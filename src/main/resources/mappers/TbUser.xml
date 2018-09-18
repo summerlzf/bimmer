@@ -5,7 +5,7 @@
 
 	<!-- "id" must be as same as method name of the interface -->
 	<select id="query" resultType="com.kedu.bimmer.model.TbUser" parameterType="map">
-		<![CDATA[ select * from tbUser limit 100 ]]>
+		<![CDATA[ select * from tbUser limit 10 ]]>
 	</select>
 
 </mapper>
