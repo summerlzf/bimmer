@@ -9,7 +9,8 @@
 
 <body>
     <h1 th:text="'Now is: ' + ${time}"></h1>
-    <div th:each="user,iter:${users}">
+    <h2>周杰伦 Party</h2>
+    <div th:each="user, iter : ${users}">
         <span th:text="${user.strNickName}"></span>
         <img th:src="${user.strAvatarUrl}" />
     </div>

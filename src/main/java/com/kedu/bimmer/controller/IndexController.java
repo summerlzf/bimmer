@@ -26,7 +26,7 @@ public class IndexController {
 	public String index(Model model) {
 		String time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 		model.addAttribute("users", userService.query());
-		model.addAttribute("time", time);
+		model.addAttribute("time", "格林威治时间 " + time);
 		logger.info("the time now is: " + time);
 		return "index";
 	}

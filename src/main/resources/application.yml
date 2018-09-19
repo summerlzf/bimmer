@@ -3,6 +3,10 @@ server:
 
 # druid
 spring:
+  application:
+    name: bimmer
+    index: 0
+
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
@@ -27,6 +31,10 @@ spring:
       testOnReturn: false
       poolPreparedStatements: true
       maxOpenPreparedStatements: 20
+
+  http:
+    multipart:
+      max-file-size: 10MB # MultipartFile 上传文件大小限制
 
 mybatis:
   mapper-locations: classpath:mappers/*.xml
