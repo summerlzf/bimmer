@@ -23,7 +23,7 @@ public class DruidConfig {
         return new DruidDataSource();
     }
 
-//    @Bean
+    @Bean
     public ServletRegistrationBean druidServlet() {
         ServletRegistrationBean bean = new ServletRegistrationBean();
         bean.setServlet(new StatViewServlet());
@@ -32,7 +32,7 @@ public class DruidConfig {
         return bean;
     }
 
-//    @Bean
+    @Bean
     public FilterRegistrationBean filterRegistrationBean() {
         FilterRegistrationBean bean = new FilterRegistrationBean();
         bean.setFilter(new WebStatFilter());

@@ -1,18 +1,29 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
+<html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
     <title>Bimmer - BMW</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 </head>
 
 <body>
     <h1 th:text="'Now is: ' + ${time}"></h1>
     <h2>周杰伦 Party</h2>
     <div th:each="user, iter : ${users}">
-        <span th:text="${user.strNickName}"></span>
-        <img th:src="${user.strAvatarUrl}" />
+        <span th:text="${user.nickName}"></span>
     </div>
+
+    <!-- JavaScript -->
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            //alert(111);
+        });
+    </script>
 </body>
 </html>

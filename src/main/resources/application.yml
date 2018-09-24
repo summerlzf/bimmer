@@ -11,7 +11,7 @@ spring:
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
       driver-class-name: com.mysql.jdbc.Driver
-      url: jdbc:mysql://58330c2a49bed.gz.cdb.myqcloud.com:15566/moneybook?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
+      url: jdbc:mysql://58330c2a49bed.gz.cdb.myqcloud.com:15566/bimmer?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
       username: cdb_outerroot
       password: admin123456
 

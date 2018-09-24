@@ -1,6 +1,6 @@
 package com.kedu.bimmer.controller;
 
-import com.kedu.bimmer.service.UserService;
+import com.kedu.bimmer.service.UserInfoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +20,12 @@ public class IndexController {
 	private static Logger logger = LoggerFactory.getLogger(IndexController.class);
 
 	@Autowired
-	private UserService userService;
+	private UserInfoService userInfoService;
 
 	@RequestMapping({"/", "/index"})
 	public String index(Model model) {
 		String time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-		model.addAttribute("users", userService.query());
+		model.addAttribute("users", userInfoService.query());
 		model.addAttribute("time", "格林威治时间 " + time);
 		logger.info("the time now is: " + time);
 		return "index";
