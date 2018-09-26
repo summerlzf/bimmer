@@ -13,4 +13,6 @@ import java.util.Map;
 public interface UserInfoDAO {
 
     List<UserInfo> query(Map<String, ?> map);
+
+    void insert(UserInfo vo);
 }

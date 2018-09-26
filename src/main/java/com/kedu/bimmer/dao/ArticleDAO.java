@@ -13,4 +13,6 @@ import java.util.Map;
 public interface ArticleDAO {
 
     List<Article> query(Map<String, ?> map);
+
+    void insert(Article vo);
 }
