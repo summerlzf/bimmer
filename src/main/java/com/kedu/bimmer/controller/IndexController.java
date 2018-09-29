@@ -24,10 +24,6 @@ public class IndexController {
 
 	@RequestMapping({"/", "/index"})
 	public String index(Model model) {
-		String time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-		model.addAttribute("users", userInfoService.query());
-		model.addAttribute("time", "格林威治时间 " + time);
-		logger.info("the time now is: " + time);
 		return "index";
 	}
 }
