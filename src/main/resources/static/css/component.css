@@ -1,0 +1,11 @@
+/**
+ * common component stylesheet
+ */
+.img-center-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.img-m5 {
+    margin-top: -170px;
+}
