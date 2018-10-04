@@ -9,6 +9,12 @@
 		]]>
 	</select>
 
+	<select id="getByUserName" resultType="com.kedu.bimmer.model.UserInfo" parameterType="string">
+		<![CDATA[
+			select * from UserInfo where userName = #{value}
+		]]>
+	</select>
+
 	<insert id="insert" parameterType="com.kedu.bimmer.model.UserInfo">
 		<![CDATA[
 			insert into UserInfo(userId, userName, password, nickName, userType, gender, birthday, province, city, town, createTime, lastModifyTime, lastLoginTime)

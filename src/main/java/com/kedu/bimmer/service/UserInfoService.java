@@ -20,4 +20,8 @@ public class UserInfoService {
     public List<UserInfo> query() {
         return userInfoDAO.query(new HashMap<>());
     }
+
+    public UserInfo getByUserName(String userName) {
+        return userInfoDAO.getByUserName(userName);
+    }
 }

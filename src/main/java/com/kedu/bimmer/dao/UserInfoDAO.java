@@ -14,5 +14,7 @@ public interface UserInfoDAO {
 
     List<UserInfo> query(Map<String, ?> map);
 
+    UserInfo getByUserName(String userName);
+
     void insert(UserInfo vo);
 }

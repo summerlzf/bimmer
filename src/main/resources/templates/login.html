@@ -34,7 +34,11 @@
         function submitForm() {
             var username = $('#username').val(), password = $('#password').val();
             $.post('/signin', {username: username, password: password}, function (json) {
-                alert('code: ' + json.code);
+                if(json.code == 0) {
+                    location.href = '/';
+                    return;
+                }
+                alert(json.message);
             });
             return false;
         }

@@ -151,6 +151,11 @@ public final class CommonUtil {
         return null;
     }
 
+    public static String hash(String text) {
+        String s = isBlank(text) ? null : MD5(text);
+        return s == null ? null : SHA1(s);
+    }
+
     /**
      * 生成UUID
      * @return
@@ -159,4 +164,12 @@ public final class CommonUtil {
         return UUID.randomUUID().toString();
     }
 
+    /**
+     * 判断是否是合法的密码（合法密码：由6-20位数字、大小写字母、下划线和横线组成）
+     * @param pwd
+     * @return
+     */
+    public static boolean isLegalPassword(String pwd) {
+        return pwd != null && pwd.matches("[0-9a-zA-Z_\\-]{6,20}$");
+    }
 }
