@@ -18,8 +18,11 @@ public class AccessInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
         String url = request.getRequestURI();
-        logger.info("request URL: {}", url);
-        return true;
+        logger.info("Request URL: {}", url);
+        if (!url.startsWith("/admin/")) {
+            return true;
+        }
+        return false;
     }
 
     @Override

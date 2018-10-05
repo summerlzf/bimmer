@@ -9,17 +9,41 @@
 		]]>
 	</select>
 
+	<select id="get" resultType="com.kedu.bimmer.model.UserInfo" parameterType="string">
+		<![CDATA[
+			select * from UserInfo where userId = #{value}
+		]]>
+	</select>
+
 	<select id="getByUserName" resultType="com.kedu.bimmer.model.UserInfo" parameterType="string">
 		<![CDATA[
 			select * from UserInfo where userName = #{value}
 		]]>
 	</select>
 
+	<select id="getByPhone" resultType="com.kedu.bimmer.model.UserInfo" parameterType="string">
+		<![CDATA[
+			select * from UserInfo where phone = #{value}
+		]]>
+	</select>
+
 	<insert id="insert" parameterType="com.kedu.bimmer.model.UserInfo">
 		<![CDATA[
-			insert into UserInfo(userId, userName, password, nickName, userType, gender, birthday, province, city, town, createTime, lastModifyTime, lastLoginTime)
-			values(#{userId}, #{userName}, #{password}, #{nickName}, #{userType}, #{gender}, #{birthday}, #{province}, #{city}, #{town}, #{createTime}, #{lastModifyTime}, #{lastLoginTime})
+			insert into UserInfo(userId, userName, password, phone, email, nickName, userType, gender, birthday, province, city, town, createTime, lastModifyTime, lastLoginTime)
+			values(#{userId}, #{userName}, #{password}, #{phone}, #{email}, #{nickName}, #{userType}, #{gender}, #{birthday}, #{province}, #{city}, #{town}, #{createTime}, #{lastModifyTime}, #{lastLoginTime})
 		]]>
 	</insert>
+
+	<update id="update" parameterType="com.kedu.bimmer.model.UserInfo">
+		<![CDATA[ UPDATE UserInfo SET ]]>
+		<if test="email != null">
+			email = #{email},
+		</if>
+ 		<if test="nickName != null">
+			nickName = #{nickName},
+		</if>
+		lastModifyTime = #{lastModifyTime}
+		<![CDATA[ where userId = #{userId} ]]>
+	</update>
 
 </mapper>

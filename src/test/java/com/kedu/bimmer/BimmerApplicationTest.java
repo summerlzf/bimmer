@@ -17,6 +17,7 @@ public class BimmerApplicationTest {
 		System.out.println("SHA1: " + CommonUtil.SHA1(s));
 		System.out.println("SHA1: " + CommonUtil.hash(s));
 		System.out.println(CommonUtil.isLegalPassword(""));
+		System.out.println(CommonUtil.isMobilePhone("13631353300"));
 	}
 
 }

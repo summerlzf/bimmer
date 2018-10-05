@@ -19,6 +19,12 @@ public class UserInfo {
     /** 密码 */
     private String password;
 
+    /** 手机号码 */
+    private String phone;
+
+    /** E-mail */
+    private String email;
+
     /** 昵称 */
     private String nickName;
 
@@ -151,5 +157,21 @@ public class UserInfo {
 
     public void setLastLoginTime(LocalDateTime lastLoginTime) {
         this.lastLoginTime = lastLoginTime;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

@@ -172,4 +172,13 @@ public final class CommonUtil {
     public static boolean isLegalPassword(String pwd) {
         return pwd != null && pwd.matches("[0-9a-zA-Z_\\-]{6,20}$");
     }
+
+    /**
+     * 判断是否是手机号码（11位）
+     * @param phone
+     * @return
+     */
+    public static boolean isMobilePhone(String phone) {
+        return phone != null && phone.matches("^[1][0-9]{10}$");
+    }
 }

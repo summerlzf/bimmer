@@ -24,4 +24,16 @@ public class UserInfoService {
     public UserInfo getByUserName(String userName) {
         return userInfoDAO.getByUserName(userName);
     }
+
+    public UserInfo getByPhone(String phone) {
+        return userInfoDAO.getByPhone(phone);
+    }
+
+    public void save(UserInfo vo) {
+        if (userInfoDAO.get(vo.getUserId()) == null) {
+            userInfoDAO.insert(vo);
+        } else {
+            userInfoDAO.update(vo);
+        }
+    }
 }

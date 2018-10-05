@@ -14,7 +14,23 @@ public interface UserInfoDAO {
 
     List<UserInfo> query(Map<String, ?> map);
 
+    UserInfo get(String userId);
+
+    /**
+     * 根据用户名（唯一）获取用户信息
+     * @param userName
+     * @return
+     */
     UserInfo getByUserName(String userName);
 
+    /**
+     * 根据手机号码（唯一）获取用户信息
+     * @param phone
+     * @return
+     */
+    UserInfo getByPhone(String phone);
+
     void insert(UserInfo vo);
+
+    void update(UserInfo vo);
 }

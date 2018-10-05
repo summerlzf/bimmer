@@ -20,24 +20,23 @@ public class LoginController {
     private UserInfoService userInfoService;
 
     @RequestMapping("/login")
-    public String index(Model model) {
+    public String login(Model model) {
         return "login";
     }
 
     @RequestMapping("/signin")
     @ResponseBody
-    public Result signin(String username, String password) {
-        System.err.println("================>   username: " + username + ", password: " + password);
+    public Result signin(String username, String password, boolean remember) {
         if (CommonUtil.isBlank(username) || !CommonUtil.isLegalPassword(password)) {
-            return Result.fail("用户名/密码错误");
+            return Result.fail("请输入正确的用户名/密码");
         }
         UserInfo vo = userInfoService.getByUserName(username);
         if (vo == null) {
-            return Result.fail("用户不存在");
+            return Result.fail("用户名/密码错误");
         }
         String pwd = CommonUtil.hash(password);
         if (pwd == null || !pwd.equals(vo.getPassword())) {
-            return Result.fail("密码错误");
+            return Result.fail("用户名/密码错误");
         }
         return Result.success();
     }
