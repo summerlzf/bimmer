@@ -5,6 +5,7 @@ import com.kedu.bimmer.model.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 
@@ -35,5 +36,12 @@ public class UserInfoService {
         } else {
             userInfoDAO.update(vo);
         }
+    }
+
+    public void updateLoginTime(String userId) {
+        UserInfo vo = new UserInfo();
+        vo.setUserId(userId);
+        vo.setLastLoginTime(LocalDateTime.now());
+        userInfoDAO.updateLoginTime(vo);
     }
 }

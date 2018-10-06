@@ -38,6 +38,8 @@ public class LoginController {
         if (pwd == null || !pwd.equals(vo.getPassword())) {
             return Result.fail("用户名/密码错误");
         }
+        // 更新登录时间
+        userInfoService.updateLoginTime(vo.getUserId());
         return Result.success();
     }
 }

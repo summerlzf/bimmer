@@ -46,4 +46,10 @@
 		<![CDATA[ where userId = #{userId} ]]>
 	</update>
 
+	<update id="updateLoginTime" parameterType="com.kedu.bimmer.model.UserInfo">
+		<![CDATA[
+			UPDATE UserInfo SET lastLoginTime = #{lastLoginTime} where userId = #{userId}
+ 		]]>
+	</update>
+
 </mapper>

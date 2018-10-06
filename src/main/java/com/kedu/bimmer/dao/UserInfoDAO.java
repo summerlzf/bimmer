@@ -33,4 +33,10 @@ public interface UserInfoDAO {
     void insert(UserInfo vo);
 
     void update(UserInfo vo);
+
+    /**
+     * 更新登录时间
+     * @param vo
+     */
+    void updateLoginTime(UserInfo vo);
 }

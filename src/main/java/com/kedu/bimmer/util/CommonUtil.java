@@ -179,6 +179,6 @@ public final class CommonUtil {
      * @return
      */
     public static boolean isMobilePhone(String phone) {
-        return phone != null && phone.matches("^[1][0-9]{10}$");
+        return phone != null && phone.length() == 11 && phone.matches("^[1][0-9]{10}$");
     }
 }
