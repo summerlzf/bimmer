@@ -1,5 +1,7 @@
 package com.kedu.bimmer.controller;
 
+import com.kedu.bimmer.base.SystemContext;
+import com.kedu.bimmer.dto.UserBasicInfo;
 import com.kedu.bimmer.service.UserInfoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +26,10 @@ public class IndexController {
 
 	@RequestMapping({"/", "/index"})
 	public String index(Model model) {
+		UserBasicInfo user = SystemContext.getUser();
+		if(user != null) {
+			model.addAttribute("username", user.getUserName());
+		}
 		return "index";
 	}
 }

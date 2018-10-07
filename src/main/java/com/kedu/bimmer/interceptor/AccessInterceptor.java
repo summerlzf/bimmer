@@ -1,5 +1,8 @@
 package com.kedu.bimmer.interceptor;
 
+import com.kedu.bimmer.base.CookieHolder;
+import com.kedu.bimmer.base.SystemContext;
+import com.kedu.bimmer.dto.UserBasicInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -19,6 +22,12 @@ public class AccessInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
         String url = request.getRequestURI();
         logger.info("Request URL: {}", url);
+
+        UserBasicInfo vo = CookieHolder.getUser(request);
+        if (vo != null) {
+            SystemContext.setUser(vo);
+            CookieHolder.setUser(response, vo);
+        }
         if (!url.startsWith("/admin/")) {
             return true;
         }
@@ -33,5 +42,8 @@ public class AccessInterceptor implements HandlerInterceptor {
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object o, Exception e) throws Exception {
         //
+    }
+
+    private void signin(HttpServletRequest request) {
     }
 }

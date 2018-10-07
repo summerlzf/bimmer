@@ -30,7 +30,6 @@ public class RegisterController {
     @RequestMapping("/signup")
     @ResponseBody
     public Result signup(String username, String password, String phone) {
-        System.err.println("=======>   username: " + username + ", password: " + password + ", phone: " + phone);
         if (CommonUtil.isBlank(username)) {
             return Result.fail("用户名不能为空");
         }
@@ -54,7 +53,7 @@ public class RegisterController {
         vo.setPhone(phone);
         vo.setCreateTime(now);
         vo.setLastModifyTime(now);
-        userInfoService.save(vo);
+        userInfoService.insert(vo);
         return Result.success();
     }
 }

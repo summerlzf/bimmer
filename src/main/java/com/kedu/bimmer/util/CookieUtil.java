@@ -9,12 +9,6 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class CookieUtil {
 
-    public static void setCookie(HttpServletResponse response, String name, String value) {
-        Cookie ck = new Cookie(name, value);
-        ck.setMaxAge(86400 * 365);
-        response.addCookie(ck);
-    }
-
     public static String getCookie(HttpServletRequest request, String name) {
         Cookie[] cks = request.getCookies();
         if (cks == null) {
@@ -26,5 +20,17 @@ public class CookieUtil {
             }
         }
         return null;
+    }
+
+    public static void setCookie(HttpServletResponse response, String name, String value) {
+        Cookie ck = new Cookie(name, value);
+        ck.setMaxAge(86400 * 365);
+        response.addCookie(ck);
+    }
+
+    public static void removeCookie(HttpServletResponse response, String name) {
+        Cookie ck = new Cookie(name, "");
+        ck.setMaxAge(0);
+        response.addCookie(ck);
     }
 }

@@ -30,6 +30,10 @@ public class UserInfoService {
         return userInfoDAO.getByPhone(phone);
     }
 
+    public void insert(UserInfo vo) {
+        userInfoDAO.insert(vo);
+    }
+
     public void save(UserInfo vo) {
         if (userInfoDAO.get(vo.getUserId()) == null) {
             userInfoDAO.insert(vo);

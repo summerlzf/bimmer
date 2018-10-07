@@ -106,6 +106,24 @@ public final class CommonUtil {
         return join(ary, split, null);
     }
 
+    public static int getInteger(String value, int defaultValue) {
+        try {
+            return Integer.parseInt(value);
+        } catch (NumberFormatException e) {
+            //
+        }
+        return defaultValue;
+    }
+
+    public static long getLong(String value, long defaultValue) {
+        try {
+            return Long.parseLong(value);
+        } catch (NumberFormatException e) {
+            //
+        }
+        return defaultValue;
+    }
+
     /**
      * 生成标准的32位MD5值
      * @param text
