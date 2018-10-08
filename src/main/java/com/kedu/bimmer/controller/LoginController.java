@@ -12,8 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletResponse;
-
 /**
  * @author Jef
  */
@@ -30,7 +28,7 @@ public class LoginController {
 
     @RequestMapping("/signin")
     @ResponseBody
-    public Result signin(HttpServletResponse response, String username, String password, boolean remember) {
+    public Result signin(String username, String password, boolean remember) {
         if (CommonUtil.isBlank(username) || !CommonUtil.isLegalPassword(password)) {
             return Result.fail("请输入正确的用户名/密码");
         }
@@ -51,7 +49,14 @@ public class LoginController {
         user.setNickName(vo.getNickName());
         user.setPhone(vo.getPhone());
         user.setEmail(vo.getEmail());
-        CookieHolder.setUser(response, user);
+        user.setRemember(remember);
+        CookieHolder.setUser(user);
         return Result.success();
+    }
+
+    @RequestMapping("/logout")
+    public String logout() {
+        CookieHolder.clearUser();
+        return "redirect:/";
     }
 }

@@ -1,6 +1,8 @@
 package com.kedu.bimmer.dto;
 
 /**
+ * 保存在cookie中的用户信息
+ *
  * @author Jef
  */
 public class UserBasicInfo {
@@ -19,6 +21,9 @@ public class UserBasicInfo {
 
     /** E-mail */
     private String email;
+
+    /** 是否记住 */
+    private boolean remember;
 
     public String getUserId() {
         return userId;
@@ -58,5 +63,13 @@ public class UserBasicInfo {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public boolean isRemember() {
+        return remember;
+    }
+
+    public void setRemember(boolean remember) {
+        this.remember = remember;
     }
 }

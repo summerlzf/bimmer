@@ -23,14 +23,17 @@ public class AccessInterceptor implements HandlerInterceptor {
         String url = request.getRequestURI();
         logger.info("Request URL: {}", url);
 
-        UserBasicInfo vo = CookieHolder.getUser(request);
+        UserBasicInfo vo = CookieHolder.getUser();
         if (vo != null) {
             SystemContext.setUser(vo);
-            CookieHolder.setUser(response, vo);
+            CookieHolder.setUser(vo);
+        } else {
+            SystemContext.clearUser();
         }
         if (!url.startsWith("/admin/")) {
             return true;
         }
+        response.sendRedirect("/");
         return false;
     }
 

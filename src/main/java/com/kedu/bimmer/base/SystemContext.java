@@ -16,4 +16,8 @@ public class SystemContext {
     public static void setUser(UserBasicInfo user) {
         userHolder.set(user);
     }
+
+    public static void clearUser() {
+        userHolder.remove();
+    }
 }
