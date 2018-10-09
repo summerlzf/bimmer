@@ -12,6 +12,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+
 /**
  * @author Jef
  */
@@ -22,7 +25,17 @@ public class LoginController {
     private UserInfoService userInfoService;
 
     @RequestMapping("/login")
-    public String login(Model model) {
+    public String login(Model model, String callbackUrl) {
+        if (CommonUtil.isBlank(callbackUrl)) {
+            callbackUrl = "/";
+        } else {
+            try {
+                callbackUrl = URLDecoder.decode(callbackUrl, "utf-8");
+            } catch (UnsupportedEncodingException e) {
+                //
+            }
+        }
+        model.addAttribute("callbackUrl", callbackUrl);
         return "login";
     }
 

@@ -10,6 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.net.URLEncoder;
 
 /**
  * @author Jef
@@ -27,13 +28,15 @@ public class AccessInterceptor implements HandlerInterceptor {
         if (vo != null) {
             SystemContext.setUser(vo);
             CookieHolder.setUser(vo);
-        } else {
-            SystemContext.clearUser();
+            return true;
         }
+        SystemContext.clearUser();
+
         if (!url.startsWith("/admin/")) {
             return true;
         }
-        response.sendRedirect("/");
+        // 跳转到登录页
+        response.sendRedirect("/login?callbackUrl=" + URLEncoder.encode(url, "utf-8"));
         return false;
     }
 

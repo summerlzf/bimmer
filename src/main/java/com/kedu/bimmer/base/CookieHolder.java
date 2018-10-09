@@ -31,7 +31,7 @@ public class CookieHolder {
         CookieUtil.setCookie(response, "bm-user", json);
         // 登录超时时间（单位：分钟）
         int minutes = 10;
-        long ts = vo.isRemember() ? 365 * 86400000 : minutes * 60000;
+        long ts = vo.isRemember() ? 365 * 86400000L : minutes * 60000L;
         CookieUtil.setCookie(response, "bm-timeout", String.valueOf(System.currentTimeMillis() + ts));
     }
 

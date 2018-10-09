@@ -30,13 +30,13 @@
 
     <!-- JavaScript -->
     <script type="text/javascript" src="/js/jquery.min.js"></script>
-    <!--<script type="text/javascript" src="/js/bootstrap.min.js"></script>-->
-    <script type="text/javascript">
+    <script type="text/javascript" th:inline="javascript">
+        var url = [[${callbackUrl}]];
         function submitForm() {
             var username = $('#username').val(), password = $('#password').val(), remember = $('#remember').is(':checked');
             $.post('/signin', {username: username, password: password, remember: remember}, function (json) {
                 if(json.code == 0) {
-                    location.href = '/';
+                    location.href = url;
                     return;
                 }
                 alert(json.message);
