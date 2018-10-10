@@ -32,12 +32,12 @@ public class AccessInterceptor implements HandlerInterceptor {
         }
         SystemContext.clearUser();
 
-        if (!url.startsWith("/admin/")) {
-            return true;
+        if (isNeedLogin(url)) {
+            // 跳转到登录页
+            response.sendRedirect("/login?callbackUrl=" + URLEncoder.encode(url, "utf-8"));
+            return false;
         }
-        // 跳转到登录页
-        response.sendRedirect("/login?callbackUrl=" + URLEncoder.encode(url, "utf-8"));
-        return false;
+        return true;
     }
 
     @Override
@@ -50,6 +50,12 @@ public class AccessInterceptor implements HandlerInterceptor {
         //
     }
 
-    private void signin(HttpServletRequest request) {
+    /**
+     * 判断是否需要登录
+     * @param url
+     * @return
+     */
+    private boolean isNeedLogin(String url) {
+        return url.startsWith("/admin/");
     }
 }
