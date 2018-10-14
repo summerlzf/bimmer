@@ -1,5 +1,6 @@
 package com.kedu.bimmer.dao;
 
+import com.kedu.bimmer.dto.ArticleSearchDTO;
 import com.kedu.bimmer.model.Article;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -12,7 +13,7 @@ import java.util.Map;
 @Mapper
 public interface ArticleDAO {
 
-    List<Article> query(Map<String, ?> map);
+    List<Article> query(ArticleSearchDTO articleSearchDTO);
 
     void insert(Article vo);
 }

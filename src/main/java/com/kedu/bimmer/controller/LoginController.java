@@ -9,6 +9,7 @@ import com.kedu.bimmer.util.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -39,7 +40,7 @@ public class LoginController {
         return "login";
     }
 
-    @RequestMapping("/signin")
+    @PostMapping("/signin")
     @ResponseBody
     public Result signin(String username, String password, boolean remember) {
         if (CommonUtil.isBlank(username) || !CommonUtil.isLegalPassword(password)) {
