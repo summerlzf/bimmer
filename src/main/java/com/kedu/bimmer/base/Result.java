@@ -41,6 +41,7 @@ public class Result<T> {
         Result<T> r = new Result<>();
         r.setCode(0);
         r.setData(data);
+        r.setMessage("操作成功");
         return r;
     }
 
