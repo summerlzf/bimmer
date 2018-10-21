@@ -2,6 +2,7 @@ package com.kedu.bimmer.controller;
 
 import com.kedu.bimmer.base.CookieHolder;
 import com.kedu.bimmer.base.Result;
+import com.kedu.bimmer.base.SystemContext;
 import com.kedu.bimmer.dto.UserBasicInfo;
 import com.kedu.bimmer.model.UserInfo;
 import com.kedu.bimmer.service.UserInfoService;
@@ -27,6 +28,10 @@ public class LoginController {
 
     @RequestMapping("/login")
     public String login(Model model, String callbackUrl) {
+        if (SystemContext.getUser() != null) {
+            // 如果已经登录，直接跳转到后台页面
+            return "redirect:/admin/main";
+        }
         if (CommonUtil.isBlank(callbackUrl)) {
             callbackUrl = "/";
         } else {

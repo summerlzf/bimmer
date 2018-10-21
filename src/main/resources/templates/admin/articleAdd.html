@@ -1,0 +1,32 @@
+<html lang="zh-CN"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/admin_box">
+
+<th:block layout:fragment="head"></th:block>
+
+<th:block layout:fragment="content">
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <h1 class="page-header">文章修改</h1>
+
+        <form id="post-form" onsubmit="return save();">
+        </form>
+    </div>
+</th:block>
+
+<th:block layout:fragment="footer">
+    <script type="text/javascript">
+        function save() {
+            var req = $('#post-form').serialize();
+            $.post('/admin/saveArticle', req, function (json) {
+                alert(JSON.stringify(json));
+            });
+            return false;
+        }
+        $(function () {
+            //
+        });
+    </script>
+</th:block>
+
+</html>

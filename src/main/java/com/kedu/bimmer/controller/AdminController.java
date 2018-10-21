@@ -26,7 +26,7 @@ public class AdminController {
     @Autowired
     private ArticleService articleService;
 
-    @RequestMapping({"/", "/main"})
+    @RequestMapping("/main")
     public String main(Model model) {
         UserBasicInfo user = SystemContext.getUser();
         model.addAttribute("username", user.getUserName());
@@ -45,5 +45,16 @@ public class AdminController {
     public Result getArticleList(ArticleSearchDTO articleSearchDTO) {
         List<Article> list = articleService.query(articleSearchDTO);
         return Result.success(list);
+    }
+
+    @RequestMapping("/articleAdd")
+    public String articleAdd(Model model) {
+        return "admin/articleAdd";
+    }
+
+    @PostMapping("/saveArticle")
+    @ResponseBody
+    public Result saveArticle() {
+        return Result.success();
     }
 }
