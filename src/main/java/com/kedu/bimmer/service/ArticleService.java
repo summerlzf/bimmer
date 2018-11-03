@@ -20,4 +20,8 @@ public class ArticleService {
     public List<Article> query(ArticleSearchDTO articleSearchDTO) {
         return articleDAO.query(articleSearchDTO);
     }
+
+    public void insert(Article vo) {
+        articleDAO.insert(vo);
+    }
 }

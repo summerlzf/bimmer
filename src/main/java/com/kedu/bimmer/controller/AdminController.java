@@ -1,5 +1,6 @@
 package com.kedu.bimmer.controller;
 
+import com.kedu.bimmer.base.GUID;
 import com.kedu.bimmer.base.Result;
 import com.kedu.bimmer.base.SystemContext;
 import com.kedu.bimmer.dto.ArticleSearchDTO;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -54,7 +56,14 @@ public class AdminController {
 
     @PostMapping("/saveArticle")
     @ResponseBody
-    public Result saveArticle() {
+    public Result saveArticle(Article vo) {
+        LocalDateTime now = LocalDateTime.now();
+        UserBasicInfo user = SystemContext.getUser();
+        vo.setArticleId(GUID.generate());
+        vo.setAuthorUserId(user.getUserId());
+        vo.setCreateTime(now);
+        vo.setLastModifyTime(now);
+        articleService.insert(vo);
         return Result.success();
     }
 }
