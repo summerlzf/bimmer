@@ -3,9 +3,27 @@
 <!-- "namespace" must be the path of interface, or show error “is not known to the MapperRegistry” when launch -->
 <mapper namespace="com.kedu.bimmer.dao.ArticleDAO">
 
-	<select id="query" resultType="com.kedu.bimmer.model.Article" parameterType="com.kedu.bimmer.dto.ArticleSearchDTO">
+	<select id="query" resultType="com.kedu.bimmer.model.Article">
 		<![CDATA[
 			select * from Article order by createTime desc limit 10
+		]]>
+	</select>
+
+	<select id="queryBySearch" resultType="com.kedu.bimmer.dto.ArticleDTO" parameterType="com.kedu.bimmer.dto.ArticleSearchDTO">
+		<![CDATA[
+			select a.articleId, a.title, a.content, u.userName as authorUserName, u.nickName as authorNickName, a.lastModifyTime
+			from Article a left join UserInfo u on u.userId = a.authorUserId
+		]]>
+		<where>
+			<if test="title != null and title != ''">
+				a.title like concat('%', #{title}, '%')
+			</if>
+			<if test="content != null and content != ''">
+				a.content like concat('%', #{content}, '%')
+			</if>
+		</where>
+		<![CDATA[
+			order by a.createTime desc limit 10
 		]]>
 	</select>
 

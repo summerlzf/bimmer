@@ -33,33 +33,19 @@
                 <thead>
                 <tr>
                     <th>#</th>
-                    <th>Header</th>
-                    <th>Header</th>
-                    <th>Header</th>
-                    <th>Header</th>
+                    <th>标题</th>
+                    <th>内容</th>
+                    <th>作者</th>
+                    <th>时间</th>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody id="tbody">
                 <tr>
-                    <td>1,001</td>
-                    <td>Lorem</td>
-                    <td>ipsum</td>
-                    <td>dolor</td>
-                    <td>sit</td>
-                </tr>
-                <tr>
-                    <td>1,002</td>
-                    <td>amet</td>
-                    <td>consectetur</td>
-                    <td>adipiscing</td>
-                    <td>elit</td>
-                </tr>
-                <tr>
-                    <td>1,003</td>
-                    <td>Integer</td>
-                    <td>nec</td>
-                    <td>odio</td>
-                    <td>Praesent</td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>--</td>
                 </tr>
                 </tbody>
             </table>
@@ -72,12 +58,23 @@
         function searchData() {
             var req = $('#search-form').serialize();
             $.post('/admin/getArticleList', req, function (json) {
-                alert(JSON.stringify(json));
+                //alert(JSON.stringify(json));
+                var list = json.data || [], html = '';
+                list.forEach(function (e) {
+                    html += '<tr>' +
+                        '<td>' + e.articleId + '</td>' +
+                        '<td>' + e.title + '</td>' +
+                        '<td>' + e.content + '</td>' +
+                        '<td>' + e.authorUserName + '</td>' +
+                        '<td>' + e.lastModifyTimeStr + '</td>' +
+                        '</tr>';
+                });
+                $('#tbody').html(html);
             });
             return false;
         }
         $(function () {
-            //
+            searchData();
         });
     </script>
 </th:block>

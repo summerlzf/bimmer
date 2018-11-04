@@ -28,6 +28,7 @@ public class AccessInterceptor implements HandlerInterceptor {
         if (vo != null) {
             SystemContext.setUser(vo);
             CookieHolder.setUser(vo);
+            request.setAttribute("username", vo.getUserName());
             return true;
         }
         SystemContext.clearUser();
