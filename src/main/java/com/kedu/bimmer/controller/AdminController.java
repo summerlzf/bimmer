@@ -1,6 +1,7 @@
 package com.kedu.bimmer.controller;
 
 import com.kedu.bimmer.base.GUID;
+import com.kedu.bimmer.base.Page;
 import com.kedu.bimmer.base.Result;
 import com.kedu.bimmer.base.SystemContext;
 import com.kedu.bimmer.dto.ArticleDTO;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * @author Jef
@@ -42,9 +42,9 @@ public class AdminController {
 
     @PostMapping("/getArticleList")
     @ResponseBody
-    public Result getArticleList(ArticleSearchDTO articleSearchDTO) {
-        List<ArticleDTO> list = articleService.query(articleSearchDTO);
-        return Result.success(list);
+    public Result getArticleList(ArticleSearchDTO articleSearchDTO, int pageNum) {
+        Page<ArticleDTO> page = articleService.query(articleSearchDTO, pageNum);
+        return Result.success(page);
     }
 
     @RequestMapping("/articleAdd")

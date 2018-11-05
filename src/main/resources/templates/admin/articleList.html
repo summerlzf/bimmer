@@ -57,9 +57,9 @@
     <script type="text/javascript">
         function searchData() {
             var req = $('#search-form').serialize();
-            $.post('/admin/getArticleList', req, function (json) {
+            $.post('/admin/getArticleList', req + '&pageNum=1', function (json) {
                 //alert(JSON.stringify(json));
-                var list = json.data || [], html = '';
+                var list = json.data.dataList || [], html = '';
                 list.forEach(function (e) {
                     html += '<tr>' +
                         '<td>' + e.articleId + '</td>' +

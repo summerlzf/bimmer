@@ -16,14 +16,14 @@
 		]]>
 		<where>
 			<if test="title != null and title != ''">
-				a.title like concat('%', #{title}, '%')
+				and a.title like concat('%', #{title}, '%')
 			</if>
 			<if test="content != null and content != ''">
-				a.content like concat('%', #{content}, '%')
+				and a.content like concat('%', #{content}, '%')
 			</if>
 		</where>
 		<![CDATA[
-			order by a.createTime desc limit 10
+			order by a.createTime desc
 		]]>
 	</select>
 

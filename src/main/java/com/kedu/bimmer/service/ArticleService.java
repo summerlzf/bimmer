@@ -1,5 +1,7 @@
 package com.kedu.bimmer.service;
 
+import com.github.pagehelper.PageHelper;
+import com.kedu.bimmer.base.Page;
 import com.kedu.bimmer.dao.ArticleDAO;
 import com.kedu.bimmer.dto.ArticleDTO;
 import com.kedu.bimmer.dto.ArticleSearchDTO;
@@ -19,11 +21,15 @@ public class ArticleService {
     @Autowired
     private ArticleDAO articleDAO;
 
-    public List<ArticleDTO> query(ArticleSearchDTO articleSearchDTO) {
-        List<ArticleDTO> list = articleDAO.queryBySearch(articleSearchDTO);
+    public Page<ArticleDTO> query(ArticleSearchDTO articleSearchDTO, int pageNum) {
+		com.github.pagehelper.Page<ArticleDTO> pg = PageHelper.startPage(pageNum, 10);
+		List<ArticleDTO> list = articleDAO.queryBySearch(articleSearchDTO);
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         list.forEach(vo -> vo.setLastModifyTimeStr(vo.getLastModifyTime().format(dtf)));
-        return list;
+		Page<ArticleDTO> page = new Page<>(pageNum, 10);
+		page.setDataList(list);
+		page.setTotalCount((int) pg.getTotal());
+        return page;
     }
 
     public void insert(Article vo) {
