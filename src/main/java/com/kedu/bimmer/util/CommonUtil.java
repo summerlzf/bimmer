@@ -199,4 +199,32 @@ public final class CommonUtil {
     public static boolean isMobilePhone(String phone) {
         return phone != null && phone.length() == 11 && phone.matches("^[1][0-9]{10}$");
     }
+
+    /**
+     * 截取字符串长度，ASCII字符长度为1，中文字符长度为2
+     * @param str
+     * @param maxLength
+     * @param suffix
+     * @return
+     */
+    public static String substr(String str, int maxLength, String suffix) {
+        if(isBlank(str) || maxLength <= 0) {
+            return "";
+        }
+        int length = 0;
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < str.length(); i++) {
+            String s = String.valueOf(str.charAt(i));
+            int len = s.getBytes(StandardCharsets.UTF_8).length == 1 ? 1 : 2;
+            length += len;
+            if(length > maxLength) {
+                if(!isBlank(suffix)) {
+                    sb.append(suffix);
+                }
+                break;
+            }
+            sb.append(s);
+        }
+        return sb.toString();
+    }
 }

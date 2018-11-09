@@ -6,6 +6,7 @@ import com.kedu.bimmer.dao.ArticleDAO;
 import com.kedu.bimmer.dto.ArticleDTO;
 import com.kedu.bimmer.dto.ArticleSearchDTO;
 import com.kedu.bimmer.model.Article;
+import com.kedu.bimmer.util.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +26,12 @@ public class ArticleService {
 		com.github.pagehelper.Page<ArticleDTO> pg = PageHelper.startPage(pageNum, 10);
 		List<ArticleDTO> list = articleDAO.queryBySearch(articleSearchDTO);
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        list.forEach(vo -> vo.setLastModifyTimeStr(vo.getLastModifyTime().format(dtf)));
+        list.forEach(vo -> {
+        	// 最多只显示20个ASCII字符（10个汉字）
+			vo.setTitle(CommonUtil.substr(vo.getTitle(), 20, "..."));
+        	vo.setContent(CommonUtil.substr(vo.getContent(), 30, "..."));
+        	vo.setLastModifyTimeStr(vo.getLastModifyTime().format(dtf));
+		});
 		Page<ArticleDTO> page = new Page<>(pageNum, 10);
 		page.setDataList(list);
 		page.setTotalCount((int) pg.getTotal());

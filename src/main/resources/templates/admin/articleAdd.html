@@ -36,7 +36,8 @@
         function save() {
             var req = $('#post-form').serialize();
             $.post('/admin/saveArticle', req, function (json) {
-                alert(JSON.stringify(json));
+                //alert(JSON.stringify(json));
+                window.location.href = '/admin/articleList';
             });
             return false;
         }

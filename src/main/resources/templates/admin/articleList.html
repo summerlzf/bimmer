@@ -50,14 +50,15 @@
                 </tbody>
             </table>
         </div>
+        <div id="pagination"></div>
     </div>
 </th:block>
 
 <th:block layout:fragment="footer">
     <script type="text/javascript">
-        function searchData() {
+        function searchData(pageNum) {
             var req = $('#search-form').serialize();
-            $.post('/admin/getArticleList', req + '&pageNum=1', function (json) {
+            $.post('/admin/getArticleList', req + '&pageNum=' + (pageNum || 1), function (json) {
                 //alert(JSON.stringify(json));
                 var list = json.data.dataList || [], html = '';
                 list.forEach(function (e) {
@@ -70,6 +71,28 @@
                         '</tr>';
                 });
                 $('#tbody').html(html);
+                $('#pagination').pagination(json.data.totalCount, {
+                    callback: function (pageIndex) {
+                        if(pageIndex + 1 == (pageNum || 1)) {
+                            alert(pageIndex);
+                            return;
+                        }
+                        searchData(pageIndex + 1);
+                    },
+                    items_per_page: 10,
+                    num_display_entries: 5,
+                    current_page: pageNum,
+                    num_edge_entries: 0,
+                    link_to: "#a",
+                    prev_text: "上一页",
+                    next_text: "下一页",
+                    ellipse_text: "...",
+                    prev_show_always: true,
+                    next_show_always: true,
+                    renderer: "defaultRenderer",
+                    show_if_single_page: true,
+                    load_first_page: true
+                });
             });
             return false;
         }
