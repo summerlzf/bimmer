@@ -54,7 +54,7 @@
             <ul class="pagination">
                 <li>
                     <a href="#" aria-label="Previous">
-                        <span aria-hidden="true">«</span>
+                        «
                     </a>
                 </li>
                 <li><a href="#">1</a></li>
@@ -64,11 +64,12 @@
                 <li><a href="#">5</a></li>
                 <li>
                     <a href="#" aria-label="Next">
-                        <span aria-hidden="true">»</span>
+                        »
                     </a>
                 </li>
             </ul>
         </nav>
+        <div id="pagination"></div>
     </div>
 </th:block>
 
@@ -88,7 +89,7 @@
                         '</tr>';
                 });
                 $('#tbody').html(html);
-                $('.pagination').pagination(json.data.totalCount, {
+                $('#pagination').pagination(json.data.totalCount, {
                     callback: function (pageIndex) {
                         var page = pageIndex + 1;
                         if(page >= (pageNum || 1) && page <= totalPage) {
