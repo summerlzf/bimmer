@@ -66,12 +66,13 @@
             page_id = page_id<0?0:(page_id<np?page_id:np-1); // Normalize page id to sane value
             appendopts = $.extend({text:page_id+1, classes:""}, appendopts||{});
             if(page_id == current_page){
-                lnk = $("<span class='current'>" + appendopts.text + "</span>");
+                // lnk = $("<span class='current'>" + appendopts.text + "</span>");
+                lnk = $("<li><span class='current'>" + appendopts.text + "</span></li>");
             }
             else
             {
-                lnk = $("<a>" + appendopts.text + "</a>")
-                    .attr('href', this.opts.link_to.replace(/__id__/,page_id));
+                lnk = $("<li><a>" + appendopts.text + "</a></li>");
+                lnk.find('a').attr('href', this.opts.link_to.replace(/__id__/,page_id));
             }
             if(appendopts.classes){ lnk.addClass(appendopts.classes); }
             if(appendopts.rel){ lnk.attr('rel', appendopts.rel); }
@@ -89,7 +90,7 @@
             var begin, end,
                 interval = this.pc.getInterval(current_page),
                 np = this.pc.numPages(),
-                fragment = $("<div class='pagination'></div>");
+                fragment = $("<ul class='pagination'></ul>");
 
             // Generate "Previous"-Link
             if(this.opts.prev_text && (current_page > 0 || this.opts.prev_show_always)){
