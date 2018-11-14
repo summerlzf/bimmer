@@ -12,21 +12,27 @@
 .pagination a, .pagination span {
     display: inline-block;
     float: left;
-    padding: 0.3em 0.5em;
+    background: #FFF;
+    color: rgb(66,139,202);
+    padding: 0.3em 0.6em;
     /*margin-right: 5px;*/
     margin-bottom: 5px;
     min-width:1em;
     text-align:center;
+    border: solid 1px #ccc;
+    border-left: none;
 }
 
 .pagination .current {
-    background: #26B;
-    color: #fff;
-    border: solid 1px #AAE;
+    color: #999;
+}
+
+.pagination .prev {
+    border-left: solid 1px #ccc;
 }
 
 .pagination .current.prev, .pagination .current.next{
-    color:#999;
-    border-color:#999;
-    background:#fff;
+    /*color:#999;*/
+    /*border-color:#999;*/
+    /*background:#fff;*/
 }
