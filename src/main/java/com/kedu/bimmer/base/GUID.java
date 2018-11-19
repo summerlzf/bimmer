@@ -28,9 +28,16 @@ public class GUID {
         return sb.toString();
     }
 
+    public static boolean isGUID(String text) {
+        return text != null && text.length() == 16 && text.matches("^[0-9a-zA-Z]{16}$");
+    }
+
     public static void main(String[] args) {
         for (int i = 0; i < 10; i++) {
-            System.out.println(generate());
+            String s = generate();
+            System.out.println(s + "   " + isGUID(s));
         }
+        String s = "123";
+        System.out.println(s + "   " + isGUID(s));
     }
 }

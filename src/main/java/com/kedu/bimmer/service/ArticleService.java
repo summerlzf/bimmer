@@ -38,6 +38,10 @@ public class ArticleService {
         return page;
     }
 
+    public Article get(String articleId) {
+        return articleDAO.get(articleId);
+    }
+
     public void insert(Article vo) {
         articleDAO.insert(vo);
     }

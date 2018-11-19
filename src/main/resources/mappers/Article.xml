@@ -27,6 +27,12 @@
 		]]>
 	</select>
 
+	<select id="get" resultType="com.kedu.bimmer.model.Article">
+		<![CDATA[
+			select * from Article where articleId = #{articleId}
+		]]>
+	</select>
+
 	<insert id="insert" parameterType="com.kedu.bimmer.model.Article">
 		<![CDATA[
 			insert into Article(articleId, title, content, authorUserId, createTime, lastModifyTime)

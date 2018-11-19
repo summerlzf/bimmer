@@ -9,6 +9,7 @@ import com.kedu.bimmer.dto.ArticleSearchDTO;
 import com.kedu.bimmer.dto.UserBasicInfo;
 import com.kedu.bimmer.model.Article;
 import com.kedu.bimmer.service.ArticleService;
+import com.kedu.bimmer.util.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -47,14 +48,20 @@ public class AdminController {
         return Result.success(page);
     }
 
-    @RequestMapping("/articleAdd")
-    public String articleAdd(Model model) {
-        return "admin/articleAdd";
+    @RequestMapping("/articleEdit")
+    public String articleEdit(Model model, String id) {
+        Article vo = GUID.isGUID(id) ? articleService.get(id) : null;
+        model.addAttribute("title", vo == null ? "" : vo.getTitle());
+        model.addAttribute("content", vo == null ? "" : vo.getContent());
+        return "admin/articleEdit";
     }
 
     @PostMapping("/saveArticle")
     @ResponseBody
     public Result saveArticle(Article vo) {
+        if (CommonUtil.isBlank(vo.getTitle()) || CommonUtil.isBlank(vo.getContent())) {
+            return Result.fail("参数有误");
+        }
         LocalDateTime now = LocalDateTime.now();
         UserBasicInfo user = SystemContext.getUser();
         vo.setArticleId(GUID.generate());

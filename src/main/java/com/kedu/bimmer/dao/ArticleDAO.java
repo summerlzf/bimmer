@@ -4,9 +4,9 @@ import com.kedu.bimmer.dto.ArticleDTO;
 import com.kedu.bimmer.dto.ArticleSearchDTO;
 import com.kedu.bimmer.model.Article;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Jef
@@ -17,6 +17,8 @@ public interface ArticleDAO {
     List<Article> query();
 
     List<ArticleDTO> queryBySearch(ArticleSearchDTO articleSearchDTO);
+
+    Article get(@Param("articleId") String articleId);
 
     void insert(Article vo);
 }
