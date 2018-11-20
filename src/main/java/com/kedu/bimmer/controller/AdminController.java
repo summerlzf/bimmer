@@ -51,6 +51,7 @@ public class AdminController {
     @RequestMapping("/articleEdit")
     public String articleEdit(Model model, String id) {
         Article vo = GUID.isGUID(id) ? articleService.get(id) : null;
+        model.addAttribute("edit", vo != null);
         model.addAttribute("title", vo == null ? "" : vo.getTitle());
         model.addAttribute("content", vo == null ? "" : vo.getContent());
         return "admin/articleEdit";
