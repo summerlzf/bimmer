@@ -49,15 +49,19 @@ public class LoginController {
     @ResponseBody
     public Result signin(String username, String password, boolean remember) {
         if (CommonUtil.isBlank(username) || !CommonUtil.isLegalPassword(password)) {
-            return Result.fail("请输入正确的用户名/密码");
+            return Result.fail("请输入正确的账号/密码");
         }
         UserInfo vo = userInfoService.getByUserName(username);
         if (vo == null) {
-            return Result.fail("用户名/密码错误");
+            // 支持手机号码登录
+            vo = userInfoService.getByPhone(username);
+        }
+        if (vo == null) {
+            return Result.fail("账号/密码错误");
         }
         String pwd = CommonUtil.hash(password);
         if (pwd == null || !pwd.equals(vo.getPassword())) {
-            return Result.fail("用户名/密码错误");
+            return Result.fail("账号/密码错误");
         }
         // 更新登录时间
         userInfoService.updateLoginTime(vo.getUserId());
