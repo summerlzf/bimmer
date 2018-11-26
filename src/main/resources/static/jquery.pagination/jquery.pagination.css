@@ -14,17 +14,22 @@
     float: left;
     background: #FFF;
     color: rgb(66,139,202);
-    padding: 5px 10px;
-    /*margin-right: 5px;*/
+    padding: 6px 12px;
     margin-bottom: 5px;
     min-width:1em;
     text-align:center;
     border: solid 1px #ccc;
     border-left: none;
 }
+.pagination a:hover, .pagination span:hover {
+    background: #f6f6f6;
+}
 
 .pagination .current {
     color: #999;
+}
+.pagination .current:hover {
+    background: none;
 }
 
 .pagination .prev {
