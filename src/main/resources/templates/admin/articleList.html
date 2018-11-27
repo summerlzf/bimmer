@@ -65,7 +65,7 @@
                 list.forEach(function (e) {
                     html += '<tr>' +
                         '<td>' + e.articleId + '</td>' +
-                        '<td>' + e.title + '</td>' +
+                        '<td><a href="/article?id=' + e.articleId + '" target="_blank">' + e.title + '</a></td>' +
                         '<td>' + e.content + '</td>' +
                         '<td>' + e.authorUserName + '</td>' +
                         '<td>' + e.lastModifyTimeStr + '</td>' +
@@ -84,7 +84,7 @@
                     num_display_entries: 5,
                     current_page: (pageNum || 1) - 1,
                     num_edge_entries: 0,
-                    link_to: "#a",
+//                    link_to: "#a",
                     prev_text: "上一页",
                     next_text: "下一页",
                     ellipse_text: "...",

@@ -32,6 +32,7 @@ public class Page<E> {
 	}
 
 	public Page() {
+		//
 	}
 
 	public Page(int pageNum, int pageSize) {
