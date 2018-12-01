@@ -52,7 +52,9 @@ public class AdminController {
     public String articleEdit(Model model, String id) {
         Article vo = GUID.isGUID(id) ? articleService.get(id) : null;
         model.addAttribute("edit", vo != null);
+        model.addAttribute("id", vo == null ? "" : vo.getArticleId());
         model.addAttribute("title", vo == null ? "" : vo.getTitle());
+        model.addAttribute("subTitle", vo == null ? "" : vo.getSubTitle());
         model.addAttribute("content", vo == null ? "" : vo.getContent());
         return "admin/articleEdit";
     }
@@ -65,11 +67,20 @@ public class AdminController {
         }
         LocalDateTime now = LocalDateTime.now();
         UserBasicInfo user = SystemContext.getUser();
-        vo.setArticleId(GUID.generate());
-        vo.setAuthorUserId(user.getUserId());
-        vo.setCreateTime(now);
-        vo.setLastModifyTime(now);
-        articleService.insert(vo);
+		Article ac = GUID.isGUID(vo.getArticleId()) ? articleService.get(vo.getArticleId()) : null;
+		if (ac == null) { // 新增
+			vo.setArticleId(GUID.generate());
+			vo.setAuthorUserId(user.getUserId());
+			vo.setCreateTime(now);
+			vo.setLastModifyTime(now);
+			articleService.insert(vo);
+		} else { // 更新
+			ac.setTitle(vo.getTitle());
+			ac.setSubTitle(vo.getSubTitle());
+			ac.setContent(vo.getContent());
+			ac.setLastModifyTime(now);
+			articleService.update(ac);
+		}
         return Result.success();
     }
 }

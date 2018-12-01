@@ -39,4 +39,8 @@ public class ArticleService {
     public void insert(Article vo) {
         articleDAO.insert(vo);
     }
+
+    public void update(Article vo) {
+        articleDAO.update(vo);
+    }
 }

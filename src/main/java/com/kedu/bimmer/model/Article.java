@@ -15,6 +15,9 @@ public class Article {
     /** 标题 */
     private String title;
 
+    /** 副标题 */
+    private String subTitle;
+
     /** 内容 */
     private String content;
 
@@ -74,4 +77,12 @@ public class Article {
     public void setLastModifyTime(LocalDateTime lastModifyTime) {
         this.lastModifyTime = lastModifyTime;
     }
+
+	public String getSubTitle() {
+		return subTitle;
+	}
+
+	public void setSubTitle(String subTitle) {
+		this.subTitle = subTitle;
+	}
 }

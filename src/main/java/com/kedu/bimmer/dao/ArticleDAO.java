@@ -21,4 +21,6 @@ public interface ArticleDAO {
     Article get(@Param("articleId") String articleId);
 
     void insert(Article vo);
+
+    void update(Article vo);
 }

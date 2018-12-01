@@ -18,12 +18,13 @@ public class ArticleController {
     @Autowired
     private ArticleService articleService;
 
-    @RequestMapping("/article/{id}")
+    @RequestMapping("/article/item/{id}")
     public String article(Model model, @PathVariable("id") String id) {
         Article vo = GUID.isGUID(id) ? articleService.get(id) : null;
         if (vo == null) {
             return "redirect:/";
         }
+        model.addAttribute("vo", vo);
         return "article";
     }
 }

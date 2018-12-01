@@ -35,9 +35,22 @@
 
 	<insert id="insert" parameterType="com.kedu.bimmer.model.Article">
 		<![CDATA[
-			insert into Article(articleId, title, content, authorUserId, createTime, lastModifyTime)
-			values(#{articleId}, #{title}, #{content}, #{authorUserId}, #{createTime}, #{lastModifyTime})
+			insert into Article(articleId, title, subTitle, content, authorUserId, createTime, lastModifyTime)
+			values(#{articleId}, #{title}, #{subTitle}, #{content}, #{authorUserId}, #{createTime}, #{lastModifyTime})
 		]]>
 	</insert>
+
+	<update id="update" parameterType="com.kedu.bimmer.model.Article">
+		<![CDATA[
+			update Article
+		]]>
+		<set>
+			title = #{title},
+			subTitle = #{subTitle},
+			content = #{content},
+			lastModifyTime = #{lastModifyTime}
+		</set>
+		<![CDATA[ where articleId = #{articleId} ]]>
+	</update>
 
 </mapper>
