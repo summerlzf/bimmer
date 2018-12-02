@@ -56,6 +56,8 @@ public class AdminController {
         model.addAttribute("title", vo == null ? "" : vo.getTitle());
         model.addAttribute("subTitle", vo == null ? "" : vo.getSubTitle());
         model.addAttribute("content", vo == null ? "" : vo.getContent());
+        model.addAttribute("allowComment", vo == null || vo.isAllowComment()); // 默认：允许评论
+        model.addAttribute("hidden", vo != null && vo.isHidden()); // 默认：不隐藏
         return "admin/articleEdit";
     }
 
@@ -71,6 +73,8 @@ public class AdminController {
 		if (ac == null) { // 新增
 			vo.setArticleId(GUID.generate());
 			vo.setAuthorUserId(user.getUserId());
+			vo.setAllowComment(true); // 默认：允许评论
+			vo.setHidden(false); // 默认：不隐藏
 			vo.setCreateTime(now);
 			vo.setLastModifyTime(now);
 			articleService.insert(vo);
@@ -78,6 +82,8 @@ public class AdminController {
 			ac.setTitle(vo.getTitle());
 			ac.setSubTitle(vo.getSubTitle());
 			ac.setContent(vo.getContent());
+			ac.setAllowComment(vo.isAllowComment());
+			ac.setHidden(vo.isHidden());
 			ac.setLastModifyTime(now);
 			articleService.update(ac);
 		}

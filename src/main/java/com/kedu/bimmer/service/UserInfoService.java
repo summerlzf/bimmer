@@ -22,6 +22,10 @@ public class UserInfoService {
         return userInfoDAO.query(new HashMap<>());
     }
 
+    public UserInfo get(String userId) {
+        return userInfoDAO.get(userId);
+    }
+
     public UserInfo getByUserName(String userName) {
         return userInfoDAO.getByUserName(userName);
     }

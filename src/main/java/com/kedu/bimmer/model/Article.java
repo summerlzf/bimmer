@@ -24,6 +24,12 @@ public class Article {
     /** 作者的用户id */
     private String authorUserId;
 
+    /** 是否允许评论 */
+    private boolean allowComment;
+
+    /** 是否隐藏 */
+    private boolean hidden;
+
     /** 创建时间 */
     private LocalDateTime createTime;
 
@@ -85,4 +91,20 @@ public class Article {
 	public void setSubTitle(String subTitle) {
 		this.subTitle = subTitle;
 	}
+
+    public boolean isAllowComment() {
+        return allowComment;
+    }
+
+    public void setAllowComment(boolean allowComment) {
+        this.allowComment = allowComment;
+    }
+
+    public boolean isHidden() {
+        return hidden;
+    }
+
+    public void setHidden(boolean hidden) {
+        this.hidden = hidden;
+    }
 }

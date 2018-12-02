@@ -26,8 +26,18 @@
             <div class="form-group">
                 <label class="col-sm-2 control-label">内容</label>
                 <div class="col-sm-8">
-                    <textarea class="form-control" name="content" rows="10" placeholder="正文内容" th:text="${content ?: ''}"></textarea>
+                    <textarea class="form-control" name="content" rows="20" placeholder="正文内容" th:text="${content ?: ''}"></textarea>
                 </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-offset-2 col-sm-8">
+                    <input type="checkbox" id="allowComment" th:checked="${allowComment}" /> 允许评论
+                </label>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-offset-2 col-sm-8">
+                    <input type="checkbox" id="hidden" th:checked="${hidden}" /> 隐藏此文
+                </label>
             </div>
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-8">
@@ -42,6 +52,8 @@
     <script type="text/javascript">
         function save() {
             var req = $('#post-form').serialize();
+            req += '&allowComment=' + $('#allowComment').is(':checked') + '&hidden=' + $('#hidden').is(':checked');
+//            alert(req);return false;
             $.post('/admin/saveArticle', req, function (json) {
                 //alert(JSON.stringify(json));
                 if(json.code != 0) {

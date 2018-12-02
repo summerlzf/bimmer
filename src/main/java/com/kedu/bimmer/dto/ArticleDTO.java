@@ -13,6 +13,9 @@ public class ArticleDTO {
     /** 标题 */
     private String title;
 
+    /** 副标题 */
+    private String subTitle;
+
     /** 内容 */
     private String content;
 
@@ -21,6 +24,18 @@ public class ArticleDTO {
 
     /** 作者的用户昵称 */
     private String authorNickName;
+
+    /** 是否允许评论 */
+    private boolean allowComment;
+
+    /** 是否隐藏 */
+    private boolean hidden;
+
+    /** 创建时间 */
+    private LocalDateTime createTime;
+
+    /** 创建时间 */
+    private String createTimeStr;
 
     /** 最后更新时间 */
     private LocalDateTime lastModifyTime;
@@ -82,5 +97,45 @@ public class ArticleDTO {
 
     public void setLastModifyTimeStr(String lastModifyTimeStr) {
         this.lastModifyTimeStr = lastModifyTimeStr;
+    }
+
+    public boolean isAllowComment() {
+        return allowComment;
+    }
+
+    public void setAllowComment(boolean allowComment) {
+        this.allowComment = allowComment;
+    }
+
+    public boolean isHidden() {
+        return hidden;
+    }
+
+    public void setHidden(boolean hidden) {
+        this.hidden = hidden;
+    }
+
+    public LocalDateTime getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(LocalDateTime createTime) {
+        this.createTime = createTime;
+    }
+
+    public String getCreateTimeStr() {
+        return createTimeStr;
+    }
+
+    public void setCreateTimeStr(String createTimeStr) {
+        this.createTimeStr = createTimeStr;
+    }
+
+    public String getSubTitle() {
+        return subTitle;
+    }
+
+    public void setSubTitle(String subTitle) {
+        this.subTitle = subTitle;
     }
 }
