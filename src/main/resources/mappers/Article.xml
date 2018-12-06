@@ -21,6 +21,9 @@
 			<if test="content != null and content != ''">
 				and a.content like concat('%', #{content}, '%')
 			</if>
+			<if test="author != null and author != ''">
+				and u.userName like concat('%', #{author}, '%')
+			</if>
 		</where>
 		<![CDATA[
 			order by a.createTime desc

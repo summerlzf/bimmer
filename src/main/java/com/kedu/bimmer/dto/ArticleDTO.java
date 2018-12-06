@@ -1,6 +1,7 @@
 package com.kedu.bimmer.dto;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @author Jef
@@ -18,6 +19,9 @@ public class ArticleDTO {
 
     /** 内容 */
     private String content;
+
+    /** 内容（分段） */
+    private List<String> contents;
 
     /** 作者的用户名 */
     private String authorUserName;
@@ -138,4 +142,12 @@ public class ArticleDTO {
     public void setSubTitle(String subTitle) {
         this.subTitle = subTitle;
     }
+
+	public List<String> getContents() {
+		return contents;
+	}
+
+	public void setContents(List<String> contents) {
+		this.contents = contents;
+	}
 }

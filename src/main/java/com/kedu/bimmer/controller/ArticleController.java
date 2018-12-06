@@ -32,10 +32,12 @@ public class ArticleController {
         if (vo == null || vo.isHidden()) { // 隐藏的文章不显示
             return "redirect:/";
         }
-        UserInfo user = userInfoService.get(vo.getAuthorUserId());
+		UserInfo user = userInfoService.get(vo.getAuthorUserId());
         ArticleDTO dto = new ArticleDTO();
         dto.setTitle(vo.getTitle());
         dto.setSubTitle(vo.getSubTitle());
+        dto.setContent(vo.getContent());
+        dto.setContents(CommonUtil.asList(vo.getContent().split("\r\n"))); // 将文章进行分段处理
         dto.setAuthorUserName(user == null ? "--" : CommonUtil.isBlank(user.getNickName()) ? user.getUserName() : user.getNickName()); // 优先获取昵称，其次获取用户名
         dto.setCreateTimeStr(vo.getCreateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         model.addAttribute("vo", dto);
