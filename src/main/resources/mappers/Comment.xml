@@ -3,10 +3,26 @@
 <!-- "namespace" must be the path of interface, or show error “is not known to the MapperRegistry” when launch -->
 <mapper namespace="com.kedu.bimmer.dao.CommentDAO">
 
-    <select id="query" resultType="com.kedu.bimmer.model.Comment">
+    <select id="queryBySearch" resultType="com.kedu.bimmer.dto.CommentDTO" parameterType="com.kedu.bimmer.dto.CommentSearchDTO">
         <![CDATA[
-            select * from Comment where articleId = #{articleId} order by createTime desc
+            select c.commentId, c.content, a.title as articleTitle, a.userName, c.createTime from Comment c
+            left join Article a on a.articleId = c.articleId
+            left join UserInfo u on u.userId = c.userId
         ]]>
+        <where>
+            <if test="content != null and content != ''">
+                and c.content like concat('%', #{content}, '%')
+            </if>
+            <if test="articleTitle != null and articleTitle != ''">
+                and a.title like concat('%', #{articleTitle}, '%')
+            </if>
+            <if test="userName != null and userName != ''">
+                and u.userName like concat('%', #{userName}, '%')
+            </if>
+        </where>
+		<![CDATA[
+			order by c.createTime desc
+		]]>
     </select>
 
     <insert id="insert" parameterType="com.kedu.bimmer.model.Comment">

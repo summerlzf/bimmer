@@ -1,5 +1,7 @@
 package com.kedu.bimmer.dao;
 
+import com.kedu.bimmer.dto.CommentDTO;
+import com.kedu.bimmer.dto.CommentSearchDTO;
 import com.kedu.bimmer.model.Comment;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -12,7 +14,7 @@ import java.util.List;
 @Mapper
 public interface CommentDAO {
 
-	List<Comment> query(@Param("articleId") String articleId);
+	List<CommentDTO> queryBySearch(CommentSearchDTO commentSearchDTO);
 
 	void insert(Comment vo);
 }

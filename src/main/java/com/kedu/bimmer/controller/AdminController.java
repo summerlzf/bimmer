@@ -4,11 +4,10 @@ import com.kedu.bimmer.base.GUID;
 import com.kedu.bimmer.base.Page;
 import com.kedu.bimmer.base.Result;
 import com.kedu.bimmer.base.SystemContext;
-import com.kedu.bimmer.dto.ArticleDTO;
-import com.kedu.bimmer.dto.ArticleSearchDTO;
-import com.kedu.bimmer.dto.UserBasicInfo;
+import com.kedu.bimmer.dto.*;
 import com.kedu.bimmer.model.Article;
 import com.kedu.bimmer.service.ArticleService;
+import com.kedu.bimmer.service.CommentService;
 import com.kedu.bimmer.util.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,6 +27,8 @@ public class AdminController {
 
     @Autowired
     private ArticleService articleService;
+    @Autowired
+    private CommentService commentService;
 
     @RequestMapping("/main")
     public String main(Model model) {
@@ -37,7 +38,7 @@ public class AdminController {
     }
 
     @RequestMapping("/articleList")
-    public String articleList(Model model) {
+    public String articleList() {
         return "admin/articleList";
     }
 
@@ -88,5 +89,17 @@ public class AdminController {
 			articleService.update(ac);
 		}
         return Result.success();
+    }
+
+    @RequestMapping("/commentList")
+    public String commentList() {
+        return "admin/commentList";
+    }
+
+    @PostMapping("/getCommentList")
+    @ResponseBody
+    public Result getCommentList(CommentSearchDTO commentSearchDTO, int pageNum) {
+        Page<CommentDTO> page = commentService.query(commentSearchDTO, pageNum);
+        return Result.success(page);
     }
 }
