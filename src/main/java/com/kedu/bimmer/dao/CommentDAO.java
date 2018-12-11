@@ -4,7 +4,6 @@ import com.kedu.bimmer.dto.CommentDTO;
 import com.kedu.bimmer.dto.CommentSearchDTO;
 import com.kedu.bimmer.model.Comment;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 

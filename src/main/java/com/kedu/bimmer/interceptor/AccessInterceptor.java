@@ -36,8 +36,15 @@ public class AccessInterceptor implements HandlerInterceptor {
         SystemContext.clearUser();
 
         if (isNeedLogin(url)) {
-            // 跳转到登录页
-            response.sendRedirect("/login?callbackUrl=" + URLEncoder.encode(url, "utf-8"));
+            if("XMLHttpRequest".equals(request.getHeader("X-Requested-With"))) { // Ajax请求
+				response.setHeader("REDIRECT", "REDIRECT");
+				// 重定向的路径：登录页
+				response.setHeader("CONTEXTPATH", "/login");
+				response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            } else {
+				// 跳转到登录页
+				response.sendRedirect("/login?callbackUrl=" + URLEncoder.encode(url, "utf-8"));
+			}
             return false;
         }
         return true;
