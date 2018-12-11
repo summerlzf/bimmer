@@ -54,7 +54,16 @@
                 <div class="blog-post">
                     <hr>
                     <p class="blog-post-meta">评论</p>
-                    <textarea class="form-control" rows="5"></textarea>
+                    <pre th:if="${!isLogin}" class="text-center"><code>评论请 <a href="/login">登录</a></code></pre>
+                    <form th:if="${isLogin}" id="post-form" onsubmit="return saveComment();">
+                        <div class="form-group">
+                            <input type="hidden" name="articleId" th:value="${vo.articleId}" />
+                            <textarea class="form-control" name="content" rows="5"></textarea>
+                        </div>
+                        <div class="form-group text-right">
+                            <button type="submit" class="btn btn-primary">提交评论</button>
+                        </div>
+                    </form>
                 </div>
 
             </div><!-- /.blog-main -->
@@ -107,6 +116,14 @@
     <script type="text/javascript" src="/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/js/public.js"></script>
     <script type="text/javascript">
+        function saveComment() {
+            var req = $('#post-form').serialize();
+            alert(req);return false;
+            $.post('/comment/addComment', req, function (json) {
+                //
+            });
+            return false;
+        }
         $(function () {
             //
         });

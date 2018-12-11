@@ -7,6 +7,7 @@ import com.kedu.bimmer.dto.UserBasicInfo;
 import com.kedu.bimmer.model.UserInfo;
 import com.kedu.bimmer.service.UserInfoService;
 import com.kedu.bimmer.util.CommonUtil;
+import com.kedu.bimmer.util.CookieUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
@@ -27,13 +29,17 @@ public class LoginController {
     private UserInfoService userInfoService;
 
     @RequestMapping("/login")
-    public String login(Model model, String callbackUrl) {
+    public String login(Model model, HttpServletRequest request, String callbackUrl) {
         if (SystemContext.getUser() != null) {
             // 如果已经登录，直接跳转到后台页面
             return "redirect:/admin/main";
         }
         if (CommonUtil.isBlank(callbackUrl)) {
-            callbackUrl = "/";
+            // 尝试读取cookie中记录的URL地址
+            callbackUrl = CookieUtil.getCookie(request, "bm-url");
+            if (CommonUtil.isBlank(callbackUrl)) {
+                callbackUrl = "/";
+            }
         } else {
             try {
                 callbackUrl = URLDecoder.decode(callbackUrl, "utf-8");

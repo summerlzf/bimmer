@@ -35,6 +35,7 @@ public class ArticleController {
         }
 		UserInfo user = userInfoService.get(vo.getAuthorUserId());
         ArticleDTO dto = new ArticleDTO();
+        dto.setArticleId(id);
         dto.setTitle(vo.getTitle());
         dto.setSubTitle(vo.getSubTitle());
         dto.setContent(vo.getContent());
@@ -44,5 +45,10 @@ public class ArticleController {
         model.addAttribute("vo", dto);
         model.addAttribute("year", LocalDate.now().getYear());
         return "article";
+    }
+
+    @RequestMapping("/article/test")
+    public String article() {
+        return "article0";
     }
 }
