@@ -1,6 +1,7 @@
 package com.kedu.bimmer.dto;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @author Jef
@@ -13,11 +14,17 @@ public class CommentDTO {
     /** 评论内容 */
     private String content;
 
+    /** 评论内容（分段） */
+    private List<String> contents;
+
     /** 文章标题 */
     private String articleTitle;
 
     /** 评论的用户名 */
     private String userName;
+
+    /** 是否隐藏 */
+    private boolean hidden;
 
     /** 创建时间 */
     private LocalDateTime createTime;
@@ -71,5 +78,21 @@ public class CommentDTO {
 
     public void setCreateTimeStr(String createTimeStr) {
         this.createTimeStr = createTimeStr;
+    }
+
+    public boolean isHidden() {
+        return hidden;
+    }
+
+    public void setHidden(boolean hidden) {
+        this.hidden = hidden;
+    }
+
+    public List<String> getContents() {
+        return contents;
+    }
+
+    public void setContents(List<String> contents) {
+        this.contents = contents;
     }
 }

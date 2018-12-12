@@ -12,38 +12,35 @@
         <form id="search-form" onsubmit="return searchData();">
             <div class="row placeholders">
                 <div class="col-xs-6 col-sm-3 placeholder">
-                    <input type="text" class="form-control" name="title" placeholder="标题" />
+                    <input type="text" class="form-control" name="content" placeholder="评论内容" />
                 </div>
                 <div class="col-xs-6 col-sm-3 placeholder">
-                    <input type="text" class="form-control" name="content" placeholder="内容" />
+                    <input type="text" class="form-control" name="articleTitle" placeholder="文章标题" />
                 </div>
                 <div class="col-xs-6 col-sm-3 placeholder">
-                    <input type="text" class="form-control" name="author" placeholder="作者" />
+                    <input type="text" class="form-control" name="userName" placeholder="评论用户名" />
                 </div>
                 <div class="col-xs-6 col-sm-3 placeholder text-left">
                     <input type="submit" class="btn btn-primary" value="搜索" />
-                    <a class="btn btn-default" href="/admin/articleEdit">新增</a>
                 </div>
             </div>
         </form>
 
-        <h2 class="sub-header">文章列表</h2>
+        <h2 class="sub-header">评论列表</h2>
         <div class="table-responsive">
             <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th>标题</th>
-                    <th>内容</th>
-                    <th>作者</th>
+                    <th>评论内容</th>
+                    <th>文章标题</th>
+                    <th>用户</th>
                     <th>时间</th>
-                    <th>评论</th>
                     <th>隐藏</th>
                     <th>操作</th>
                 </tr>
                 </thead>
                 <tbody id="tbody">
                 <tr>
-                    <td>--</td>
                     <td>--</td>
                     <td>--</td>
                     <td>--</td>
@@ -62,17 +59,16 @@
     <script type="text/javascript">
         function searchData(pageNum) {
             var req = $('#search-form').serialize();
-            $.post('/admin/getArticleList', req + '&pageNum=' + (pageNum || 1), function (json) {
+            $.post('/admin/getCommentList', req + '&pageNum=' + (pageNum || 1), function (json) {
                 var list = json.data.dataList || [], totalPage = json.data.totalPage, html = '';
                 list.forEach(function (e) {
                     html += '<tr>' +
-                        '<td><a href="/article/item/' + e.articleId + '" target="_blank">' + e.title + '</a></td>' +
                         '<td>' + e.content + '</td>' +
-                        '<td>' + e.authorUserName + '</td>' +
-                        '<td>' + e.lastModifyTimeStr + '</td>' +
-                        '<td>' + (e.allowComment ? '√' : '') + '</td>' +
+                        '<td>' + e.articleTitle + '</td>' +
+                        '<td>' + e.userName + '</td>' +
+                        '<td>' + e.createTimeStr + '</td>' +
                         '<td>' + (e.hidden ? '√' : '') + '</td>' +
-                        '<td><a href="/admin/articleEdit?id=' + e.articleId + '">编辑</a></td>' +
+                        '<td><a href="#">编辑</a></td>' +
                         '</tr>';
                 });
                 $('#tbody').html(html);

@@ -5,7 +5,7 @@
 
     <select id="queryBySearch" resultType="com.kedu.bimmer.dto.CommentDTO" parameterType="com.kedu.bimmer.dto.CommentSearchDTO">
         <![CDATA[
-            select c.commentId, c.content, a.title as articleTitle, a.userName, c.createTime from Comment c
+            select c.commentId, c.content, a.title as articleTitle, u.userName, c.hidden, c.createTime from Comment c
             left join Article a on a.articleId = c.articleId
             left join UserInfo u on u.userId = c.userId
         ]]>
@@ -23,6 +23,15 @@
 		<![CDATA[
 			order by c.createTime desc
 		]]>
+    </select>
+
+    <select id="listByArticleId" resultType="com.kedu.bimmer.dto.CommentDTO">
+        <![CDATA[
+            select c.commentId, c.content, u.userName, c.hidden, c.createTime from Comment c
+            left join UserInfo u on u.userId = c.userId
+            where c.articleId = #{articleId} and c.hidden = 0
+			order by c.createTime asc
+        ]]>
     </select>
 
     <insert id="insert" parameterType="com.kedu.bimmer.model.Comment">

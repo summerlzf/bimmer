@@ -44,12 +44,14 @@
                     <p th:each="item,stat:${vo.contents}">[[${item ?: '&nbsp;'}]]</p>
                 </div><!-- /.blog-post -->
 
-                <!--<nav>
-                    <ul class="pager">
-                        <li><a href="#">Previous</a></li>
-                        <li><a href="#">Next</a></li>
-                    </ul>
-                </nav>-->
+                <!-- 评论列表 -->
+                <div class="blog-post" th:each="comment,index:${comments}">
+                    <hr>
+                    <p class="blog-post-meta">[[${comment.createTimeStr}]] | [[${comment.userName}]]</p>
+                    <blockquote>
+                        <p th:each="item,stat:${comment.contents}">[[${item ?: '&nbsp;'}]]</p>
+                    </blockquote>
+                </div>
 
                 <div class="blog-post">
                     <hr>

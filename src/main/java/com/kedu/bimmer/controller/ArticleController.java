@@ -5,6 +5,7 @@ import com.kedu.bimmer.dto.ArticleDTO;
 import com.kedu.bimmer.model.Article;
 import com.kedu.bimmer.model.UserInfo;
 import com.kedu.bimmer.service.ArticleService;
+import com.kedu.bimmer.service.CommentService;
 import com.kedu.bimmer.service.UserInfoService;
 import com.kedu.bimmer.util.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,8 @@ public class ArticleController {
     private ArticleService articleService;
     @Autowired
     private UserInfoService userInfoService;
+    @Autowired
+    private CommentService commentService;
 
     @RequestMapping("/article/item/{id}")
     public String article(Model model, @PathVariable("id") String id) {
@@ -43,6 +46,7 @@ public class ArticleController {
         dto.setAuthorUserName(user == null ? "--" : CommonUtil.isBlank(user.getNickName()) ? user.getUserName() : user.getNickName()); // 优先获取昵称，其次获取用户名
         dto.setCreateTimeStr(vo.getCreateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         model.addAttribute("vo", dto);
+        model.addAttribute("comments", commentService.listByArticleId(id));
         model.addAttribute("year", LocalDate.now().getYear());
         return "article";
     }
