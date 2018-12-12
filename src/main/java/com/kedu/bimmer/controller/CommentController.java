@@ -25,6 +25,9 @@ public class CommentController {
     @PostMapping("/comment/addComment")
     @ResponseBody
     public Result add(Comment vo) {
+        if (!GUID.isGUID(vo.getArticleId())) {
+            return Result.fail("参数错误");
+        }
         if (CommonUtil.isBlank(vo.getContent())) {
             return Result.fail("请输入评论内容");
         }

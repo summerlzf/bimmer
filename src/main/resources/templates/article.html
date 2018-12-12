@@ -118,9 +118,13 @@
     <script type="text/javascript">
         function saveComment() {
             var req = $('#post-form').serialize();
-            alert(req);return false;
+//            alert(req);return false;
             $.post('/comment/addComment', req, function (json) {
-                //
+                if(json.code != 0) {
+                    alert(json.message || '评论失败');
+                    return;
+                }
+                window.location.reload();
             });
             return false;
         }
