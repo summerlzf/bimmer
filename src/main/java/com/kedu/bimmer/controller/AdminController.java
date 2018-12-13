@@ -6,6 +6,7 @@ import com.kedu.bimmer.base.Result;
 import com.kedu.bimmer.base.SystemContext;
 import com.kedu.bimmer.dto.*;
 import com.kedu.bimmer.model.Article;
+import com.kedu.bimmer.model.Comment;
 import com.kedu.bimmer.service.ArticleService;
 import com.kedu.bimmer.service.CommentService;
 import com.kedu.bimmer.util.CommonUtil;
@@ -101,5 +102,15 @@ public class AdminController {
     public Result getCommentList(CommentSearchDTO commentSearchDTO, int pageNum) {
         Page<CommentDTO> page = commentService.query(commentSearchDTO, pageNum);
         return Result.success(page);
+    }
+
+    @PostMapping("/updateCommentHidden")
+    @ResponseBody
+    public Result updateCommentHidden(Comment vo) {
+        if (!GUID.isGUID(vo.getCommentId())) {
+            return Result.fail("参数有误");
+        }
+        commentService.updateHidden(vo);
+        return Result.success();
     }
 }

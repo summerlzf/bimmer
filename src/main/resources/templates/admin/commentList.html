@@ -51,7 +51,7 @@
                 </tbody>
             </table>
         </div>
-        <div id="pagination" align="center"></div>
+        <div id="pagination" class="text-center"></div>
     </div>
 </th:block>
 
@@ -68,7 +68,7 @@
                         '<td>' + e.userName + '</td>' +
                         '<td>' + e.createTimeStr + '</td>' +
                         '<td>' + (e.hidden ? '√' : '') + '</td>' +
-                        '<td><a href="#">编辑</a></td>' +
+                        '<td><a href="javascript:void;" onclick="setHidden(\'' + e.commentId + '\', ' + !e.hidden + ');">' + (e.hidden ? '显示' : '隐藏') + '</a></td>' +
                         '</tr>';
                 });
                 $('#tbody').html(html);
@@ -95,6 +95,15 @@
                 });
             });
             return false;
+        }
+        function setHidden(id, hidden) {
+            $.post('/admin/updateCommentHidden', {commentId: id, hidden: hidden}, function (json) {
+                if(json.code != 0) {
+                    alert(json.message || '操作失败');
+                    return;
+                }
+                searchData();
+            });
         }
         $(function () {
             searchData();

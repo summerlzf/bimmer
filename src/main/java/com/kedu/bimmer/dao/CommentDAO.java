@@ -19,4 +19,6 @@ public interface CommentDAO {
 	List<CommentDTO> listByArticleId(@Param("articleId") String articleId);
 
 	void insert(Comment vo);
+
+	void updateHidden(Comment vo);
 }

@@ -53,7 +53,7 @@
                     </blockquote>
                 </div>
 
-                <div class="blog-post">
+                <div class="blog-post" th:if="${vo.allowComment}">
                     <hr>
                     <p class="blog-post-meta">评论</p>
                     <pre th:if="${!isLogin}" class="text-center"><code>评论请 <a href="/login">登录</a></code></pre>

@@ -41,4 +41,10 @@
         ]]>
     </insert>
 
+    <update id="updateHidden" parameterType="com.kedu.bimmer.model.Comment">
+        <![CDATA[
+            update Comment set hidden = #{hidden} where commentId = #{commentId}
+        ]]>
+    </update>
+
 </mapper>

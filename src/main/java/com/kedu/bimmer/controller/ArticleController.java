@@ -44,6 +44,7 @@ public class ArticleController {
         dto.setContent(vo.getContent());
         dto.setContents(CommonUtil.asList(vo.getContent().split("\r\n"))); // 将文章进行分段处理
         dto.setAuthorUserName(user == null ? "--" : CommonUtil.isBlank(user.getNickName()) ? user.getUserName() : user.getNickName()); // 优先获取昵称，其次获取用户名
+        dto.setAllowComment(vo.isAllowComment());
         dto.setCreateTimeStr(vo.getCreateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         model.addAttribute("vo", dto);
         model.addAttribute("comments", commentService.listByArticleId(id));

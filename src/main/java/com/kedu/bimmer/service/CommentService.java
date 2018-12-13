@@ -45,4 +45,8 @@ public class CommentService {
     public void insert(Comment vo) {
         commentDAO.insert(vo);
     }
+
+    public void updateHidden(Comment vo) {
+        commentDAO.updateHidden(vo);
+    }
 }
