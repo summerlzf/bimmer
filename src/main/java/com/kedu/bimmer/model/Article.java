@@ -24,6 +24,9 @@ public class Article {
     /** 作者的用户id */
     private String authorUserId;
 
+    /** 浏览次数 */
+    private int viewCount;
+
     /** 是否允许评论 */
     private boolean allowComment;
 
@@ -106,5 +109,13 @@ public class Article {
 
     public void setHidden(boolean hidden) {
         this.hidden = hidden;
+    }
+
+    public int getViewCount() {
+        return viewCount;
+    }
+
+    public void setViewCount(int viewCount) {
+        this.viewCount = viewCount;
     }
 }

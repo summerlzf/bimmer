@@ -36,6 +36,7 @@
                     <th>内容</th>
                     <th>作者</th>
                     <th>时间</th>
+                    <th>浏览次数</th>
                     <th>评论</th>
                     <th>隐藏</th>
                     <th>操作</th>
@@ -43,6 +44,7 @@
                 </thead>
                 <tbody id="tbody">
                 <tr>
+                    <td>--</td>
                     <td>--</td>
                     <td>--</td>
                     <td>--</td>
@@ -70,6 +72,7 @@
                         '<td>' + e.content + '</td>' +
                         '<td>' + e.authorUserName + '</td>' +
                         '<td>' + e.lastModifyTimeStr + '</td>' +
+                        '<td>' + e.viewCount + '</td>' +
                         '<td>' + (e.allowComment ? '√' : '') + '</td>' +
                         '<td>' + (e.hidden ? '√' : '') + '</td>' +
                         '<td><a href="/admin/articleEdit?id=' + e.articleId + '">编辑</a></td>' +

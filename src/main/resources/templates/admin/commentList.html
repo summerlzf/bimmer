@@ -97,6 +97,10 @@
             return false;
         }
         function setHidden(id, hidden) {
+            // 设置为【隐藏】时弹出确认对话框
+            if(hidden && !confirm('隐藏后将不会显示在文章评论中，你确定要隐藏该评论？')) {
+                return;
+            }
             $.post('/admin/updateCommentHidden', {commentId: id, hidden: hidden}, function (json) {
                 if(json.code != 0) {
                     alert(json.message || '操作失败');

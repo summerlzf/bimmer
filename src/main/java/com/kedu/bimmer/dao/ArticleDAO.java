@@ -23,4 +23,6 @@ public interface ArticleDAO {
     void insert(Article vo);
 
     void update(Article vo);
+
+    void updateViewCount(@Param("articleId") String articleId);
 }

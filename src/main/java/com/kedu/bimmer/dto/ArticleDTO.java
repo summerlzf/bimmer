@@ -29,6 +29,9 @@ public class ArticleDTO {
     /** 作者的用户昵称 */
     private String authorNickName;
 
+    /** 浏览次数 */
+    private int viewCount;
+
     /** 是否允许评论 */
     private boolean allowComment;
 
@@ -150,4 +153,12 @@ public class ArticleDTO {
 	public void setContents(List<String> contents) {
 		this.contents = contents;
 	}
+
+    public int getViewCount() {
+        return viewCount;
+    }
+
+    public void setViewCount(int viewCount) {
+        this.viewCount = viewCount;
+    }
 }

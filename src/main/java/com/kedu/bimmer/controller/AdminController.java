@@ -75,6 +75,7 @@ public class AdminController {
 		if (ac == null) { // 新增
 			vo.setArticleId(GUID.generate());
 			vo.setAuthorUserId(user.getUserId());
+			vo.setViewCount(0);
 			vo.setAllowComment(true); // 默认：允许评论
 			vo.setHidden(false); // 默认：不隐藏
 			vo.setCreateTime(now);

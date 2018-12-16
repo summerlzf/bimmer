@@ -7,6 +7,7 @@ import com.kedu.bimmer.dto.ArticleSearchDTO;
 import com.kedu.bimmer.model.Article;
 import com.kedu.bimmer.util.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.time.format.DateTimeFormatter;
@@ -42,5 +43,11 @@ public class ArticleService {
 
     public void update(Article vo) {
         articleDAO.update(vo);
+    }
+
+    @Async
+    public void updateViewCount(String articleId) {
+        // 异步执行更新阅读数量
+        articleDAO.updateViewCount(articleId);
     }
 }

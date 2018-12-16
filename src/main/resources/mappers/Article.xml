@@ -11,7 +11,7 @@
 
 	<select id="queryBySearch" resultType="com.kedu.bimmer.dto.ArticleDTO" parameterType="com.kedu.bimmer.dto.ArticleSearchDTO">
 		<![CDATA[
-			select a.articleId, a.title, a.content, u.userName as authorUserName, u.nickName as authorNickName, a.allowComment, a.hidden, a.lastModifyTime
+			select a.articleId, a.title, a.content, u.userName as authorUserName, u.nickName as authorNickName, a.viewCount, a.allowComment, a.hidden, a.lastModifyTime
 			from Article a left join UserInfo u on u.userId = a.authorUserId
 		]]>
 		<where>
@@ -38,8 +38,8 @@
 
 	<insert id="insert" parameterType="com.kedu.bimmer.model.Article">
 		<![CDATA[
-			insert into Article(articleId, title, subTitle, content, authorUserId, allowComment, hidden, createTime, lastModifyTime)
-			values(#{articleId}, #{title}, #{subTitle}, #{content}, #{authorUserId}, #{allowComment}, #{hidden}, #{createTime}, #{lastModifyTime})
+			insert into Article(articleId, title, subTitle, content, authorUserId, viewCount, allowComment, hidden, createTime, lastModifyTime)
+			values(#{articleId}, #{title}, #{subTitle}, #{content}, #{authorUserId}, #{viewCount}, #{allowComment}, #{hidden}, #{createTime}, #{lastModifyTime})
 		]]>
 	</insert>
 
@@ -56,6 +56,12 @@
 			lastModifyTime = #{lastModifyTime}
 		</set>
 		<![CDATA[ where articleId = #{articleId} ]]>
+	</update>
+
+	<update id="updateViewCount">
+		<![CDATA[
+			update Article set viewCount = viewCount + 1 where articleId = #{articleId}
+		]]>
 	</update>
 
 </mapper>
