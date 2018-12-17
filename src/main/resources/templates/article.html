@@ -76,20 +76,9 @@
                     <p>Etiam porta <em>sem malesuada magna</em> mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.</p>
                 </div>
                 <div class="sidebar-module">
-                    <h4>Archives</h4>
-                    <ol class="list-unstyled">
-                        <li><a href="#">March 2014</a></li>
-                        <li><a href="#">February 2014</a></li>
-                        <li><a href="#">January 2014</a></li>
-                        <li><a href="#">December 2013</a></li>
-                        <li><a href="#">November 2013</a></li>
-                        <li><a href="#">October 2013</a></li>
-                        <li><a href="#">September 2013</a></li>
-                        <li><a href="#">August 2013</a></li>
-                        <li><a href="#">July 2013</a></li>
-                        <li><a href="#">June 2013</a></li>
-                        <li><a href="#">May 2013</a></li>
-                        <li><a href="#">April 2013</a></li>
+                    <h4>热门文章</h4>
+                    <ol class="list-unstyled" id="popular-list">
+                        <li>Loading...</li>
                     </ol>
                 </div>
                 <div class="sidebar-module">
@@ -107,7 +96,7 @@
     </div><!-- /.container -->
 
     <footer class="blog-footer">
-        <p>&copy; [[${year}]] Bimmer Company, Inc. <a href="https://www.baidu.com">Bimmer</a></p>
+        <p>&copy; [[${year}]] Bimmer Company, Inc. <a href="http://www.bimmer.com">Bimmer</a></p>
         <p>
             <a href="#">Back to top</a>
         </p>
@@ -130,8 +119,17 @@
             });
             return false;
         }
+        function listPopularArticle() {
+            $.post('/article/listPopular', function (json) {
+                var list = json.data || [], html = '';
+                list.forEach(function (e) {
+                    html += '<li><a href="/article/item/' + e.articleId + '">' + e.title + '</a></li>';
+                });
+                $('#popular-list').html(html);
+            });
+        }
         $(function () {
-            //
+            listPopularArticle();
         });
     </script>
 </body>

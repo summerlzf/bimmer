@@ -3,12 +3,6 @@
 <!-- "namespace" must be the path of interface, or show error “is not known to the MapperRegistry” when launch -->
 <mapper namespace="com.kedu.bimmer.dao.ArticleDAO">
 
-	<select id="query" resultType="com.kedu.bimmer.model.Article">
-		<![CDATA[
-			select * from Article order by createTime desc limit 10
-		]]>
-	</select>
-
 	<select id="queryBySearch" resultType="com.kedu.bimmer.dto.ArticleDTO" parameterType="com.kedu.bimmer.dto.ArticleSearchDTO">
 		<![CDATA[
 			select a.articleId, a.title, a.content, u.userName as authorUserName, u.nickName as authorNickName, a.viewCount, a.allowComment, a.hidden, a.lastModifyTime
@@ -27,6 +21,12 @@
 		</where>
 		<![CDATA[
 			order by a.createTime desc
+		]]>
+	</select>
+
+	<select id="queryPopular" resultType="com.kedu.bimmer.model.Article">
+		<![CDATA[
+			select * from Article where hidden = false order by viewCount desc limit #{limit}
 		]]>
 	</select>
 

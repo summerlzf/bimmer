@@ -14,9 +14,9 @@ import java.util.List;
 @Mapper
 public interface ArticleDAO {
 
-    List<Article> query();
-
     List<ArticleDTO> queryBySearch(ArticleSearchDTO articleSearchDTO);
+
+    List<Article> queryPopular(@Param("limit") int limit);
 
     Article get(@Param("articleId") String articleId);
 

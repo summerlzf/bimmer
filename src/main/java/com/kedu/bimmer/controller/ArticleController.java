@@ -1,6 +1,7 @@
 package com.kedu.bimmer.controller;
 
 import com.kedu.bimmer.base.GUID;
+import com.kedu.bimmer.base.Result;
 import com.kedu.bimmer.dto.ArticleDTO;
 import com.kedu.bimmer.model.Article;
 import com.kedu.bimmer.model.UserInfo;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -44,7 +46,7 @@ public class ArticleController {
         dto.setContent(vo.getContent());
         dto.setContents(CommonUtil.asList(vo.getContent().split("\r\n"))); // 将文章进行分段处理
         dto.setAuthorUserName(user == null ? "--" : CommonUtil.isBlank(user.getNickName()) ? user.getUserName() : user.getNickName()); // 优先获取昵称，其次获取用户名
-        dto.setViewCount(vo.getViewCount());
+        dto.setViewCount(vo.getViewCount() + 1);
         dto.setAllowComment(vo.isAllowComment());
         dto.setCreateTimeStr(vo.getCreateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         model.addAttribute("vo", dto);
@@ -58,5 +60,11 @@ public class ArticleController {
     @RequestMapping("/article/test")
     public String article() {
         return "article0";
+    }
+
+    @RequestMapping("/article/listPopular")
+	@ResponseBody
+    public Result listPopular() {
+		return Result.success(articleService.listPopular());
     }
 }

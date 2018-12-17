@@ -11,6 +11,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 /**
  * @author Jef
@@ -31,6 +32,12 @@ public class ArticleService {
             vo.setLastModifyTimeStr(vo.getLastModifyTime().format(dtf));
         });
         return page;
+    }
+
+    public List<Article> listPopular() {
+        List<Article> list = articleDAO.queryPopular(10);
+        list.forEach(v -> v.setTitle(CommonUtil.substr(v.getTitle(), 20, "...")));
+        return list;
     }
 
     public Article get(String articleId) {
