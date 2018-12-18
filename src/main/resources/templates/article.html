@@ -41,7 +41,7 @@
                     <p class="blog-post-meta">发表于：[[${vo.createTimeStr}]] &nbsp; 作者：[[${vo.authorUserName}]] &nbsp; 浏览次数：[[${vo.viewCount}]]</p>
 
                     <hr>
-                    <p th:each="item,stat:${vo.contents}">[[${item ?: '&nbsp;'}]]</p>
+                    <p th:each="item,stat:${vo.contents}" th:utext="${item ?: '&nbsp;'}"></p>
                 </div><!-- /.blog-post -->
 
                 <!-- 评论列表 -->

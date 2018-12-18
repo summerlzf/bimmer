@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Jef
@@ -44,7 +46,7 @@ public class ArticleController {
         dto.setTitle(vo.getTitle());
         dto.setSubTitle(vo.getSubTitle());
         dto.setContent(vo.getContent());
-        dto.setContents(CommonUtil.asList(vo.getContent().split("\r\n"))); // 将文章进行分段处理
+        dto.setContents(sperate(vo.getContent())); // 将文章进行分段处理
         dto.setAuthorUserName(user == null ? "--" : CommonUtil.isBlank(user.getNickName()) ? user.getUserName() : user.getNickName()); // 优先获取昵称，其次获取用户名
         dto.setViewCount(vo.getViewCount() + 1);
         dto.setAllowComment(vo.isAllowComment());
@@ -56,6 +58,31 @@ public class ArticleController {
         articleService.updateViewCount(id);
         return "article";
     }
+
+    private List<String> sperate(String content) {
+    	List<String> list = new ArrayList<>();
+        for(String str : content.split("\r\n")) {
+        	list.addAll(subSperate(str));
+		}
+		return list;
+    }
+
+	private List<String> subSperate(String str) {
+    	// 处理图片
+		int start = str.indexOf("[image]"), end = str.indexOf("[/image]");
+		if (start == -1 || end == -1) {
+			return CommonUtil.asList(str);
+		}
+		List<String> list = new ArrayList<>();
+		if (start > 0) {
+			list.add(str.substring(0, start));
+		}
+		list.add("<img width=\"100%\" src=\"" + str.substring(start + 7, end) + "\" />");
+		if (end + 8 < str.length()) {
+			list.add(str.substring(end + 8));
+		}
+		return list;
+	}
 
     @RequestMapping("/article/test")
     public String article() {
