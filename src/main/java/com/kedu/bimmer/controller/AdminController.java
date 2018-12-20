@@ -71,7 +71,7 @@ public class AdminController {
     @ResponseBody
     public Result saveArticle(Article vo) {
         if (CommonUtil.isBlank(vo.getTitle()) || CommonUtil.isBlank(vo.getContent())) {
-            return Result.fail("参数有误");
+            return Result.fail("文章标题/内容不能为空");
         }
         LocalDateTime now = LocalDateTime.now();
         UserBasicInfo user = SystemContext.getUser();
@@ -146,6 +146,25 @@ public class AdminController {
 	@PostMapping("/saveFileInfo")
 	@ResponseBody
 	public Result saveFileInfo(FileInfo vo) {
-        return Result.success();
+		if (CommonUtil.isBlank(vo.getRealName()) || CommonUtil.isBlank(vo.getFileName())) {
+			return Result.fail("文件名不能为空");
+		}
+		if (vo.getFileType() == 0) {
+			return Result.fail("文件类型不能为空");
+		}
+		FileInfo f = GUID.isGUID(vo.getFileId()) ? fileInfoService.get(vo.getFileId()) : null;
+		if (f == null) { // 新增
+			vo.setFileId(GUID.generate());
+			vo.setHidden(false); // 默认：不隐藏
+			vo.setCreateTime(LocalDateTime.now());
+			fileInfoService.insert(vo);
+		} else { // 更新
+			f.setRealName(vo.getRealName());
+			f.setFileName(vo.getFileName());
+			f.setFileType(vo.getFileType());
+			f.setHidden(vo.isHidden());
+			fileInfoService.update(f);
+		}
+		return Result.success();
 	}
 }

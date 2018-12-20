@@ -38,7 +38,8 @@
             update FileInfo set
             realName = #{realName},
             fileName = #{fileName},
-            fileType = #{fileType}
+            fileType = #{fileType},
+            hidden = #{hidden}
             where fileId = #{fileId}
         ]]>
     </update>
