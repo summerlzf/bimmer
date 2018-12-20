@@ -1,0 +1,68 @@
+<html lang="zh-CN"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/admin_box">
+
+<th:block layout:fragment="head"></th:block>
+
+<th:block layout:fragment="content">
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <h1 class="page-header" th:text="${edit ? '文件信息修改' : '添加文件信息'}"></h1>
+
+        <form id="post-form" class="form-horizontal" onsubmit="return save();">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">真实文件名</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" name="realName" placeholder="真实文件名" th:value="${realName ?: ''}" />
+                </div>
+                <input type="hidden" name="fileId" th:value="${id}" />
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">显示文件名</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" name="fileName" placeholder="显示文件名" th:value="${fileName ?: ''}" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">文件类型</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" name="fileType" placeholder="文件类型" th:value="${fileType ?: ''}" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-offset-2 col-sm-8">
+                    <input type="checkbox" id="hidden" th:checked="${hidden}" /> 隐藏
+                </label>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-8">
+                    <button type="submit" class="btn btn-primary">提交</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</th:block>
+
+<th:block layout:fragment="footer">
+    <script type="text/javascript">
+        function save() {
+            var req = $('#post-form').serialize();
+            req += '&hidden=' + $('#hidden').is(':checked');
+//            alert(req);return false;
+            $.post('/admin/saveFileInfo', req, function (json) {
+                //alert(JSON.stringify(json));
+                if(json.code != 0) {
+                    alert(json.message || '保存失败');
+                    return;
+                }
+                window.location.href = '/admin/fileInfoList';
+            });
+            return false;
+        }
+        $(function () {
+            //searchData();
+        });
+    </script>
+</th:block>
+
+</html>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- "namespace" must be the path of interface, or show error “is not known to the MapperRegistry” when launch -->
+<mapper namespace="com.kedu.bimmer.dao.FileInfoDAO">
+
+    <select id="query" resultType="com.kedu.bimmer.model.FileInfo" parameterType="com.kedu.bimmer.dto.FileSearchDTO">
+        <![CDATA[
+            select * from FileInfo
+        ]]>
+        <where>
+            <if test="fileName != null and fileName != ''">
+                and fileName like concat('%', #{fileName}, '%')
+            </if>
+            <if test="fileType != null and fileType != 0">
+                and fileType = #{fileType}
+            </if>
+        </where>
+        <![CDATA[
+			order by createTime desc
+		]]>
+    </select>
+
+    <select id="get" resultType="com.kedu.bimmer.model.FileInfo">
+        <![CDATA[
+            select * from FileInfo where fileId = #{fileId}
+        ]]>
+    </select>
+
+    <insert id="insert" parameterType="com.kedu.bimmer.model.FileInfo">
+        <![CDATA[
+            insert into FileInfo(fileId, realName, fileName, fileType, hidden, createTime)
+            values(#{fileId}, #{realName}, #{fileName}, #{fileType}, #{hidden}, #{createTime})
+        ]]>
+    </insert>
+
+    <update id="update" parameterType="com.kedu.bimmer.model.FileInfo">
+        <![CDATA[
+            update FileInfo set
+            realName = #{realName},
+            fileName = #{fileName},
+            fileType = #{fileType}
+            where fileId = #{fileId}
+        ]]>
+    </update>
+
+</mapper>

@@ -46,7 +46,7 @@ public class ArticleController {
         dto.setTitle(vo.getTitle());
         dto.setSubTitle(vo.getSubTitle());
         dto.setContent(vo.getContent());
-        dto.setContents(sperate(vo.getContent())); // 将文章进行分段处理
+        dto.setContents(separate(vo.getContent())); // 将文章进行分段处理
         dto.setAuthorUserName(user == null ? "--" : CommonUtil.isBlank(user.getNickName()) ? user.getUserName() : user.getNickName()); // 优先获取昵称，其次获取用户名
         dto.setViewCount(vo.getViewCount() + 1);
         dto.setAllowComment(vo.isAllowComment());
@@ -59,15 +59,15 @@ public class ArticleController {
         return "article";
     }
 
-    private List<String> sperate(String content) {
+    private List<String> separate(String content) {
     	List<String> list = new ArrayList<>();
         for(String str : content.split("\r\n")) {
-        	list.addAll(subSperate(str));
+        	list.addAll(subSeparate(str));
 		}
 		return list;
     }
 
-	private List<String> subSperate(String str) {
+	private List<String> subSeparate(String str) {
     	// 处理图片
 		int start = str.indexOf("[image]"), end = str.indexOf("[/image]");
 		if (start == -1 || end == -1) {

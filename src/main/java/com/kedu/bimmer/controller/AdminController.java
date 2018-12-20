@@ -7,8 +7,10 @@ import com.kedu.bimmer.base.SystemContext;
 import com.kedu.bimmer.dto.*;
 import com.kedu.bimmer.model.Article;
 import com.kedu.bimmer.model.Comment;
+import com.kedu.bimmer.model.FileInfo;
 import com.kedu.bimmer.service.ArticleService;
 import com.kedu.bimmer.service.CommentService;
+import com.kedu.bimmer.service.FileInfoService;
 import com.kedu.bimmer.util.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,6 +32,8 @@ public class AdminController {
     private ArticleService articleService;
     @Autowired
     private CommentService commentService;
+    @Autowired
+    private FileInfoService fileInfoService;
 
     @RequestMapping("/main")
     public String main(Model model) {
@@ -114,4 +118,34 @@ public class AdminController {
         commentService.updateHidden(vo);
         return Result.success();
     }
+
+	@RequestMapping("/fileInfoList")
+	public String fileInfoList() {
+		return "admin/fileInfoList";
+	}
+
+	@PostMapping("/getFileInfoList")
+	@ResponseBody
+	public Result getFileInfoList(FileSearchDTO fileSearchDTO, int pageNum) {
+		Page<FileInfoDTO> page = fileInfoService.query(fileSearchDTO, pageNum);
+		return Result.success(page);
+	}
+
+	@RequestMapping("/fileInfoEdit")
+	public String fileInfoEdit(Model model, String id) {
+    	FileInfo vo = GUID.isGUID(id) ? fileInfoService.get(id) : null;
+		model.addAttribute("edit", vo != null);
+		model.addAttribute("id", vo == null ? "" : vo.getFileId());
+		model.addAttribute("realName", vo == null ? "" : vo.getRealName());
+		model.addAttribute("fileName", vo == null ? "" : vo.getFileName());
+		model.addAttribute("fileType", vo == null ? "" : vo.getFileType());
+		model.addAttribute("hidden", vo != null && vo.isHidden()); // 默认：不隐藏
+		return "admin/fileInfoEdit";
+	}
+
+	@PostMapping("/saveFileInfo")
+	@ResponseBody
+	public Result saveFileInfo(FileInfo vo) {
+        return Result.success();
+	}
 }
