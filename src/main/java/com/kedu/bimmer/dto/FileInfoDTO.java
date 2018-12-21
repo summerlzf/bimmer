@@ -17,6 +17,9 @@ public class FileInfoDTO {
 	/** 文件类型 */
 	private String fileTypeName;
 
+	/** 文件URL地址 */
+	private String url;
+
 	/** 是否隐藏 */
 	private boolean hidden;
 
@@ -69,5 +72,13 @@ public class FileInfoDTO {
 
 	public void setCreateTimeStr(String createTimeStr) {
 		this.createTimeStr = createTimeStr;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
 	}
 }

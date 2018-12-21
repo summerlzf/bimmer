@@ -1,5 +1,6 @@
 package com.kedu.bimmer.service;
 
+import com.kedu.bimmer.base.FileHolder;
 import com.kedu.bimmer.base.Page;
 import com.kedu.bimmer.constant.FileType;
 import com.kedu.bimmer.dao.FileInfoDAO;
@@ -33,6 +34,7 @@ public class FileInfoService {
 			dto.setFileName(vo.getFileName());
 			FileType t = FileType.of(vo.getFileType());
 			dto.setFileTypeName(t.getNote() + "（" + t.getTypeName() + "）");
+			dto.setUrl(FileHolder.getUrl(vo.getRealName()));
 			dto.setHidden(vo.isHidden());
 			dto.setCreateTimeStr(vo.getCreateTime().format(dtf));
 			return dto;
