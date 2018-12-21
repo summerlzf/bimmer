@@ -15,7 +15,11 @@
                     <input type="text" class="form-control" name="fileName" placeholder="文件名" />
                 </div>
                 <div class="col-xs-6 col-sm-3 placeholder">
-                    <input type="text" class="form-control" name="fileType" placeholder="文件类型" />
+                    <select class="form-control" name="fileType">
+                        <option value="0">全部</option>
+                        <option value="1">图片</option>
+                        <option value="2">视频</option>
+                    </select>
                 </div>
                 <div class="col-xs-6 col-sm-3 placeholder text-left">
                     <input type="submit" class="btn btn-primary" value="搜索" />
@@ -60,8 +64,8 @@
                 list.forEach(function (e) {
                     html += '<tr>' +
                         '<td>' + e.fileName + '</td>' +
-                        '<td>' + e.fileType + '</td>' +
-                        '<td>' + e.createTime + '</td>' +
+                        '<td>' + e.fileTypeName + '</td>' +
+                        '<td>' + e.createTimeStr + '</td>' +
                         '<td>' + (e.hidden ? '√' : '') + '</td>' +
                         '<td><a href="/admin/fileInfoEdit?id=' + e.fileId + '">编辑</a></td>' +
                         '</tr>';

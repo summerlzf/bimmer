@@ -138,7 +138,7 @@ public class AdminController {
 		model.addAttribute("id", vo == null ? "" : vo.getFileId());
 		model.addAttribute("realName", vo == null ? "" : vo.getRealName());
 		model.addAttribute("fileName", vo == null ? "" : vo.getFileName());
-		model.addAttribute("fileType", vo == null ? "" : vo.getFileType());
+		model.addAttribute("fileType", vo == null ? 1 : vo.getFileType());
 		model.addAttribute("hidden", vo != null && vo.isHidden()); // 默认：不隐藏
 		return "admin/fileInfoEdit";
 	}

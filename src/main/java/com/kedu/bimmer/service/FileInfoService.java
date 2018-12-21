@@ -31,7 +31,8 @@ public class FileInfoService {
 			dto.setFileId(vo.getFileId());
 			dto.setRealName(vo.getRealName());
 			dto.setFileName(vo.getFileName());
-			dto.setFileTypeName(FileType.of(vo.getFileType()).getTypeName());
+			FileType t = FileType.of(vo.getFileType());
+			dto.setFileTypeName(t.getNote() + "（" + t.getTypeName() + "）");
 			dto.setHidden(vo.isHidden());
 			dto.setCreateTimeStr(vo.getCreateTime().format(dtf));
 			return dto;
