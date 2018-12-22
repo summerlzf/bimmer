@@ -62,12 +62,13 @@
             $.post('/admin/getFileInfoList', req + '&pageNum=' + (pageNum || 1), function (json) {
                 var list = json.data.dataList || [], totalPage = json.data.totalPage, html = '';
                 list.forEach(function (e) {
+                    var viewImg = e.fileType == 1 ? '<a target="_blank" href="' + e.url + '">查看图片</a> ' : '';
                     html += '<tr>' +
                         '<td>' + e.fileName + '</td>' +
                         '<td>' + e.fileTypeName + '</td>' +
                         '<td>' + e.createTimeStr + '</td>' +
                         '<td>' + (e.hidden ? '√' : '') + '</td>' +
-                        '<td><a target="_blank" href="' + e.url + '">查看图片</a> <a href="/admin/fileInfoEdit?id=' + e.fileId + '">编辑</a></td>' +
+                        '<td>' + viewImg + '<a href="/admin/fileInfoEdit?id=' + e.fileId + '">编辑</a></td>' +
                         '</tr>';
                 });
                 $('#tbody').html(html);

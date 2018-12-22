@@ -15,6 +15,9 @@ public class FileInfoDTO {
 	private String fileName;
 
 	/** 文件类型 */
+	private int fileType;
+
+	/** 文件类型 */
 	private String fileTypeName;
 
 	/** 文件URL地址 */
@@ -80,5 +83,13 @@ public class FileInfoDTO {
 
 	public void setUrl(String url) {
 		this.url = url;
+	}
+
+	public int getFileType() {
+		return fileType;
+	}
+
+	public void setFileType(int fileType) {
+		this.fileType = fileType;
 	}
 }
