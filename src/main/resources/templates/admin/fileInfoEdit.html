@@ -11,10 +11,14 @@
 
         <form id="post-form" class="form-horizontal" onsubmit="return save();">
             <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-8" id="viewImg"></div>
+            </div>
+            <div class="form-group">
                 <label class="col-sm-2 control-label">真实文件名</label>
                 <div class="col-sm-8">
                     <input type="text" class="form-control" name="realName" placeholder="真实文件名" th:value="${realName ?: ''}" />
                 </div>
+                <div class="col-sm-2" th:if="${fileType == 1}"><a class="btn btn-default" onclick="loadImg();" th:text="${edit ? '重新加载' : '加载'}"></a></div>
                 <input type="hidden" name="fileId" th:value="${id}" />
             </div>
             <div class="form-group">
@@ -62,8 +66,14 @@
             });
             return false;
         }
+        var filePath = '[[${filePath}]]';
+        function loadImg() {
+            var v = $('input[name="realName"]').val();
+            var ft = $('select[name="fileType"]').val();
+            v && ft == 1 && $('#viewImg').html('<img src="' + filePath + '/' + v + '" width="100%" onerror="alert(\'图片不存在\');" />');
+        }
         $(function () {
-            //searchData();
+            loadImg();
         });
     </script>
 </th:block>

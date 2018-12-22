@@ -1,9 +1,7 @@
 package com.kedu.bimmer.controller;
 
-import com.kedu.bimmer.base.GUID;
-import com.kedu.bimmer.base.Page;
-import com.kedu.bimmer.base.Result;
-import com.kedu.bimmer.base.SystemContext;
+import com.kedu.bimmer.base.*;
+import com.kedu.bimmer.constant.FileType;
 import com.kedu.bimmer.dto.*;
 import com.kedu.bimmer.model.Article;
 import com.kedu.bimmer.model.Comment;
@@ -140,6 +138,8 @@ public class AdminController {
 		model.addAttribute("fileName", vo == null ? "" : vo.getFileName());
 		model.addAttribute("fileType", vo == null ? 1 : vo.getFileType());
 		model.addAttribute("hidden", vo != null && vo.isHidden()); // 默认：不隐藏
+        // 文件路径，对于新增的文件，默认类型为：图片
+		model.addAttribute("filePath", FileHolder.getFilePath(vo == null ? FileType.IMAGE : FileType.of(vo.getFileType())));
 		return "admin/fileInfoEdit";
 	}
 

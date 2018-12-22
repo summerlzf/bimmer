@@ -53,6 +53,25 @@
         </div>
         <div id="pagination" class="text-center"></div>
     </div>
+
+    <!-- 模态对话框 -->
+    <div class="modal fade" id="viewModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">图片预览</h4>
+                </div>
+                <div class="modal-body">
+                    <p><img id="viewImg" width="100%" /></p>
+                </div>
+                <div class="modal-footer">
+                    <a id="viewSource" type="button" class="btn btn-primary" target="_blank">查看原图</a>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 </th:block>
 
 <th:block layout:fragment="footer">
@@ -62,7 +81,7 @@
             $.post('/admin/getFileInfoList', req + '&pageNum=' + (pageNum || 1), function (json) {
                 var list = json.data.dataList || [], totalPage = json.data.totalPage, html = '';
                 list.forEach(function (e) {
-                    var viewImg = e.fileType == 1 ? '<a target="_blank" href="' + e.url + '">查看图片</a> ' : '';
+                    var viewImg = e.fileType == 1 ? '<a href="#" onclick="viewImg(\'' + e.url + '\');">预览</a> ' : '';
                     html += '<tr>' +
                         '<td>' + e.fileName + '</td>' +
                         '<td>' + e.fileTypeName + '</td>' +
@@ -95,6 +114,12 @@
                 });
             });
             return false;
+        }
+        // 图片预览
+        function viewImg(url) {
+            $('#viewModal').modal();
+            $('#viewImg').attr('src', url);
+            $('#viewSource').attr('href', url);
         }
         $(function () {
             searchData();

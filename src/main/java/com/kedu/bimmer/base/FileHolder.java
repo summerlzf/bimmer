@@ -15,4 +15,8 @@ public class FileHolder {
         }
         return fileURL + "/" + type.getTypeName() + "/" + realName;
     }
+
+    public static String getFilePath(FileType type) {
+        return fileURL + "/" + type.getTypeName();
+    }
 }
