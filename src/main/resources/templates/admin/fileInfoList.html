@@ -81,7 +81,7 @@
             $.post('/admin/getFileInfoList', req + '&pageNum=' + (pageNum || 1), function (json) {
                 var list = json.data.dataList || [], totalPage = json.data.totalPage, html = '';
                 list.forEach(function (e) {
-                    var viewImg = e.fileType == 1 ? '<a href="#" onclick="viewImg(\'' + e.url + '\');">预览</a> ' : '';
+                    var viewImg = e.fileType == 1 ? '<a href="javascript:void;" onclick="viewImg(\'' + e.url + '\');">预览</a> ' : '';
                     html += '<tr>' +
                         '<td>' + e.fileName + '</td>' +
                         '<td>' + e.fileTypeName + '</td>' +
