@@ -50,37 +50,14 @@
 
     <!-- 模态对话框 -->
     <div class="modal fade" id="viewModal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title">图片选择</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <a href="#" class="thumbnail"><img src="http://file.bimmer.com:8888/image/640%20(4).webp" alt="test" /></a>
-                        </div>
-                        <div class="col-sm-6">
-                            <a href="#" class="thumbnail"><img src="http://file.bimmer.com:8888/image/640%20(5).webp" alt="test" /></a>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <a href="#" class="thumbnail"><img src="http://file.bimmer.com:8888/image/640%20(2).webp" alt="test" /></a>
-                        </div>
-                        <div class="col-sm-6">
-                            <a href="#" class="thumbnail"><img src="http://file.bimmer.com:8888/image/640%20(3).webp" alt="test" /></a>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <a href="#" class="thumbnail"><img src="http://file.bimmer.com:8888/image/640%20(4).webp" alt="test" /></a>
-                        </div>
-                        <div class="col-sm-6">
-                            <a href="#" class="thumbnail"><img src="http://file.bimmer.com:8888/image/640%20(5).webp" alt="test" /></a>
-                        </div>
-                    </div>
+                    <div>暂无图片</div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
@@ -109,17 +86,31 @@
         // 图片预览
         function viewImgs() {
             $('#viewModal').modal();
-            $.post('/admin/getFileInfoList', 'pageNum=1', function (json) {
+            var fill = function (e) {
+                return '<div class="col-sm-4">' +
+                    '<a href="javascript:void" class="thumbnail" onclick="chooseImg(\'' + e.fileId + '\');"><img src="' + e.url + '" alt="' + e.fileName + '" /></a>' +
+                    '</div>';
+            };
+            $.post('/admin/getFileInfoList', 'fileType=1&pageNum=1', function (json) {
                 var list = json.data.dataList || [], totalPage = json.data.totalPage, html = '';
-                list.forEach(function (e) {
-                    html += '<div class="row">' +
-                        '<div class="col-sm-6">' +
-                        '<a href="#" class="thumbnail"><img src="' + e.url + '" alt="" /></a>' +
-                        '</div>' +
-                        '</div>';
-                });
-//                $('#viewModal .modal-body').html(html);
+                var i = 0;
+                while(i < list.length) {
+                    html += '<div class="row">' + fill(list[i]);
+                    if(i + 1 < list.length) {
+                        html += fill(list[i + 1]);
+                    }
+                    if(i + 2 < list.length) {
+                        html += fill(list[i + 2]);
+                    }
+                    html += '</div>';
+                    i += 3;
+                }
+                $('#viewModal .modal-body').html(html);
             });
+        }
+        function chooseImg(id) {
+            alert(id);
+            $('#viewModal').modal('hide');
         }
         $(function () {
             //searchData();
