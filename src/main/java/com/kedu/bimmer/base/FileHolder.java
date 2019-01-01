@@ -1,6 +1,7 @@
 package com.kedu.bimmer.base;
 
 import com.kedu.bimmer.constant.FileType;
+import com.kedu.bimmer.model.FileInfo;
 
 /**
  * @author Jef
@@ -8,6 +9,10 @@ import com.kedu.bimmer.constant.FileType;
 public class FileHolder {
 
     private static final String fileURL = "http://file.bimmer.com:8888";
+
+    public static String getUrl(FileInfo vo) {
+        return getUrl(vo.getRealName(), FileType.of(vo.getFileType()));
+    }
 
     public static String getUrl(String realName, FileType type) {
         if (type == FileType.UNKNOWN) {

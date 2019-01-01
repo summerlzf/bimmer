@@ -1,12 +1,16 @@
 package com.kedu.bimmer.controller;
 
+import com.kedu.bimmer.base.FileHolder;
 import com.kedu.bimmer.base.GUID;
 import com.kedu.bimmer.base.Result;
+import com.kedu.bimmer.cache.CacheHolder;
 import com.kedu.bimmer.dto.ArticleDTO;
 import com.kedu.bimmer.model.Article;
+import com.kedu.bimmer.model.FileInfo;
 import com.kedu.bimmer.model.UserInfo;
 import com.kedu.bimmer.service.ArticleService;
 import com.kedu.bimmer.service.CommentService;
+import com.kedu.bimmer.service.FileInfoService;
 import com.kedu.bimmer.service.UserInfoService;
 import com.kedu.bimmer.util.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +38,8 @@ public class ArticleController {
     private UserInfoService userInfoService;
     @Autowired
     private CommentService commentService;
+    @Autowired
+    private FileInfoService fileInfoService;
 
     @RequestMapping("/article/item/{id}")
     public String article(Model model, @PathVariable("id") String id) {
@@ -59,6 +66,29 @@ public class ArticleController {
         return "article";
     }
 
+    @RequestMapping("/article/preview/{token}")
+    public String articlePrev(Model model, @PathVariable("token") String token) {
+        // 从缓存中token对应的预览内容
+        Article vo = CacheHolder.get(token);
+        if (vo == null) {
+            return "redirect:/";
+        }
+        LocalDateTime now = LocalDateTime.now();
+        ArticleDTO dto = new ArticleDTO();
+        dto.setTitle(vo.getTitle());
+        dto.setSubTitle(vo.getSubTitle());
+        dto.setContents(separate(vo.getContent())); // 将文章进行分段处理
+        dto.setAuthorUserName("预览者(Jacky)");
+        dto.setAllowComment(false);
+        dto.setCreateTimeStr(now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        model.addAttribute("vo", dto);
+        model.addAttribute("comments", new ArrayList<>());
+        model.addAttribute("year", now.getYear());
+        // 从缓存中移除token及对应的预览内容，确保预览页面只能展示一次
+        CacheHolder.remove(token);
+        return "article";
+    }
+
     private List<String> separate(String content) {
     	List<String> list = new ArrayList<>();
         for(String str : content.split("\r\n")) {
@@ -77,7 +107,13 @@ public class ArticleController {
 		if (start > 0) {
 			list.add(str.substring(0, start));
 		}
-		list.add("<img width=\"100%\" src=\"" + str.substring(start + 7, end) + "\" />");
+		String fileId = str.substring(start + 7, end);
+        FileInfo file = GUID.isGUID(fileId) ? fileInfoService.get(fileId) : null;
+        if (file == null) {
+            list.add(fileId); // 如果查不到图片，则直接显示文本内容
+        } else {
+            list.add("<img width=\"100%\" src=\"" + FileHolder.getUrl(file) + "\" />");
+        }
 		if (end + 8 < str.length()) {
 			list.add(str.substring(end + 8));
 		}

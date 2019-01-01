@@ -1,6 +1,7 @@
 package com.kedu.bimmer.controller;
 
 import com.kedu.bimmer.base.*;
+import com.kedu.bimmer.cache.CacheHolder;
 import com.kedu.bimmer.constant.FileType;
 import com.kedu.bimmer.dto.*;
 import com.kedu.bimmer.model.Article;
@@ -94,6 +95,18 @@ public class AdminController {
 		}
         return Result.success();
     }
+
+	@PostMapping("/previewArticle")
+	@ResponseBody
+	public Result previewArticle(Article vo) {
+		if (CommonUtil.isBlank(vo.getTitle()) || CommonUtil.isBlank(vo.getContent())) {
+			return Result.fail("文章标题/内容为空，无法预览");
+		}
+    	String token = GUID.generate();
+    	// 将生成的token和预览的内容写入缓存
+		CacheHolder.put(token, vo);
+		return Result.success(token);
+	}
 
     @RequestMapping("/commentList")
     public String commentList() {
