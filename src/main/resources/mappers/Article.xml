@@ -38,8 +38,8 @@
 
 	<insert id="insert" parameterType="com.kedu.bimmer.model.Article">
 		<![CDATA[
-			insert into Article(articleId, title, subTitle, content, authorUserId, viewCount, allowComment, hidden, createTime, lastModifyTime)
-			values(#{articleId}, #{title}, #{subTitle}, #{content}, #{authorUserId}, #{viewCount}, #{allowComment}, #{hidden}, #{createTime}, #{lastModifyTime})
+			insert into Article(articleId, title, subTitle, content, authorUserId, originalUrl, viewCount, allowComment, hidden, createTime, lastModifyTime)
+			values(#{articleId}, #{title}, #{subTitle}, #{content}, #{authorUserId}, #{originalUrl}, #{viewCount}, #{allowComment}, #{hidden}, #{createTime}, #{lastModifyTime})
 		]]>
 	</insert>
 
@@ -51,6 +51,7 @@
 			title = #{title},
 			subTitle = #{subTitle},
 			content = #{content},
+			originalUrl = #{originalUrl},
 			allowComment = #{allowComment},
 			hidden = #{hidden},
 			lastModifyTime = #{lastModifyTime}

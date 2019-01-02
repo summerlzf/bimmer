@@ -29,6 +29,9 @@ public class ArticleDTO {
     /** 作者的用户昵称 */
     private String authorNickName;
 
+    /** 文章来源URL */
+    private String originalUrl;
+
     /** 浏览次数 */
     private int viewCount;
 
@@ -160,5 +163,13 @@ public class ArticleDTO {
 
     public void setViewCount(int viewCount) {
         this.viewCount = viewCount;
+    }
+
+    public String getOriginalUrl() {
+        return originalUrl;
+    }
+
+    public void setOriginalUrl(String originalUrl) {
+        this.originalUrl = originalUrl;
     }
 }

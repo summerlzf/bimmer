@@ -24,6 +24,12 @@
                 </div>
             </div>
             <div class="form-group">
+                <label class="col-sm-2 control-label">文章来源</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" name="originalUrl" placeholder="文章来源URL地址" th:value="${originalUrl ?: ''}" />
+                </div>
+            </div>
+            <div class="form-group">
                 <label class="col-sm-2 control-label">内容</label>
                 <div class="col-sm-8">
                     <textarea class="form-control" name="content" rows="20" placeholder="正文内容" th:text="${content ?: ''}"></textarea>

@@ -44,6 +44,10 @@
                     <p th:each="item,stat:${vo.contents}" th:utext="${item ?: '&nbsp;'}"></p>
                 </div><!-- /.blog-post -->
 
+                <div class="blog-post" th:if="${vo.originalUrl}">
+                    <p class="blog-post-meta">来源于：<a target="_blank" th:href="${vo.originalUrl}" th:text="${vo.originalUrl}"></a></p>
+                </div><!-- /.blog-post -->
+
                 <!-- 评论列表 -->
                 <div class="blog-post" th:each="comment,index:${comments}">
                     <hr>

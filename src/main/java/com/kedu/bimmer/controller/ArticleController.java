@@ -54,6 +54,7 @@ public class ArticleController {
         dto.setSubTitle(vo.getSubTitle());
         dto.setContent(vo.getContent());
         dto.setContents(separate(vo.getContent())); // 将文章进行分段处理
+		dto.setOriginalUrl(vo.getOriginalUrl());
         dto.setAuthorUserName(user == null ? "--" : CommonUtil.isBlank(user.getNickName()) ? user.getUserName() : user.getNickName()); // 优先获取昵称，其次获取用户名
         dto.setViewCount(vo.getViewCount() + 1);
         dto.setAllowComment(vo.isAllowComment());
@@ -78,6 +79,7 @@ public class ArticleController {
         dto.setTitle(vo.getTitle());
         dto.setSubTitle(vo.getSubTitle());
         dto.setContents(separate(vo.getContent())); // 将文章进行分段处理
+		dto.setOriginalUrl(vo.getOriginalUrl());
         dto.setAuthorUserName("预览者(Jacky)");
         dto.setAllowComment(false);
         dto.setCreateTimeStr(now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));

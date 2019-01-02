@@ -24,6 +24,9 @@ public class Article {
     /** 作者的用户id */
     private String authorUserId;
 
+    /** 文章来源URL */
+    private String originalUrl;
+
     /** 浏览次数 */
     private int viewCount;
 
@@ -118,4 +121,12 @@ public class Article {
     public void setViewCount(int viewCount) {
         this.viewCount = viewCount;
     }
+
+	public String getOriginalUrl() {
+		return originalUrl;
+	}
+
+	public void setOriginalUrl(String originalUrl) {
+		this.originalUrl = originalUrl;
+	}
 }
