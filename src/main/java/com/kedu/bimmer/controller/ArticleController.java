@@ -13,6 +13,7 @@ import com.kedu.bimmer.service.CommentService;
 import com.kedu.bimmer.service.FileInfoService;
 import com.kedu.bimmer.service.UserInfoService;
 import com.kedu.bimmer.util.CommonUtil;
+import com.kedu.bimmer.util.RandomUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -60,6 +61,7 @@ public class ArticleController {
         dto.setAllowComment(vo.isAllowComment());
         dto.setCreateTimeStr(vo.getCreateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         model.addAttribute("vo", dto);
+        model.addAttribute("existOriginalUrl", !CommonUtil.isBlank(vo.getOriginalUrl()));
         model.addAttribute("comments", commentService.listByArticleId(id));
         model.addAttribute("year", LocalDate.now().getYear());
         // 异步更新浏览次数
@@ -80,10 +82,11 @@ public class ArticleController {
         dto.setSubTitle(vo.getSubTitle());
         dto.setContents(separate(vo.getContent())); // 将文章进行分段处理
 		dto.setOriginalUrl(vo.getOriginalUrl());
-        dto.setAuthorUserName("预览者(Jacky)");
+        dto.setAuthorUserName("预览者(" + RandomUtil.getUserName() + ")"); // 预览者随机获取
         dto.setAllowComment(false);
         dto.setCreateTimeStr(now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         model.addAttribute("vo", dto);
+		model.addAttribute("existOriginalUrl", !CommonUtil.isBlank(vo.getOriginalUrl()));
         model.addAttribute("comments", new ArrayList<>());
         model.addAttribute("year", now.getYear());
         // 从缓存中移除token及对应的预览内容，确保预览页面只能展示一次

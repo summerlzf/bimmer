@@ -70,10 +70,11 @@ public class AdminController {
     @PostMapping("/saveArticle")
     @ResponseBody
     public Result saveArticle(Article vo) {
-        if (CommonUtil.isBlank(vo.getTitle()) || CommonUtil.isBlank(vo.getContent())) {
-            return Result.fail("文章标题/内容不能为空");
-        }
-        LocalDateTime now = LocalDateTime.now();
+		String err = verify(vo);
+		if (err != null) {
+			return Result.fail(err);
+		}
+		LocalDateTime now = LocalDateTime.now();
         UserBasicInfo user = SystemContext.getUser();
 		Article ac = GUID.isGUID(vo.getArticleId()) ? articleService.get(vo.getArticleId()) : null;
 		if (ac == null) { // 新增
@@ -101,13 +102,35 @@ public class AdminController {
 	@PostMapping("/previewArticle")
 	@ResponseBody
 	public Result previewArticle(Article vo) {
-		if (CommonUtil.isBlank(vo.getTitle()) || CommonUtil.isBlank(vo.getContent())) {
-			return Result.fail("文章标题/内容为空，无法预览");
+    	String err = verify(vo);
+		if (err != null) {
+			return Result.fail(err);
 		}
     	String token = GUID.generate();
     	// 将生成的token和预览的内容写入缓存
 		CacheHolder.put(token, vo);
 		return Result.success(token);
+	}
+
+	/**
+	 * 校验文章参数
+	 * @param vo
+	 * @return
+	 */
+	private String verify(Article vo) {
+		if (CommonUtil.isBlank(vo.getTitle()) || CommonUtil.isBlank(vo.getContent())) {
+			return "文章标题/内容不能为空";
+		}
+		String url = vo.getOriginalUrl();
+		if (!CommonUtil.isBlank(url)) {
+			if (url.length() > 290) {
+				return "文章来源URL地址太长";
+			}
+			if (!url.startsWith("http://") && !url.startsWith("https://")) {
+				return "不是正确的URL地址";
+			}
+		}
+		return null;
 	}
 
     @RequestMapping("/commentList")

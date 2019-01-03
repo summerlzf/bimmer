@@ -44,8 +44,9 @@
                     <p th:each="item,stat:${vo.contents}" th:utext="${item ?: '&nbsp;'}"></p>
                 </div><!-- /.blog-post -->
 
-                <div class="blog-post" th:if="${vo.originalUrl}">
-                    <p class="blog-post-meta">来源于：<a target="_blank" th:href="${vo.originalUrl}" th:text="${vo.originalUrl}"></a></p>
+                <div class="blog-post" th:if="${existOriginalUrl}">
+                    <!--<p class="blog-post-meta">来源于：<a target="_blank" th:href="${vo.originalUrl}" th:text="${vo.originalUrl}"></a></p>-->
+                    <pre><code>来源于：<a target="_blank" th:href="${vo.originalUrl}" th:text="${vo.originalUrl}"></a></code></pre>
                 </div><!-- /.blog-post -->
 
                 <!-- 评论列表 -->
