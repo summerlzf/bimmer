@@ -12,37 +12,28 @@
         <form id="search-form" onsubmit="return searchData();">
             <div class="row placeholders">
                 <div class="col-xs-6 col-sm-3 placeholder">
-                    <input type="text" class="form-control" name="fileName" placeholder="文件名" />
-                </div>
-                <div class="col-xs-6 col-sm-3 placeholder">
-                    <select class="form-control" name="fileType">
-                        <option value="0">全部</option>
-                        <option value="1">图片</option>
-                        <option value="2">视频</option>
-                    </select>
+                    <input type="text" class="form-control" name="tagName" placeholder="标签名" />
                 </div>
                 <div class="col-xs-6 col-sm-3 placeholder text-left">
                     <input type="submit" class="btn btn-primary" value="搜索" />
-                    <a class="btn btn-default" href="/admin/fileInfoEdit">新增</a>
+                    <a class="btn btn-default" onclick="edit();">新增</a>
                 </div>
             </div>
         </form>
 
-        <h2 class="sub-header">文件/资源列表</h2>
+        <h2 class="sub-header">文件标签列表</h2>
         <div class="table-responsive">
             <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th>文件名</th>
-                    <th>文件类型</th>
-                    <th>时间</th>
-                    <th>隐藏</th>
+                    <th>#</th>
+                    <th>文件标签</th>
+                    <th>排序序号</th>
                     <th>操作</th>
                 </tr>
                 </thead>
                 <tbody id="tbody">
                 <tr>
-                    <td>--</td>
                     <td>--</td>
                     <td>--</td>
                     <td>--</td>
@@ -56,20 +47,30 @@
 
     <!-- 模态对话框 -->
     <div class="modal fade" id="viewModal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-sm" role="document">
+            <form onsubmit="return save();">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">图片预览</h4>
+                    <h4 class="modal-title">图片标签</h4>
                 </div>
                 <div class="modal-body">
-                    <p><img id="viewImg" width="100%" /></p>
+                    <div class="form-group">
+                        <label>标签名称</label>
+                        <input class="form-control" name="tagName" placeholder="标签名称" />
+                        <input type="hidden" name="tagId" />
+                    </div>
+                    <div class="form-group">
+                        <label>排序序号</label>
+                        <input class="form-control" name="sortOrder" type="number" placeholder="排序序号（只能填写数字）" />
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    <a id="viewSource" type="button" class="btn btn-primary" target="_blank">查看原图</a>
+                    <input type="submit" class="btn btn-primary" value="提交" />
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                 </div>
             </div><!-- /.modal-content -->
+            </form>
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 </th:block>
@@ -78,16 +79,14 @@
     <script type="text/javascript">
         function searchData(pageNum) {
             var req = $('#search-form').serialize();
-            $.post('/admin/getFileInfoList', req + '&pageNum=' + (pageNum || 1), function (json) {
+            $.post('/admin/getFileTagList', req + '&pageNum=' + (pageNum || 1), function (json) {
                 var list = json.data.dataList || [], totalPage = json.data.totalPage, html = '';
                 list.forEach(function (e) {
-                    var viewImg = e.fileType == 1 ? '<a href="javascript:;" onclick="viewImg(\'' + e.url + '\');">预览</a> ' : '';
                     html += '<tr>' +
-                        '<td>' + e.fileName + '</td>' +
-                        '<td>' + e.fileTypeName + '</td>' +
-                        '<td>' + e.createTimeStr + '</td>' +
-                        '<td>' + (e.hidden ? '√' : '') + '</td>' +
-                        '<td>' + viewImg + '<a href="/admin/fileInfoEdit?id=' + e.fileId + '">编辑</a></td>' +
+                        '<td>' + e.tagId + '</td>' +
+                        '<td>' + e.tagName + '</td>' +
+                        '<td>' + e.sortOrder + '</td>' +
+                        '<td><a href="javascript:;" onclick="edit(\'' + e.tagId + '\');">编辑</a> <a href="javascript:;" onclick="remove(\'' + e.tagId + '\');">删除</a></td>' +
                         '</tr>';
                 });
                 $('#tbody').html(html);
@@ -115,11 +114,33 @@
             });
             return false;
         }
-        // 图片预览
-        function viewImg(url) {
+        // 图片标签 新增/编辑
+        function edit(id) {
             $('#viewModal').modal();
-            $('#viewImg').attr('src', url);
-            $('#viewSource').attr('href', url);
+            id ? $.post('/admin/getFileTag', {tagId: id}, function (json) {
+                $.common.initForm($('#viewModal form'), json.data);
+            }) : $.common.initForm($('#viewModal form'));
+        }
+        // 保存图片标签
+        function save() {
+            var sort = $('#viewModal input[name="sortOrder"]').val();
+            if(!sort) {
+                alert('排序序号不能为空');
+                return false;
+            }
+            var req = $('#viewModal form').serialize();
+//            alert(req);
+            $.post('/admin/saveFileTag', req, function (json) {
+                if(json.code != 0) {
+                    alert(json.message || '保存失败');
+                    return;
+                }
+                window.location.reload();
+            });
+            return false;
+        }
+        function remove(id) {
+            alert('remove: ' + id);
         }
         $(function () {
             searchData();

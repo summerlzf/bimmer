@@ -7,9 +7,11 @@ import com.kedu.bimmer.dto.*;
 import com.kedu.bimmer.model.Article;
 import com.kedu.bimmer.model.Comment;
 import com.kedu.bimmer.model.FileInfo;
+import com.kedu.bimmer.model.FileTag;
 import com.kedu.bimmer.service.ArticleService;
 import com.kedu.bimmer.service.CommentService;
 import com.kedu.bimmer.service.FileInfoService;
+import com.kedu.bimmer.service.FileTagService;
 import com.kedu.bimmer.util.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,6 +35,8 @@ public class AdminController {
     private CommentService commentService;
     @Autowired
     private FileInfoService fileInfoService;
+    @Autowired
+    private FileTagService fileTagService;
 
     @RequestMapping("/main")
     public String main(Model model) {
@@ -202,6 +206,39 @@ public class AdminController {
 			f.setFileType(vo.getFileType());
 			f.setHidden(vo.isHidden());
 			fileInfoService.update(f);
+		}
+		return Result.success();
+	}
+
+	@RequestMapping("/fileTagList")
+	public String fileTagList() {
+		return "admin/fileTagList";
+	}
+
+	@PostMapping("/getFileTagList")
+	@ResponseBody
+	public Result getFileTagList(FileTag fileTag, int pageNum) {
+		Page<FileTag> page = fileTagService.query(fileTag, pageNum);
+		return Result.success(page);
+	}
+
+	@PostMapping("/getFileTag")
+	@ResponseBody
+	public Result getFileTag(String tagId) {
+		return Result.success(fileTagService.get(tagId));
+	}
+
+	@PostMapping("/saveFileTag")
+	@ResponseBody
+	public Result saveFileTag(FileTag vo) {
+		if (CommonUtil.isBlank(vo.getTagName())) {
+			return Result.fail("标签名称不能为空");
+		}
+		if (GUID.isGUID(vo.getTagId())) {
+			fileTagService.update(vo);
+		} else {
+			vo.setTagId(GUID.generate());
+			fileTagService.insert(vo);
 		}
 		return Result.success();
 	}

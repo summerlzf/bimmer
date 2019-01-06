@@ -68,7 +68,7 @@
                         '<td>' + e.userName + '</td>' +
                         '<td>' + e.createTimeStr + '</td>' +
                         '<td>' + (e.hidden ? '√' : '') + '</td>' +
-                        '<td><a href="javascript:void;" onclick="setHidden(\'' + e.commentId + '\', ' + !e.hidden + ');">' + (e.hidden ? '显示' : '隐藏') + '</a></td>' +
+                        '<td><a href="javascript:;" onclick="setHidden(\'' + e.commentId + '\', ' + !e.hidden + ');">' + (e.hidden ? '显示' : '隐藏') + '</a></td>' +
                         '</tr>';
                 });
                 $('#tbody').html(html);

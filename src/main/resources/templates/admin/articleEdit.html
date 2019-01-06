@@ -128,7 +128,7 @@
             $('#viewModal').modal();
             var fill = function (e) {
                 return '<div class="col-sm-4">' +
-                    '<a href="javascript:void" class="thumbnail" onclick="chooseImg(\'' + e.fileId + '\');"><img src="' + e.url + '" alt="' + e.fileName + '" /></a>' +
+                    '<a href="javascript:;" class="thumbnail" onclick="chooseImg(\'' + e.fileId + '\');"><img src="' + e.url + '" alt="' + e.fileName + '" /></a>' +
                     '</div>';
             };
             $.post('/admin/getFileInfoList', 'fileType=1&pageNum=1', function (json) {
