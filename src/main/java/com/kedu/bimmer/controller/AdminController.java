@@ -242,4 +242,14 @@ public class AdminController {
 		}
 		return Result.success();
 	}
+
+	@PostMapping("/deleteFileTag")
+	@ResponseBody
+	public Result deleteFileTag(String tagId) {
+		if (!GUID.isGUID(tagId)) {
+			return Result.fail("参数错误");
+		}
+		fileTagService.delete(tagId);
+		return Result.success();
+	}
 }

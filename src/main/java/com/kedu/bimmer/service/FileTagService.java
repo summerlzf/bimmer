@@ -30,4 +30,8 @@ public class FileTagService {
     public void update(FileTag vo) {
         fileTagDAO.update(vo);
     }
+
+    public void delete(String tagId) {
+        fileTagDAO.delete(tagId);
+    }
 }

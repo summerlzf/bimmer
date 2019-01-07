@@ -19,4 +19,6 @@ public interface FileTagDAO {
     void insert(FileTag vo);
 
     void update(FileTag vo);
+
+    void delete(@Param("tagId") String tagId);
 }

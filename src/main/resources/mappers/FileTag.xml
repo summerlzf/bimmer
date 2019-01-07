@@ -39,4 +39,8 @@
         ]]>
     </update>
 
+    <delete id="delete">
+        delete from FileTag where tagId = #{tagId}
+    </delete>
+
 </mapper>

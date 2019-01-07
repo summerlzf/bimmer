@@ -140,7 +140,16 @@
             return false;
         }
         function remove(id) {
-            alert('remove: ' + id);
+            if(!confirm('确定要删除该标签信息？')) {
+                return;
+            }
+            $.post('/admin/deleteFileTag', {tagId: id}, function (json) {
+                if(json.code != 0) {
+                    alert(json.message || '删除失败');
+                    return;
+                }
+                window.location.reload();
+            });
         }
         $(function () {
             searchData();
