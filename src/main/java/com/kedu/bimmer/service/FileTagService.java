@@ -23,6 +23,10 @@ public class FileTagService {
         return fileTagDAO.get(tagId);
     }
 
+    public FileTag getByTagName(String tagName) {
+        return fileTagDAO.getByTagName(tagName);
+    }
+
     public void insert(FileTag vo) {
         fileTagDAO.insert(vo);
     }

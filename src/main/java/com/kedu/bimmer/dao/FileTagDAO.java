@@ -16,6 +16,8 @@ public interface FileTagDAO {
 
     FileTag get(@Param("tagId") String tagId);
 
+    FileTag getByTagName(@Param("tagName") String tagName);
+
     void insert(FileTag vo);
 
     void update(FileTag vo);

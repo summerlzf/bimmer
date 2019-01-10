@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- "namespace" must be the path of interface, or show error “is not known to the MapperRegistry” when launch -->
+<mapper namespace="com.kedu.bimmer.dao.FileInfoTagDAO">
+
+    <insert id="insert" parameterType="com.kedu.bimmer.model.FileInfoTag">
+        <![CDATA[
+            insert into FileInfoTag(fileId, tagId) values(#{fileId}, #{tagId})
+        ]]>
+    </insert>
+
+    <delete id="delete" parameterType="com.kedu.bimmer.model.FileInfoTag">
+        <![CDATA[
+            delete from FileInfoTag
+        ]]>
+        <where>
+            <if test="fileId != null and fileId != ''">
+                and fileId = #{fileId}
+            </if>
+            <if test="tagId != null and tagId != ''">
+                and tagId = #{tagId}
+            </if>
+        </where>
+    </delete>
+
+</mapper>

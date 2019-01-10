@@ -234,9 +234,16 @@ public class AdminController {
 		if (CommonUtil.isBlank(vo.getTagName())) {
 			return Result.fail("标签名称不能为空");
 		}
+		FileTag t = fileTagService.getByTagName(vo.getTagName());
 		if (GUID.isGUID(vo.getTagId())) {
+			if (t != null && !vo.getTagId().equals(t.getTagId())) {
+				return Result.fail("标签名称已存在");
+			}
 			fileTagService.update(vo);
 		} else {
+			if (t != null) {
+				return Result.fail("标签名称已存在");
+			}
 			vo.setTagId(GUID.generate());
 			fileTagService.insert(vo);
 		}

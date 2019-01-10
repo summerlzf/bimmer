@@ -23,6 +23,12 @@
         ]]>
     </select>
 
+    <select id="getByTagName" resultType="com.kedu.bimmer.model.FileTag">
+        <![CDATA[
+            select * from FileTag where tagName = #{tagName}
+        ]]>
+    </select>
+
     <insert id="insert" parameterType="com.kedu.bimmer.model.FileTag">
         <![CDATA[
             insert into FileTag(tagId, tagName, sortOrder)
