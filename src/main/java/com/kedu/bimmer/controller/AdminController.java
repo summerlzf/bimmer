@@ -182,6 +182,8 @@ public class AdminController {
 		model.addAttribute("hidden", vo != null && vo.isHidden()); // 默认：不隐藏
         // 文件路径，对于新增的文件，默认类型为：图片
 		model.addAttribute("filePath", FileHolder.getFilePath(vo == null ? FileType.IMAGE : FileType.of(vo.getFileType())));
+		// 文件标签列表（所有标签）
+		model.addAttribute("tags", fileTagService.listTags(id));
 		return "admin/fileInfoEdit";
 	}
 

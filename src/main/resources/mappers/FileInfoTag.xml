@@ -3,6 +3,19 @@
 <!-- "namespace" must be the path of interface, or show error “is not known to the MapperRegistry” when launch -->
 <mapper namespace="com.kedu.bimmer.dao.FileInfoTagDAO">
 
+    <select id="listAll" resultType="com.kedu.bimmer.dto.FileInfoTagDTO">
+        <![CDATA[
+            select it.fileId, it.tagId, t.tagName
+            from FileInfoTag it left join FileTag t on t.tagId = it.tagId
+        ]]>
+    </select>
+
+    <select id="listByFileId" resultType="java.lang.String">
+        <![CDATA[
+            select tagId from FileInfoTag where fileId = #{fileId}
+        ]]>
+    </select>
+
     <insert id="insert" parameterType="com.kedu.bimmer.model.FileInfoTag">
         <![CDATA[
             insert into FileInfoTag(fileId, tagId) values(#{fileId}, #{tagId})
