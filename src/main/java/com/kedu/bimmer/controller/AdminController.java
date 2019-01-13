@@ -189,7 +189,7 @@ public class AdminController {
 
 	@PostMapping("/saveFileInfo")
 	@ResponseBody
-	public Result saveFileInfo(FileInfo vo) {
+	public Result saveFileInfo(FileInfo vo, String tagIds) {
 		if (CommonUtil.isBlank(vo.getRealName()) || CommonUtil.isBlank(vo.getFileName())) {
 			return Result.fail("文件名不能为空");
 		}
@@ -208,6 +208,10 @@ public class AdminController {
 			f.setFileType(vo.getFileType());
 			f.setHidden(vo.isHidden());
 			fileInfoService.update(f);
+		}
+		if (!CommonUtil.isBlank(tagIds)) {
+			// 批量保存文件信息-标签关系表
+			fileTagService.saveFileTags(vo.getFileId(), tagIds.split(","));
 		}
 		return Result.success();
 	}

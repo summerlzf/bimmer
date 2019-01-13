@@ -19,6 +19,8 @@ public interface FileInfoTagDAO {
 
 	void insert(FileInfoTag vo);
 
+	void insertBatch(List<FileInfoTag> list);
+
 	/**
 	 * 根据参数可删除一条或多条记录
 	 * @param vo

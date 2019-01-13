@@ -22,6 +22,15 @@
         ]]>
     </insert>
 
+    <insert id="insertBatch" parameterType="list">
+        <![CDATA[
+            insert into FileInfoTag(fileId, tagId) values
+        ]]>
+        <foreach collection="list" item="item" separator=",">
+            (#{item.fileId}, #{item.tagId})
+        </foreach>
+    </insert>
+
     <delete id="delete" parameterType="com.kedu.bimmer.model.FileInfoTag">
         <![CDATA[
             delete from FileInfoTag
