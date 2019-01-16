@@ -4,7 +4,6 @@ import com.kedu.bimmer.base.GUID;
 import com.kedu.bimmer.base.Page;
 import com.kedu.bimmer.dao.FileInfoTagDAO;
 import com.kedu.bimmer.dao.FileTagDAO;
-import com.kedu.bimmer.dto.FileInfoTagDTO;
 import com.kedu.bimmer.dto.FileTagDTO;
 import com.kedu.bimmer.model.FileInfoTag;
 import com.kedu.bimmer.model.FileTag;
@@ -56,14 +55,16 @@ public class FileTagService {
         FileInfoTag q = new FileInfoTag();
         q.setFileId(fileId);
         fileInfoTagDAO.delete(q); // 先将文件信息-标签关系信息删除
-        List<FileInfoTag> list = CommonUtil.asList(tagIds).stream().map(tid -> {
+        List<FileInfoTag> list = CommonUtil.asList(tagIds).stream().filter(GUID::isGUID).map(tid -> {
             FileInfoTag vo = new FileInfoTag();
             vo.setFileId(fileId);
             vo.setTagId(tid);
             return vo;
         }).collect(Collectors.toList());
-        // 批量插入文件信息-标签关系表
-        fileInfoTagDAO.insertBatch(list);
+        if (list.size() > 0) {
+            // 批量插入文件信息-标签关系表
+            fileInfoTagDAO.insertBatch(list);
+        }
     }
 
     public void insert(FileTag vo) {

@@ -17,6 +17,8 @@ public interface FileInfoTagDAO {
 
 	List<String> listByFileId(@Param("fileId") String fileId);
 
+	List<FileInfoTagDTO> listByFileIds(List<String> fileIds);
+
 	void insert(FileInfoTag vo);
 
 	void insertBatch(List<FileInfoTag> list);

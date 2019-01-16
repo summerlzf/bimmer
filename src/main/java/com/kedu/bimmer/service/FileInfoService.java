@@ -4,9 +4,12 @@ import com.kedu.bimmer.base.FileHolder;
 import com.kedu.bimmer.base.Page;
 import com.kedu.bimmer.constant.FileType;
 import com.kedu.bimmer.dao.FileInfoDAO;
+import com.kedu.bimmer.dao.FileInfoTagDAO;
 import com.kedu.bimmer.dto.FileInfoDTO;
+import com.kedu.bimmer.dto.FileInfoTagDTO;
 import com.kedu.bimmer.dto.FileSearchDTO;
 import com.kedu.bimmer.model.FileInfo;
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,11 +26,19 @@ public class FileInfoService {
 
 	@Autowired
 	private FileInfoDAO fileInfoDAO;
+	@Autowired
+	private FileInfoTagDAO fileInfoTagDAO;
 
 	public Page<FileInfoDTO> query(FileSearchDTO fileSearchDTO, int pageNum) {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 		Page<FileInfo> page = Page.startPage(pageNum, 10, () -> fileInfoDAO.query(fileSearchDTO));
-		List<FileInfoDTO> list = page.getDataList().isEmpty() ? new ArrayList<>() : page.getDataList().stream().map(vo -> {
+		List<FileInfo> vos = page.getDataList();
+		List<String> fileIds = vos.isEmpty() ? new ArrayList<>() : vos.stream().map(FileInfo::getFileId).collect(Collectors.toList());
+		if (fileIds.size() > 0) {
+			List<FileInfoTagDTO> infoTags = fileInfoTagDAO.listByFileIds(fileIds);
+			infoTags.stream().collect(Collectors.toMap(FileInfoTagDTO::getFileId, v -> v)); // TODO 未完成 -> 需要转成 Map<key, List<DTO>> 归并的map数据
+		}
+		List<FileInfoDTO> list = vos.isEmpty() ? new ArrayList<>() : vos.stream().map(vo -> {
 			FileInfoDTO dto = new FileInfoDTO();
 			dto.setFileId(vo.getFileId());
 			dto.setRealName(vo.getRealName());

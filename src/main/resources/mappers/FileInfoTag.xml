@@ -16,6 +16,17 @@
         ]]>
     </select>
 
+    <select id="listByFileIds" resultType="com.kedu.bimmer.dto.FileInfoTagDTO" parameterType="list">
+        <![CDATA[
+            select it.fileId, it.tagId, t.tagName
+            from FileInfoTag it left join FileTag t on t.tagId = it.tagId
+            where it.fileId in
+        ]]>
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </select>
+
     <insert id="insert" parameterType="com.kedu.bimmer.model.FileInfoTag">
         <![CDATA[
             insert into FileInfoTag(fileId, tagId) values(#{fileId}, #{tagId})
