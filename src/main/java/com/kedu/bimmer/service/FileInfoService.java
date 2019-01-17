@@ -9,13 +9,14 @@ import com.kedu.bimmer.dto.FileInfoDTO;
 import com.kedu.bimmer.dto.FileInfoTagDTO;
 import com.kedu.bimmer.dto.FileSearchDTO;
 import com.kedu.bimmer.model.FileInfo;
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -36,7 +37,7 @@ public class FileInfoService {
 		List<String> fileIds = vos.isEmpty() ? new ArrayList<>() : vos.stream().map(FileInfo::getFileId).collect(Collectors.toList());
 		if (fileIds.size() > 0) {
 			List<FileInfoTagDTO> infoTags = fileInfoTagDAO.listByFileIds(fileIds);
-			infoTags.stream().collect(Collectors.toMap(FileInfoTagDTO::getFileId, v -> v)); // TODO 未完成 -> 需要转成 Map<key, List<DTO>> 归并的map数据
+			Map<String, List<FileInfoTagDTO>> map = infoTags.isEmpty() ? new HashMap<>() : infoTags.stream().collect(Collectors.groupingBy(FileInfoTagDTO::getFileId));
 		}
 		List<FileInfoDTO> list = vos.isEmpty() ? new ArrayList<>() : vos.stream().map(vo -> {
 			FileInfoDTO dto = new FileInfoDTO();
