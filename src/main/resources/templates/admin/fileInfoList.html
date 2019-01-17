@@ -87,7 +87,7 @@
                     html += '<tr>' +
                         '<td>' + e.fileName + '</td>' +
                         '<td>' + e.fileTypeName + '</td>' +
-                        '<td>' + (e.fileTagNames || '--') + '</td>' +
+                        '<td><span class="badge">' + (e.fileTagNames || '--') + '</span></td>' +
                         '<td>' + e.createTimeStr + '</td>' +
                         '<td>' + (e.hidden ? '√' : '') + '</td>' +
                         '<td>' + viewImg + '<a href="/admin/fileInfoEdit?id=' + e.fileId + '">编辑</a></td>' +
