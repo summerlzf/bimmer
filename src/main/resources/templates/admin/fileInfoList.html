@@ -35,6 +35,7 @@
                 <tr>
                     <th>文件名</th>
                     <th>文件类型</th>
+                    <th>文件标签</th>
                     <th>时间</th>
                     <th>隐藏</th>
                     <th>操作</th>
@@ -42,6 +43,7 @@
                 </thead>
                 <tbody id="tbody">
                 <tr>
+                    <td>--</td>
                     <td>--</td>
                     <td>--</td>
                     <td>--</td>
@@ -85,6 +87,7 @@
                     html += '<tr>' +
                         '<td>' + e.fileName + '</td>' +
                         '<td>' + e.fileTypeName + '</td>' +
+                        '<td>' + (e.fileTagNames || '--') + '</td>' +
                         '<td>' + e.createTimeStr + '</td>' +
                         '<td>' + (e.hidden ? '√' : '') + '</td>' +
                         '<td>' + viewImg + '<a href="/admin/fileInfoEdit?id=' + e.fileId + '">编辑</a></td>' +

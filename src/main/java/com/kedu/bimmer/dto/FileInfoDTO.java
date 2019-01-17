@@ -20,6 +20,9 @@ public class FileInfoDTO {
 	/** 文件类型 */
 	private String fileTypeName;
 
+	/** 文件标签名（多个） */
+	private String fileTagNames;
+
 	/** 文件URL地址 */
 	private String url;
 
@@ -91,5 +94,13 @@ public class FileInfoDTO {
 
 	public void setFileType(int fileType) {
 		this.fileType = fileType;
+	}
+
+	public String getFileTagNames() {
+		return fileTagNames;
+	}
+
+	public void setFileTagNames(String fileTagNames) {
+		this.fileTagNames = fileTagNames;
 	}
 }

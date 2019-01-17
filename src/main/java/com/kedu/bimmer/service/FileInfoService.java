@@ -9,6 +9,7 @@ import com.kedu.bimmer.dto.FileInfoDTO;
 import com.kedu.bimmer.dto.FileInfoTagDTO;
 import com.kedu.bimmer.dto.FileSearchDTO;
 import com.kedu.bimmer.model.FileInfo;
+import com.kedu.bimmer.util.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,9 +36,14 @@ public class FileInfoService {
 		Page<FileInfo> page = Page.startPage(pageNum, 10, () -> fileInfoDAO.query(fileSearchDTO));
 		List<FileInfo> vos = page.getDataList();
 		List<String> fileIds = vos.isEmpty() ? new ArrayList<>() : vos.stream().map(FileInfo::getFileId).collect(Collectors.toList());
+		Map<String, String> tagMap = new HashMap<>();
 		if (fileIds.size() > 0) {
 			List<FileInfoTagDTO> infoTags = fileInfoTagDAO.listByFileIds(fileIds);
 			Map<String, List<FileInfoTagDTO>> map = infoTags.isEmpty() ? new HashMap<>() : infoTags.stream().collect(Collectors.groupingBy(FileInfoTagDTO::getFileId));
+			map.forEach((key, val) -> {
+				List<String> names = val.stream().map(FileInfoTagDTO::getTagName).collect(Collectors.toList());
+				tagMap.put(key, CommonUtil.join(names, ",", ""));
+			});
 		}
 		List<FileInfoDTO> list = vos.isEmpty() ? new ArrayList<>() : vos.stream().map(vo -> {
 			FileInfoDTO dto = new FileInfoDTO();
@@ -47,6 +53,7 @@ public class FileInfoService {
 			dto.setFileType(vo.getFileType());
 			FileType t = FileType.of(vo.getFileType());
 			dto.setFileTypeName(t.getNote() + "（" + t.getTypeName() + "）");
+			dto.setFileTagNames(tagMap.get(vo.getFileId()));
 			dto.setUrl(FileHolder.getUrl(vo.getRealName(), t));
 			dto.setHidden(vo.isHidden());
 			dto.setCreateTimeStr(vo.getCreateTime().format(dtf));
