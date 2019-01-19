@@ -55,7 +55,7 @@ public class FileTagService {
         FileInfoTag q = new FileInfoTag();
         q.setFileId(fileId);
         fileInfoTagDAO.delete(q); // 先将文件信息-标签关系信息删除
-        List<FileInfoTag> list = CommonUtil.asList(tagIds).stream().filter(GUID::isGUID).map(tid -> {
+        List<FileInfoTag> list = tagIds == null || tagIds.length == 0 ? new ArrayList<>() : CommonUtil.asList(tagIds).stream().filter(GUID::isGUID).map(tid -> {
             FileInfoTag vo = new FileInfoTag();
             vo.setFileId(fileId);
             vo.setTagId(tid);

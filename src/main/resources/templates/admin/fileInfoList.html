@@ -83,11 +83,15 @@
             $.post('/admin/getFileInfoList', req + '&pageNum=' + (pageNum || 1), function (json) {
                 var list = json.data.dataList || [], totalPage = json.data.totalPage, html = '';
                 list.forEach(function (e) {
+                    var tagNames = '';
+                    e.fileTagNames && e.fileTagNames.forEach(function (name) {
+                        tagNames += ' <span class="badge">' + name + '</span>';
+                    });
                     var viewImg = e.fileType == 1 ? '<a href="javascript:;" onclick="viewImg(\'' + e.url + '\');">预览</a> ' : '';
                     html += '<tr>' +
                         '<td>' + e.fileName + '</td>' +
                         '<td>' + e.fileTypeName + '</td>' +
-                        '<td><span class="badge">' + (e.fileTagNames || '--') + '</span></td>' +
+                        '<td>' + (tagNames || '--') + '</td>' +
                         '<td>' + e.createTimeStr + '</td>' +
                         '<td>' + (e.hidden ? '√' : '') + '</td>' +
                         '<td>' + viewImg + '<a href="/admin/fileInfoEdit?id=' + e.fileId + '">编辑</a></td>' +

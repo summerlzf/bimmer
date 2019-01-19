@@ -36,13 +36,13 @@ public class FileInfoService {
 		Page<FileInfo> page = Page.startPage(pageNum, 10, () -> fileInfoDAO.query(fileSearchDTO));
 		List<FileInfo> vos = page.getDataList();
 		List<String> fileIds = vos.isEmpty() ? new ArrayList<>() : vos.stream().map(FileInfo::getFileId).collect(Collectors.toList());
-		Map<String, String> tagMap = new HashMap<>();
+		Map<String, List<String>> tagMap = new HashMap<>();
 		if (fileIds.size() > 0) {
 			List<FileInfoTagDTO> infoTags = fileInfoTagDAO.listByFileIds(fileIds);
 			Map<String, List<FileInfoTagDTO>> map = infoTags.isEmpty() ? new HashMap<>() : infoTags.stream().collect(Collectors.groupingBy(FileInfoTagDTO::getFileId));
 			map.forEach((key, val) -> {
 				List<String> names = val.stream().map(FileInfoTagDTO::getTagName).collect(Collectors.toList());
-				tagMap.put(key, CommonUtil.join(names, ",", ""));
+				tagMap.put(key, names);
 			});
 		}
 		List<FileInfoDTO> list = vos.isEmpty() ? new ArrayList<>() : vos.stream().map(vo -> {

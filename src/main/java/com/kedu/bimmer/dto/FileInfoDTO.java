@@ -1,5 +1,7 @@
 package com.kedu.bimmer.dto;
 
+import java.util.List;
+
 /**
  * Created by liuzifeng on 2018/12/21.
  */
@@ -21,7 +23,7 @@ public class FileInfoDTO {
 	private String fileTypeName;
 
 	/** 文件标签名（多个） */
-	private String fileTagNames;
+	private List<String> fileTagNames;
 
 	/** 文件URL地址 */
 	private String url;
@@ -96,11 +98,11 @@ public class FileInfoDTO {
 		this.fileType = fileType;
 	}
 
-	public String getFileTagNames() {
+	public List<String> getFileTagNames() {
 		return fileTagNames;
 	}
 
-	public void setFileTagNames(String fileTagNames) {
+	public void setFileTagNames(List<String> fileTagNames) {
 		this.fileTagNames = fileTagNames;
 	}
 }

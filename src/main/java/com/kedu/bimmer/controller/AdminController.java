@@ -209,10 +209,8 @@ public class AdminController {
 			f.setHidden(vo.isHidden());
 			fileInfoService.update(f);
 		}
-		if (!CommonUtil.isBlank(tagIds)) {
-			// 批量保存文件信息-标签关系表
-			fileTagService.saveFileTags(vo.getFileId(), tagIds.split(","));
-		}
+		// 批量保存文件信息-标签关系表
+		fileTagService.saveFileTags(vo.getFileId(), CommonUtil.isBlank(tagIds) ? null : tagIds.split(","));
 		return Result.success();
 	}
 
