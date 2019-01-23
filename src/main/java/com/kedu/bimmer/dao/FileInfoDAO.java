@@ -15,6 +15,13 @@ public interface FileInfoDAO {
 
 	List<FileInfo> query(FileSearchDTO fileSearchDTO);
 
+	/**
+	 * 只查图片
+	 * @param tagId
+	 * @return
+	 */
+	List<FileInfo> listByTagId(@Param("tagId") String tagId);
+
 	FileInfo get(@Param("fileId") String fileId);
 
 	void insert(FileInfo vo);

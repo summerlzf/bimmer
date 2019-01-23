@@ -64,7 +64,9 @@
                     <h4 class="modal-title">图片选择</h4>
                 </div>
                 <div class="modal-body">
-                    <div>暂无图片</div>
+                    <p id="view-img-tags">暂无标签</p>
+                    <hr />
+                    <div id="view-img-body">暂无图片</div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
@@ -126,13 +128,22 @@
         // 图片预览
         function viewImgs() {
             $('#viewModal').modal();
+            $.post('/admin/listAllFileTags', function (json) {
+                var html = '';
+                json.data.forEach(function (e) {
+                    html += ' <button type="button" class="btn btn-default" onclick="showImgs(\'' + e.tagId + '\');">' + e.tagName + '</button>';
+                });
+                $('#view-img-tags').html(html || '暂无标签');
+            });
+        }
+        function showImgs(tagId) {
             var fill = function (e) {
                 return '<div class="col-sm-4">' +
                     '<a href="javascript:;" class="thumbnail" onclick="chooseImg(\'' + e.fileId + '\');"><img src="' + e.url + '" alt="' + e.fileName + '" /></a>' +
                     '</div>';
             };
-            $.post('/admin/getFileInfoList', 'fileType=1&pageNum=1', function (json) {
-                var list = json.data.dataList || [], totalPage = json.data.totalPage, html = '';
+            $.post('/admin/listFileInfoByTag', {tagId: tagId}, function (json) {
+                var list = json.data || [], html = '';
                 var i = 0;
                 while(i < list.length) {
                     html += '<div class="row">' + fill(list[i]);
@@ -145,14 +156,11 @@
                     html += '</div>';
                     i += 3;
                 }
-                $('#viewModal .modal-body').html(html);
+                $('#view-img-body').html(html || '暂无图片');
             });
         }
         function chooseImg(id) {
-            addText('[image]' + id + '[/image]');
-            $('#viewModal').modal('hide');
-        }
-        function addText(text) {
+            var text = '[image]' + id + '[/image]';
             var box = $('textarea[name="content"]')[0];
             if(document.selection) { // IE
                 var sel = document.selection.createRange();
@@ -166,6 +174,7 @@
             } else {
                 alert('该浏览器不支持插入图片，请使用其它浏览器');
             }
+            $('#viewModal').modal('hide');
         }
         $(function () {
             //searchData();

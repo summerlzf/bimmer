@@ -171,6 +171,12 @@ public class AdminController {
 		return Result.success(page);
 	}
 
+	@PostMapping("/listFileInfoByTag")
+	@ResponseBody
+	public Result listFileInfoByTag(String tagId) {
+		return Result.success(fileInfoService.listByTagId(tagId));
+	}
+
 	@RequestMapping("/fileInfoEdit")
 	public String fileInfoEdit(Model model, String id) {
     	FileInfo vo = GUID.isGUID(id) ? fileInfoService.get(id) : null;
@@ -196,6 +202,10 @@ public class AdminController {
 		if (vo.getFileType() == 0) {
 			return Result.fail("文件类型不能为空");
 		}
+		String[] tids = CommonUtil.isBlank(tagIds) ? new String[]{} : tagIds.split(",");
+		if (tids.length > 3) {
+			return Result.fail("文件标签最多选择3个");
+		}
 		FileInfo f = GUID.isGUID(vo.getFileId()) ? fileInfoService.get(vo.getFileId()) : null;
 		if (f == null) { // 新增
 			vo.setFileId(GUID.generate());
@@ -210,7 +220,7 @@ public class AdminController {
 			fileInfoService.update(f);
 		}
 		// 批量保存文件信息-标签关系表
-		fileTagService.saveFileTags(vo.getFileId(), CommonUtil.isBlank(tagIds) ? null : tagIds.split(","));
+		fileTagService.saveFileTags(vo.getFileId(), tids);
 		return Result.success();
 	}
 
@@ -224,6 +234,12 @@ public class AdminController {
 	public Result getFileTagList(FileTag fileTag, int pageNum) {
 		Page<FileTag> page = fileTagService.query(fileTag, pageNum);
 		return Result.success(page);
+	}
+
+	@PostMapping("/listAllFileTags")
+	@ResponseBody
+	public Result listAllFileTags() {
+		return Result.success(fileTagService.listAll());
 	}
 
 	@PostMapping("/getFileTag")

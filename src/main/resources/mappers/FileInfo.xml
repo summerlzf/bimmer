@@ -20,6 +20,13 @@
 		]]>
     </select>
 
+    <select id="listByTagId" resultType="com.kedu.bimmer.model.FileInfo">
+        <![CDATA[
+            select f.* from FileInfoTag t left join FileInfo f on f.fileId = t.fileId
+            where t.tagId = #{tagId} and f.fileType = 1
+        ]]>
+    </select>
+
     <select id="get" resultType="com.kedu.bimmer.model.FileInfo">
         <![CDATA[
             select * from FileInfo where fileId = #{fileId}

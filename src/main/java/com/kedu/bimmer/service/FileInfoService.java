@@ -65,6 +65,19 @@ public class FileInfoService {
 		return p;
 	}
 
+	public List<FileInfoDTO> listByTagId(String tagId) {
+		// 只查图片数据
+		List<FileInfo> list = fileInfoDAO.listByTagId(tagId);
+		return list.isEmpty() ? new ArrayList<>() : list.stream().map(vo -> {
+			FileInfoDTO dto = new FileInfoDTO();
+			dto.setFileId(vo.getFileId());
+			dto.setRealName(vo.getRealName());
+			dto.setFileName(vo.getFileName());
+			dto.setUrl(FileHolder.getUrl(vo));
+			return dto;
+		}).collect(Collectors.toList());
+	}
+
 	public FileInfo get(String fileId) {
 		return fileInfoDAO.get(fileId);
 	}

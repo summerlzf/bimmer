@@ -31,6 +31,10 @@ public class FileTagService {
         return Page.startPage(pageNum, 10, () -> fileTagDAO.query(fileTag));
     }
 
+    public List<FileTag> listAll() {
+        return fileTagDAO.query(new FileTag());
+    }
+
     public List<FileTagDTO> listTags(String fileId) {
         List<String> tagIds = GUID.isGUID(fileId) ? fileInfoTagDAO.listByFileId(fileId) : new ArrayList<>();
         List<FileTag> list = fileTagDAO.query(new FileTag()); // 所有的标签
@@ -55,7 +59,7 @@ public class FileTagService {
         FileInfoTag q = new FileInfoTag();
         q.setFileId(fileId);
         fileInfoTagDAO.delete(q); // 先将文件信息-标签关系信息删除
-        List<FileInfoTag> list = tagIds == null || tagIds.length == 0 ? new ArrayList<>() : CommonUtil.asList(tagIds).stream().filter(GUID::isGUID).map(tid -> {
+        List<FileInfoTag> list = tagIds.length == 0 ? new ArrayList<>() : CommonUtil.asList(tagIds).stream().filter(GUID::isGUID).map(tid -> {
             FileInfoTag vo = new FileInfoTag();
             vo.setFileId(fileId);
             vo.setTagId(tid);
