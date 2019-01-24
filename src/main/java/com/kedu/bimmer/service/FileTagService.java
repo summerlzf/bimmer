@@ -47,6 +47,10 @@ public class FileTagService {
         }).collect(Collectors.toList());
     }
 
+    public List<String> listByTagId(String tagId) {
+        return fileInfoTagDAO.listByTagId(tagId);
+    }
+
     public FileTag get(String tagId) {
         return fileTagDAO.get(tagId);
     }

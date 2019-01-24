@@ -276,6 +276,9 @@ public class AdminController {
 		if (!GUID.isGUID(tagId)) {
 			return Result.fail("参数错误");
 		}
+		if (fileTagService.listByTagId(tagId).size() > 0) {
+			return Result.fail("存在与文件信息的关联");
+		}
 		fileTagService.delete(tagId);
 		return Result.success();
 	}

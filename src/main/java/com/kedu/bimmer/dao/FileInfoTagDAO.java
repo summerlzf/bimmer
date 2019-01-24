@@ -15,6 +15,8 @@ public interface FileInfoTagDAO {
 
 	List<FileInfoTagDTO> listAll();
 
+	List<String> listByTagId(@Param("tagId") String tagId);
+
 	List<String> listByFileId(@Param("fileId") String fileId);
 
 	List<FileInfoTagDTO> listByFileIds(List<String> fileIds);
