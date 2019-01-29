@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,15 +11,11 @@
 </head>
 
 <body>
-    <h1 th:text="'Now is: ' + ${time}"></h1>
-    <h2>周杰伦 Party</h2>
-    <div th:each="user, iter : ${users}">
-        <span th:text="${user.nickName}"></span>
-    </div>
+    <h2 th:text="'Info: ' + ${info}"></h2>
+    <h2 th:text="'Data: ' + ${data}"></h2>
 
     <!-- JavaScript -->
     <script type="text/javascript" src="/js/jquery.min.js"></script>
-    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
     <script type="text/javascript">
         $(function () {
             //alert(111);
