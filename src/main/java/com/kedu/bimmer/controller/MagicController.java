@@ -21,15 +21,15 @@ public class MagicController {
 
     @RequestMapping("/magic/test")
     public String test(Model model) {
-        long p1 = System.currentTimeMillis();
 //        String info = magicService.getInfo();
         FutureTask<String> infoTask = new FutureTask<>(() -> magicService.getInfo());
-        long p2 = System.currentTimeMillis();
 //        String data = magicService.getData();
         FutureTask<String> dataTask = new FutureTask<>(() -> magicService.getData());
-        long p3 = System.currentTimeMillis();
+        long p1 = System.currentTimeMillis();
         executorService.submit(infoTask);
+        long p2 = System.currentTimeMillis();
         executorService.submit(dataTask);
+        long p3 = System.currentTimeMillis();
         try {
             model.addAttribute("info", infoTask.get());
             model.addAttribute("data", dataTask.get());
@@ -41,6 +41,32 @@ public class MagicController {
         System.out.println("p2 ~ p3: " + (p3 - p2));
         System.out.println("p3 ~ p4: " + (p4 - p3));
         System.out.println("总共: " + (p4 - p1));
+        return "test";
+    }
+
+    @RequestMapping("/magic/modify")
+    public String modify(Model model) {
+        long t1 = System.currentTimeMillis();
+        Runnable runInfo = () -> magicService.modifyInfo();
+//        magicService.modifyInfo();
+        long t2 = System.currentTimeMillis();
+        FutureTask<String> dataTask = new FutureTask<>(() -> magicService.getData());
+//        Runnable runData = () -> magicService.modifyData();
+        long t3 = System.currentTimeMillis();
+        executorService.submit(runInfo);
+        executorService.submit(dataTask);
+        long t4 = System.currentTimeMillis();
+        System.out.println("t1 - t2: " + (t2 - t1));
+        System.out.println("t2 - t3: " + (t3 - t2));
+        System.out.println("t3 - t4: " + (t4 - t3));
+        System.out.println("Total: " + (t4 - t1));
+
+        try {
+            model.addAttribute("info", "info - x,y,z");
+            model.addAttribute("data", "data - i,j,k - " + dataTask.get());
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
         return "test";
     }
 }

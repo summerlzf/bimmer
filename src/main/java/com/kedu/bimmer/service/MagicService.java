@@ -2,6 +2,8 @@ package com.kedu.bimmer.service;
 
 import org.springframework.stereotype.Service;
 
+import java.util.Random;
+
 /**
  * @author Jef
  */
@@ -10,7 +12,9 @@ public class MagicService {
 
     public String getInfo() {
         try {
-            Thread.sleep(2000);
+            int t = new Random().nextInt(2000);
+            Thread.sleep(t);
+            System.out.println("getInfo: " + t);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -19,10 +23,32 @@ public class MagicService {
 
     public String getData() {
         try {
-            Thread.sleep(1500);
+            int t = new Random().nextInt(2000);
+            Thread.sleep(t);
+            System.out.println("getData: " + t);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         return "data";
+    }
+
+    public void modifyInfo() {
+        try {
+            int t = new Random().nextInt(3000);
+            Thread.sleep(t);
+            System.out.println("modifyInfo: " + t);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void modifyData() {
+        try {
+            int t = new Random().nextInt(3000);
+            Thread.sleep(t);
+            System.out.println("modifyData: " + t);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
