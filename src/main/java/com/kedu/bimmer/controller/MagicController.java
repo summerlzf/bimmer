@@ -1,6 +1,7 @@
 package com.kedu.bimmer.controller;
 
 import com.kedu.bimmer.service.MagicService;
+import com.kedu.bimmer.threads.RunnableTask;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -47,14 +48,15 @@ public class MagicController {
     @RequestMapping("/magic/modify")
     public String modify(Model model) {
         long t1 = System.currentTimeMillis();
-        Runnable runInfo = () -> magicService.modifyInfo();
+//        Runnable runInfo = () -> magicService.modifyInfo();
+		RunnableTask task = new RunnableTask(() -> magicService.modifyInfo());
 //        magicService.modifyInfo();
         long t2 = System.currentTimeMillis();
-        FutureTask<String> dataTask = new FutureTask<>(() -> magicService.getData());
 //        Runnable runData = () -> magicService.modifyData();
-        long t3 = System.currentTimeMillis();
-        executorService.submit(runInfo);
-        executorService.submit(dataTask);
+		RunnableTask task1 = new RunnableTask(() -> magicService.modifyData());
+		long t3 = System.currentTimeMillis();
+        executorService.submit(task);
+        executorService.submit(task1);
         long t4 = System.currentTimeMillis();
         System.out.println("t1 - t2: " + (t2 - t1));
         System.out.println("t2 - t3: " + (t3 - t2));
@@ -63,10 +65,13 @@ public class MagicController {
 
         try {
             model.addAttribute("info", "info - x,y,z");
-            model.addAttribute("data", "data - i,j,k - " + dataTask.get());
-        } catch (InterruptedException | ExecutionException e) {
+            model.addAttribute("data", "data - i,j,k");
+            task.done();
+            task1.done();
+        } catch (Exception e) {
             e.printStackTrace();
         }
+        System.out.println("return page");
         return "test";
     }
 }
