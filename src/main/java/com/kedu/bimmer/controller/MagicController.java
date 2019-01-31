@@ -53,10 +53,11 @@ public class MagicController {
 //        magicService.modifyInfo();
         long t2 = System.currentTimeMillis();
 //        Runnable runData = () -> magicService.modifyData();
-		RunnableTask task1 = new RunnableTask(() -> magicService.modifyData());
+//		RunnableTask task1 = new RunnableTask(() -> magicService.modifyData());
 		long t3 = System.currentTimeMillis();
         executorService.submit(task);
-        executorService.submit(task1);
+//        executorService.submit(task1);
+        magicService.modifyData();
         long t4 = System.currentTimeMillis();
         System.out.println("t1 - t2: " + (t2 - t1));
         System.out.println("t2 - t3: " + (t3 - t2));
@@ -67,11 +68,11 @@ public class MagicController {
             model.addAttribute("info", "info - x,y,z");
             model.addAttribute("data", "data - i,j,k");
             task.done();
-            task1.done();
+//            task1.done();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println("return page");
+        System.out.println("return page" + "   --- " + System.currentTimeMillis());
         return "test";
     }
 }

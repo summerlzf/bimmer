@@ -18,11 +18,15 @@ public class RunnableTask implements Runnable {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			this.notify();
+			synchronized (this) {
+				this.notify();
+			}
 		}
 	}
 
 	public void done() throws InterruptedException {
-		this.wait();
+		synchronized (this) {
+			this.wait();
+		}
 	}
 }

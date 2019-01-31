@@ -5,6 +5,7 @@ import com.kedu.bimmer.base.GUID;
 import com.kedu.bimmer.base.Result;
 import com.kedu.bimmer.cache.CacheHolder;
 import com.kedu.bimmer.dto.ArticleDTO;
+import com.kedu.bimmer.dto.CommentDTO;
 import com.kedu.bimmer.model.Article;
 import com.kedu.bimmer.model.FileInfo;
 import com.kedu.bimmer.model.UserInfo;
@@ -26,6 +27,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.FutureTask;
 
 /**
  * @author Jef
@@ -41,6 +45,8 @@ public class ArticleController {
     private CommentService commentService;
     @Autowired
     private FileInfoService fileInfoService;
+    @Autowired
+    private ExecutorService executorService;
 
     @RequestMapping("/article/item/{id}")
     public String article(Model model, @PathVariable("id") String id) {
@@ -48,7 +54,11 @@ public class ArticleController {
         if (vo == null || vo.isHidden()) { // 隐藏的文章不显示
             return "redirect:/";
         }
-		UserInfo user = userInfoService.get(vo.getAuthorUserId());
+        // 并发：加载评论数据
+        FutureTask<List<CommentDTO>> task = new FutureTask<>(() -> commentService.listByArticleId(id));
+        executorService.submit(task);
+
+        UserInfo user = userInfoService.get(vo.getAuthorUserId());
         ArticleDTO dto = new ArticleDTO();
         dto.setArticleId(id);
         dto.setTitle(vo.getTitle());
@@ -62,8 +72,12 @@ public class ArticleController {
         dto.setCreateTimeStr(vo.getCreateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         model.addAttribute("vo", dto);
         model.addAttribute("existOriginalUrl", !CommonUtil.isBlank(vo.getOriginalUrl()));
-        model.addAttribute("comments", commentService.listByArticleId(id));
         model.addAttribute("year", LocalDate.now().getYear());
+        try {
+            model.addAttribute("comments", task.get());
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
         // 异步更新浏览次数
         articleService.updateViewCount(id);
         return "article";

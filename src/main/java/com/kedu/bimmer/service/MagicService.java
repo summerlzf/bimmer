@@ -36,7 +36,7 @@ public class MagicService {
         try {
             int t = new Random().nextInt(3000);
             Thread.sleep(t);
-            System.out.println("modifyInfo: " + t);
+            System.out.println("modifyInfo: " + t + "   --- " + System.currentTimeMillis());
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -46,7 +46,7 @@ public class MagicService {
         try {
             int t = new Random().nextInt(3000);
             Thread.sleep(t);
-            System.out.println("modifyData: " + t);
+            System.out.println("modifyData: " + t + "   --- " + System.currentTimeMillis());
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
