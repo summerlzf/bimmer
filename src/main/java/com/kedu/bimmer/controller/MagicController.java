@@ -45,6 +45,42 @@ public class MagicController {
         return "test";
     }
 
+    @RequestMapping("/magic/query")
+    public String query(Model model) {
+		System.out.println("start...");
+		Future<String> f1 = executorService.submit(() -> magicService.getInfo());
+		System.out.println("future 1");
+		Future<String> f2 = executorService.submit(() -> magicService.getData());
+		System.out.println("future 2");
+		try {
+			model.addAttribute("info", f1.get());
+			model.addAttribute("data", f2.get());
+		} catch (InterruptedException | ExecutionException e) {
+			e.printStackTrace();
+		}
+		System.out.println("return page" + "   --- " + System.currentTimeMillis());
+		return "test";
+    }
+
+	@RequestMapping("/magic/update")
+	public String update(Model model) {
+		System.out.println("start...");
+		Future<?> f1 = executorService.submit(() -> magicService.modifyInfo());
+		System.out.println("future 1");
+		Future<?> f2 = executorService.submit(() -> magicService.modifyData());
+		System.out.println("future 2");
+		try {
+			model.addAttribute("info", "info - 1,2,3");
+			model.addAttribute("data", "data - a,b,c");
+			f1.get();
+			f2.get();
+		} catch (InterruptedException | ExecutionException e) {
+			e.printStackTrace();
+		}
+		System.out.println("return page" + "   --- " + System.currentTimeMillis());
+		return "test";
+	}
+
     @RequestMapping("/magic/modify")
     public String modify(Model model) {
         long t1 = System.currentTimeMillis();
