@@ -20,7 +20,7 @@ public class BimmerConfiguration {
 
 	@Bean
 	public ExecutorService executorService() {
-		return Executors.newFixedThreadPool(10);
+		return Executors.newFixedThreadPool(30);
 	}
 
 	@Bean

@@ -17,6 +17,9 @@ public class CommentDTO {
     /** 评论内容（分段） */
     private List<String> contents;
 
+    /** 文章id */
+    private String articleId;
+
     /** 文章标题 */
     private String articleTitle;
 
@@ -94,5 +97,13 @@ public class CommentDTO {
 
     public void setContents(List<String> contents) {
         this.contents = contents;
+    }
+
+    public String getArticleId() {
+        return articleId;
+    }
+
+    public void setArticleId(String articleId) {
+        this.articleId = articleId;
     }
 }

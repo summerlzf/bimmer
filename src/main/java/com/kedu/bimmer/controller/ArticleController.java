@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.FutureTask;
+import java.util.concurrent.Future;
 
 /**
  * @author Jef
@@ -54,9 +54,8 @@ public class ArticleController {
         if (vo == null || vo.isHidden()) { // 隐藏的文章不显示
             return "redirect:/";
         }
-        // 并发：加载评论数据
-        FutureTask<List<CommentDTO>> task = new FutureTask<>(() -> commentService.listByArticleId(id));
-        executorService.submit(task);
+        // 并发：先异步加载评论数据
+        Future<List<CommentDTO>> task = executorService.submit(() -> commentService.listByArticleId(id));
 
         UserInfo user = userInfoService.get(vo.getAuthorUserId());
         ArticleDTO dto = new ArticleDTO();

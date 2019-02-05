@@ -5,7 +5,7 @@
 
     <select id="queryBySearch" resultType="com.kedu.bimmer.dto.CommentDTO" parameterType="com.kedu.bimmer.dto.CommentSearchDTO">
         <![CDATA[
-            select c.commentId, c.content, a.title as articleTitle, u.userName, c.hidden, c.createTime from Comment c
+            select c.commentId, c.content, c.articleId, a.title as articleTitle, u.userName, c.hidden, c.createTime from Comment c
             left join Article a on a.articleId = c.articleId
             left join UserInfo u on u.userId = c.userId
         ]]>

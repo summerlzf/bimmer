@@ -64,7 +64,7 @@
                 list.forEach(function (e) {
                     html += '<tr>' +
                         '<td>' + e.content + '</td>' +
-                        '<td>' + e.articleTitle + '</td>' +
+                        '<td><a href="/article/item/' + e.articleId + '" target="_blank">' + e.articleTitle + '</a></td>' +
                         '<td>' + e.userName + '</td>' +
                         '<td>' + e.createTimeStr + '</td>' +
                         '<td>' + (e.hidden ? '√' : '') + '</td>' +
