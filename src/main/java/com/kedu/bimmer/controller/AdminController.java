@@ -4,15 +4,10 @@ import com.kedu.bimmer.base.*;
 import com.kedu.bimmer.cache.CacheHolder;
 import com.kedu.bimmer.constant.FileType;
 import com.kedu.bimmer.dto.*;
-import com.kedu.bimmer.model.Article;
-import com.kedu.bimmer.model.Comment;
-import com.kedu.bimmer.model.FileInfo;
-import com.kedu.bimmer.model.FileTag;
-import com.kedu.bimmer.service.ArticleService;
-import com.kedu.bimmer.service.CommentService;
-import com.kedu.bimmer.service.FileInfoService;
-import com.kedu.bimmer.service.FileTagService;
+import com.kedu.bimmer.model.*;
+import com.kedu.bimmer.service.*;
 import com.kedu.bimmer.util.CommonUtil;
+import com.kedu.bimmer.util.JSONUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,6 +26,8 @@ public class AdminController {
 
     @Autowired
     private ArticleService articleService;
+    @Autowired
+    private ArticleExtendService articleExtendService;
     @Autowired
     private CommentService commentService;
     @Autowired
@@ -68,18 +65,25 @@ public class AdminController {
         model.addAttribute("originalUrl", vo == null ? "" : vo.getOriginalUrl());
         model.addAttribute("allowComment", vo == null || vo.isAllowComment()); // 默认：允许评论
         model.addAttribute("hidden", vo != null && vo.isHidden()); // 默认：不隐藏
-        return "admin/articleEdit";
+		// 文章扩展表信息
+		ArticleExtend ext = GUID.isGUID(id) ? articleExtendService.get(id) : null;
+		model.addAttribute("linkUrl", ext == null ? "" : ext.getLinkUrl());
+		model.addAttribute("imageUrl", ext == null ? "" : ext.getImageUrl());
+		model.addAttribute("position", ext == null ? "" : ext.getPosition());
+		model.addAttribute("sortOrder", ext == null ? 0 : ext.getSortOrder());
+		return "admin/articleEdit";
     }
 
     @PostMapping("/saveArticle")
     @ResponseBody
-    public Result saveArticle(Article vo) {
+    public Result saveArticle(Article vo, ArticleExtend ext) {
 		String err = verify(vo);
 		if (err != null) {
 			return Result.fail(err);
 		}
 		LocalDateTime now = LocalDateTime.now();
         UserBasicInfo user = SystemContext.getUser();
+        boolean extEmpty = CommonUtil.isBlank(ext.getLinkUrl()) && CommonUtil.isBlank(ext.getImageUrl()) && CommonUtil.isBlank(ext.getPosition());
 		Article ac = GUID.isGUID(vo.getArticleId()) ? articleService.get(vo.getArticleId()) : null;
 		if (ac == null) { // 新增
 			vo.setArticleId(GUID.generate());
@@ -90,6 +94,10 @@ public class AdminController {
 			vo.setCreateTime(now);
 			vo.setLastModifyTime(now);
 			articleService.insert(vo);
+			if (!extEmpty) {
+				ext.setArticleId(vo.getArticleId());
+				articleExtendService.insert(ext);
+			}
 		} else { // 更新
 			ac.setTitle(vo.getTitle());
 			ac.setSubTitle(vo.getSubTitle());
@@ -99,6 +107,11 @@ public class AdminController {
 			ac.setHidden(vo.isHidden());
 			ac.setLastModifyTime(now);
 			articleService.update(ac);
+			if (extEmpty) {
+				articleExtendService.delete(ac.getArticleId());
+			} else {
+				articleExtendService.save(ext);
+			}
 		}
         return Result.success();
     }
@@ -131,7 +144,7 @@ public class AdminController {
 				return "文章来源URL地址太长";
 			}
 			if (!url.startsWith("http://") && !url.startsWith("https://")) {
-				return "不是正确的URL地址";
+				return "文章来源不是正确的URL地址";
 			}
 		}
 		return null;
