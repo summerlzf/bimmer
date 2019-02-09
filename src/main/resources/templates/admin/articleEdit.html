@@ -62,7 +62,10 @@
             <div class="form-group">
                 <label class="col-sm-2 control-label">所在位置</label>
                 <div class="col-sm-8">
-                    <input type="text" class="form-control" name="position" placeholder="所在位置" th:value="${position ?: ''}" />
+                    <select class="form-control" name="position">
+                        <option value="">请选择</option>
+                        <option th:each="item,stat:${allPosition}" th:value="${item.name}" th:text="${item.note + ' （' + item.name + '）'}" th:attr="selected=${item.name == position}"></option>
+                    </select>
                 </div>
             </div>
             <div class="form-group">

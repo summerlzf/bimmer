@@ -4,11 +4,15 @@ import com.kedu.bimmer.model.ArticleExtend;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * @author Jef
  */
 @Mapper
 public interface ArticleExtendDAO {
+
+    List<ArticleExtend> listByPosition(@Param("position") String position);
 
     ArticleExtend get(@Param("articleId") String articleId);
 

@@ -2,12 +2,12 @@ package com.kedu.bimmer.controller;
 
 import com.kedu.bimmer.base.*;
 import com.kedu.bimmer.cache.CacheHolder;
+import com.kedu.bimmer.constant.ArticlePosition;
 import com.kedu.bimmer.constant.FileType;
 import com.kedu.bimmer.dto.*;
 import com.kedu.bimmer.model.*;
 import com.kedu.bimmer.service.*;
 import com.kedu.bimmer.util.CommonUtil;
-import com.kedu.bimmer.util.JSONUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -71,6 +71,7 @@ public class AdminController {
 		model.addAttribute("imageUrl", ext == null ? "" : ext.getImageUrl());
 		model.addAttribute("position", ext == null ? "" : ext.getPosition());
 		model.addAttribute("sortOrder", ext == null ? 0 : ext.getSortOrder());
+		model.addAttribute("allPosition", ArticlePosition.asList()); // 文章所有位置信息
 		return "admin/articleEdit";
     }
 
@@ -95,6 +96,9 @@ public class AdminController {
 			vo.setLastModifyTime(now);
 			articleService.insert(vo);
 			if (!extEmpty) {
+				if (!ArticlePosition.exist(ext.getPosition())) {
+					return Result.fail("文章所在位置参数错误");
+				}
 				ext.setArticleId(vo.getArticleId());
 				articleExtendService.insert(ext);
 			}
@@ -110,6 +114,9 @@ public class AdminController {
 			if (extEmpty) {
 				articleExtendService.delete(ac.getArticleId());
 			} else {
+				if (!ArticlePosition.exist(ext.getPosition())) {
+					return Result.fail("文章所在位置参数错误");
+				}
 				articleExtendService.save(ext);
 			}
 		}
