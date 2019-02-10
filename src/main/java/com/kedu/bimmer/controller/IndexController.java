@@ -2,11 +2,13 @@ package com.kedu.bimmer.controller;
 
 import com.kedu.bimmer.base.SystemContext;
 import com.kedu.bimmer.constant.ArticlePosition;
+import com.kedu.bimmer.dto.ArticleIndexDTO;
 import com.kedu.bimmer.dto.UserBasicInfo;
 import com.kedu.bimmer.model.Article;
 import com.kedu.bimmer.model.ArticleExtend;
 import com.kedu.bimmer.service.ArticleExtendService;
 import com.kedu.bimmer.service.ArticleService;
+import com.kedu.bimmer.util.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,12 +39,20 @@ public class IndexController {
 			// 最多显示3个
 			exts = exts.subList(0, 3);
 		}
-		List<Article> articles = new ArrayList<>();
+		List<ArticleIndexDTO> articles = new ArrayList<>();
 		for(ArticleExtend ext : exts) {
-			Article vo = articleService.get(ext.getArticleId());
-			if (vo != null) {
-				articles.add(vo);
+			Article a = articleService.get(ext.getArticleId());
+			if (a == null) {
+				continue;
 			}
+			ArticleIndexDTO vo = new ArticleIndexDTO();
+			vo.setArticleId(a.getArticleId());
+			vo.setTitle(CommonUtil.substr(a.getTitle(), 20, "..."));
+			vo.setSubTitle(a.getSubTitle());
+			vo.setContent(CommonUtil.substr(a.getContent(), 100, " ..."));
+			vo.setLinkUrl(ext.getLinkUrl());
+			vo.setImageUrl(ext.getImageUrl());
+			articles.add(vo);
 		}
 		model.addAttribute("middleNavArticles", articles);
 		return "index";
