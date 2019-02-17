@@ -111,4 +111,24 @@ public class MagicController {
         System.out.println("return page" + "   --- " + System.currentTimeMillis());
         return "test";
     }
+
+    @RequestMapping("/magic/name")
+    public String name(Model model) {
+        Future<?> f1 = executorService.submit(() -> {
+            String name = magicService.getName1();
+            model.addAttribute("info", name);
+        });
+        Future<?> f2 = executorService.submit(() -> {
+            String name = magicService.getName2();
+            model.addAttribute("data", name);
+        });
+        model.addAttribute("name", magicService.getName());
+        try {
+            f1.get();
+            f2.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        return "test";
+    }
 }

@@ -14,6 +14,7 @@ public enum ArticlePosition {
 
     INDEX_BANNER("index-banner", "首页Banner轮播图"),
     INDEX_MIDDLE_NAV("index-middle-nav", "首页中间导航"),
+    INDEX_MIDDLE_CONTENT("index-middle-content", "首页中间内容"),
     UNKNOWN("unknown", "未知");
 
     private String name;
