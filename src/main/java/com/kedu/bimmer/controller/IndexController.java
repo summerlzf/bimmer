@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 
 /**
  * Created by liuzifeng on 2018/9/17.
@@ -27,6 +30,8 @@ public class IndexController {
 	private ArticleService articleService;
 	@Autowired
 	private ArticleExtendService articleExtendService;
+	@Autowired
+	private ExecutorService executorService;
 
 	@RequestMapping({"/", "/index"})
 	public String index(Model model) {
@@ -34,27 +39,61 @@ public class IndexController {
 		if(user != null) {
 			model.addAttribute("username", user.getUserName());
 		}
-		List<ArticleExtend> exts = articleExtendService.listByPosition(ArticlePosition.INDEX_MIDDLE_NAV);
-		if (exts.size() > 3) {
-			// 最多显示3个
-			exts = exts.subList(0, 3);
-		}
-		List<ArticleIndexDTO> articles = new ArrayList<>();
-		for(ArticleExtend ext : exts) {
-			Article a = articleService.get(ext.getArticleId());
-			if (a == null) {
-				continue;
+		// 首页中间导航
+		Future<List<ArticleIndexDTO>> navTask = executorService.submit(() -> {
+			List<ArticleExtend> exts = articleExtendService.listByPosition(ArticlePosition.INDEX_MIDDLE_NAV);
+			if (exts.size() > 3) {
+				// 最多显示3个
+				exts = exts.subList(0, 3);
 			}
-			ArticleIndexDTO vo = new ArticleIndexDTO();
-			vo.setArticleId(a.getArticleId());
-			vo.setTitle(CommonUtil.substr(a.getTitle(), 20, "..."));
-			vo.setSubTitle(a.getSubTitle());
-			vo.setContent(CommonUtil.substr(a.getContent(), 100, " ..."));
-			vo.setLinkUrl(ext.getLinkUrl());
-			vo.setImageUrl(ext.getImageUrl());
-			articles.add(vo);
+			List<ArticleIndexDTO> list = new ArrayList<>();
+			for (ArticleExtend ext : exts) {
+				Article a = articleService.get(ext.getArticleId());
+				if (a == null) {
+					continue;
+				}
+				ArticleIndexDTO vo = new ArticleIndexDTO();
+				vo.setArticleId(a.getArticleId());
+				vo.setTitle(CommonUtil.substr(a.getTitle(), 20, "..."));
+				vo.setSubTitle(a.getSubTitle());
+				vo.setContent(CommonUtil.substr(a.getContent(), 100, " ..."));
+				vo.setLinkUrl(ext.getLinkUrl());
+				vo.setImageUrl(ext.getImageUrl());
+				list.add(vo);
+			}
+			return list;
+		});
+		// 首页中间内容
+		Future<List<ArticleIndexDTO>> contentTask = executorService.submit(() -> {
+			List<ArticleExtend> exts = articleExtendService.listByPosition(ArticlePosition.INDEX_MIDDLE_CONTENT);
+			if (exts.size() > 4) {
+				// 最多显示4个
+				exts = exts.subList(0, 4);
+			}
+			List<ArticleIndexDTO> list = new ArrayList<>();
+			for (ArticleExtend ext : exts) {
+				Article a = articleService.get(ext.getArticleId());
+				if (a == null) {
+					continue;
+				}
+				ArticleIndexDTO vo = new ArticleIndexDTO();
+				vo.setArticleId(a.getArticleId());
+				vo.setTitle(a.getTitle());
+				vo.setSubTitle(a.getSubTitle());
+				vo.setContent(CommonUtil.substr(a.getContent(), 100, " ..."));
+				vo.setLinkUrl(ext.getLinkUrl());
+				vo.setImageUrl(ext.getImageUrl());
+				list.add(vo);
+			}
+			return list;
+		});
+
+		try {
+			model.addAttribute("middleNavArticles", navTask.get());
+			model.addAttribute("middleContentArticles", contentTask.get());
+		} catch (InterruptedException | ExecutionException e) {
+			e.printStackTrace();
 		}
-		model.addAttribute("middleNavArticles", articles);
 		return "index";
 	}
 }

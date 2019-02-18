@@ -125,31 +125,21 @@
             </div>
         </div>
 
+        <th:block th:each="item,stat:${middleContentArticles}">
         <hr class="featurette-divider">
 
         <div class="row featurette">
-            <div class="col-md-7">
-                <h2 class="featurette-heading">First featurette heading. <span class="text-muted">It'll blow your mind.</span></h2>
-                <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+            <div class="col-md-7" th:class="${stat.index % 2 == 0 ? 'col-md-7' : 'col-md-7 col-md-push-5'}">
+                <h2 class="featurette-heading" th:text="${item.title}"></h2>
+                <p class="lead" th:text="${item.content}"></p>
             </div>
-            <div class="col-md-5">
-                <img class="featurette-image img-responsive center-block" data-src="holder.js/500x500/auto" alt="Generic placeholder image">
-            </div>
-        </div>
-
-        <hr class="featurette-divider">
-
-        <div class="row featurette">
-            <div class="col-md-7 col-md-push-5">
-                <h2 class="featurette-heading">Oh yeah, it's that good. <span class="text-muted">See for yourself.</span></h2>
-                <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
-            </div>
-            <div class="col-md-5 col-md-pull-7">
-                <img class="featurette-image img-responsive center-block" data-src="holder.js/500x500/auto" alt="Generic placeholder image">
+            <div class="col-md-5" th:class="${stat.index % 2 == 0 ? 'col-md-5' : 'col-md-5 col-md-pull-7'}">
+                <img class="featurette-image img-responsive center-block" th:src="${item.imageUrl}" th:alt="${item.title}">
             </div>
         </div>
+        </th:block>
 
-        <hr class="featurette-divider">
+        <!--<hr class="featurette-divider">
 
         <div class="row featurette">
             <div class="col-md-7">
@@ -159,7 +149,7 @@
             <div class="col-md-5">
                 <img class="featurette-image img-responsive center-block" data-src="holder.js/500x500/auto" alt="Generic placeholder image">
             </div>
-        </div>
+        </div>-->
 
         <hr class="featurette-divider">
 
