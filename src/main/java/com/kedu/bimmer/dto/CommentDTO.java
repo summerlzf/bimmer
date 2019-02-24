@@ -11,6 +11,9 @@ public class CommentDTO {
     /** 评论id */
     private String commentId;
 
+    /** 所回复的评论id */
+    private String replyCommentId;
+
     /** 评论内容 */
     private String content;
 
@@ -34,6 +37,9 @@ public class CommentDTO {
 
     /** 创建时间 */
     private String createTimeStr;
+
+    /** 该评论下的回复评论（仅用于展示） */
+    private List<CommentDTO> replyComments;
 
     public String getCommentId() {
         return commentId;
@@ -105,5 +111,21 @@ public class CommentDTO {
 
     public void setArticleId(String articleId) {
         this.articleId = articleId;
+    }
+
+    public String getReplyCommentId() {
+        return replyCommentId;
+    }
+
+    public void setReplyCommentId(String replyCommentId) {
+        this.replyCommentId = replyCommentId;
+    }
+
+    public List<CommentDTO> getReplyComments() {
+        return replyComments;
+    }
+
+    public void setReplyComments(List<CommentDTO> replyComments) {
+        this.replyComments = replyComments;
     }
 }

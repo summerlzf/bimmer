@@ -10,7 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.format.DateTimeFormatter;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Jef
@@ -35,11 +36,24 @@ public class CommentService {
     public List<CommentDTO> listByArticleId(String articleId) {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         Page<CommentDTO> page = Page.startPage(1, 5, () -> commentDAO.listByArticleId(articleId));
-        page.getDataList().forEach(vo -> {
+        List<CommentDTO> list = page.getDataList();
+        if (CommonUtil.isBlank(list)) {
+            return new ArrayList<>();
+        }
+        List<String> ids = list.stream().map(CommentDTO::getCommentId).collect(Collectors.toList());
+        List<CommentDTO> replyComments = commentDAO.listByReplyCommentId(ids);
+        replyComments.forEach(vo -> {
             vo.setContents(CommonUtil.asList(vo.getContent().split("\r\n")));
             vo.setCreateTimeStr(vo.getCreateTime().format(dtf));
         });
-        return page.getDataList();
+        Map<String, List<CommentDTO>> map = replyComments.isEmpty() ? new HashMap<>() : replyComments.stream().collect(Collectors.groupingBy(CommentDTO::getReplyCommentId));
+        list.forEach(vo -> {
+            vo.setContents(CommonUtil.asList(vo.getContent().split("\r\n")));
+            vo.setCreateTimeStr(vo.getCreateTime().format(dtf));
+            // 拼装某一评论下的回复评论
+            vo.setReplyComments(Optional.ofNullable(map.get(vo.getCommentId())).orElse(new ArrayList<>()));
+        });
+        return list;
     }
 
     public void insert(Comment vo) {

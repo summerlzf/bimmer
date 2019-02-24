@@ -52,10 +52,34 @@
                 <!-- 评论列表 -->
                 <div class="blog-post" th:each="comment,index:${comments}">
                     <hr>
-                    <p class="blog-post-meta">[[${comment.createTimeStr}]] | [[${comment.userName}]]</p>
+                    <p class="blog-post-meta row">
+                        <span class="col-md-10">[[${comment.createTimeStr}]] | [[${comment.userName}]]</span>
+                        <span class="col-md-2 text-right"><a href="javascript:;" th:if="${vo.allowComment}" th:attr="commentid=${comment.commentId}" onclick="replyComment(this);">回复</a></span>
+                    </p>
                     <blockquote>
+                        <!-- 评论内容 -->
                         <p th:each="item,stat:${comment.contents}">[[${item ?: '&nbsp;'}]]</p>
+                        <!-- 回复的评论 -->
+                        <th:block th:each="reply,idx:${comment.replyComments}">
+                            <hr />
+                            <p class="blog-post-meta">[[${reply.createTimeStr}]] | [[${reply.userName}]]</p>
+                            <blockquote>
+                                <p th:each="item,stat:${reply.contents}">[[${item ?: '&nbsp;'}]]</p>
+                            </blockquote>
+                        </th:block>
                     </blockquote>
+                    <div th:class="${'row hidden div-reply-' + comment.commentId}">
+                        <pre th:if="${!isLogin}" class="col-md-10 col-md-offset-1 text-center"><code>回复评论请 <a href="/login">登录</a></code></pre>
+                        <form th:if="${isLogin}" class="col-md-10 col-md-offset-1" th:attr="commentid=${comment.commentId}" onsubmit="return saveReplyComment(this);">
+                            <div class="form-group">
+                                <input type="hidden" name="articleId" th:value="${vo.articleId}" />
+                                <textarea class="form-control" name="content" rows="3"></textarea>
+                            </div>
+                            <div class="form-group text-right">
+                                <button type="submit" class="btn btn-primary">提交回复评论</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
 
                 <div class="blog-post" th:if="${vo.allowComment}">
@@ -123,6 +147,25 @@
                 window.location.reload();
             });
             return false;
+        }
+        function saveReplyComment(ele) {
+            var id = $(ele).attr('commentid');
+            var req = $('.div-reply-' + id + ' form').serialize();
+//            alert(req + '&replyCommentId=' + id);
+            $.post('/comment/addComment', req + '&replyCommentId=' + id, function (json) {
+                if(json.code != 0) {
+                    alert(json.message || '回复评论失败');
+                    return;
+                }
+                window.location.reload();
+            });
+            return false;
+        }
+        // 隐藏/显示 回复评论表单
+        function replyComment(ele) {
+            var id = $(ele).attr('commentid');
+            var div = $('.div-reply-' + id);
+            div.is(':hidden') ? div.removeClass('hidden') : div.addClass('hidden');
         }
         function listPopularArticle() {
             $.post('/article/listPopular', function (json) {

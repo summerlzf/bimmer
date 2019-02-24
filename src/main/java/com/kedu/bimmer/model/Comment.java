@@ -12,6 +12,9 @@ public class Comment {
 	/** 评论id */
 	private String commentId;
 
+	/** 所回复的评论id */
+	private String replyCommentId;
+
 	/** 文章id */
 	private String articleId;
 
@@ -73,5 +76,13 @@ public class Comment {
 
 	public void setCreateTime(LocalDateTime createTime) {
 		this.createTime = createTime;
+	}
+
+	public String getReplyCommentId() {
+		return replyCommentId;
+	}
+
+	public void setReplyCommentId(String replyCommentId) {
+		this.replyCommentId = replyCommentId;
 	}
 }

@@ -29,15 +29,30 @@
         <![CDATA[
             select c.commentId, c.content, u.userName, c.hidden, c.createTime from Comment c
             left join UserInfo u on u.userId = c.userId
-            where c.articleId = #{articleId} and c.hidden = 0
+            where c.articleId = #{articleId} and c.replyCommentId is null and c.hidden = 0
+			order by c.createTime asc
+        ]]>
+    </select>
+
+    <select id="listByReplyCommentId" resultType="com.kedu.bimmer.dto.CommentDTO" parameterType="list">
+        <![CDATA[
+            select c.commentId, c.replyCommentId, c.content, u.userName, c.hidden, c.createTime from Comment c
+            left join UserInfo u on u.userId = c.userId
+            where c.replyCommentId in
+        ]]>
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+        <![CDATA[
+            and c.hidden = 0
 			order by c.createTime asc
         ]]>
     </select>
 
     <insert id="insert" parameterType="com.kedu.bimmer.model.Comment">
         <![CDATA[
-            insert into Comment(commentId, articleId, userId, content, hidden, createTime)
-            values(#{commentId}, #{articleId}, #{userId}, #{content}, #{hidden}, #{createTime})
+            insert into Comment(commentId, replyCommentId, articleId, userId, content, hidden, createTime)
+            values(#{commentId}, #{replyCommentId}, #{articleId}, #{userId}, #{content}, #{hidden}, #{createTime})
         ]]>
     </insert>
 
