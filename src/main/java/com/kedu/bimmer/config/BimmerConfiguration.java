@@ -1,6 +1,7 @@
 package com.kedu.bimmer.config;
 
 import com.github.pagehelper.PageHelper;
+import com.kedu.bimmer.interceptor.AccessInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -21,6 +22,11 @@ public class BimmerConfiguration {
 	@Bean
 	public ExecutorService executorService() {
 		return Executors.newFixedThreadPool(30);
+	}
+
+	@Bean
+	public AccessInterceptor accessInterceptor() {
+		return new AccessInterceptor();
 	}
 
 	@Bean
