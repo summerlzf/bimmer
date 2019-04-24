@@ -1,15 +1,15 @@
 package com.kedu.bimmer.util;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Iterator;
-
-import org.apache.log4j.Logger;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
   
 /**
  *  包含操作 {@code JSON} 数据的常用方法的工具类。 
@@ -20,7 +20,7 @@ import com.google.gson.reflect.TypeToken;
  */
 public class JSONUtils {  
       
-    private static final Logger LOGGER = Logger.getLogger(JSONUtils.class);  
+    private static final Logger LOGGER = LoggerFactory.getLogger(JSONUtils.class);
   
     /** 空的 {@code JSON} 数据 - <code>"{}"</code>。 */  
     public static final String EMPTY_JSON = "{}";  

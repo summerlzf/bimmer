@@ -1,2 +1,0 @@
-#bootstrap in your thymeleaf 3 config
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.kedu.bimmer.config.ThymeleafConfig
