@@ -14,15 +14,17 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 public class WebMvcConfig implements WebMvcConfigurer {
 
+    private static final String[] excludes = {"/**/*.js", "/**/*.css", "/**/*.jpg", "/**/*.jpeg", "/**/*.gif", "/**/*.png", "/fonts/*"};
+
     @Autowired
     private AccessInterceptor accessInterceptor;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(accessInterceptor);
+        registry.addInterceptor(accessInterceptor).addPathPatterns("/**").excludePathPatterns(excludes);
     }
 
-    @Override
+	@Override
     public void configureAsyncSupport(AsyncSupportConfigurer configurer) {
         configurer.setDefaultTimeout(60 * 1000);
         configurer.registerCallableInterceptors(timeoutInterceptor());

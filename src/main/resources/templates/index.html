@@ -134,7 +134,7 @@
                 <p class="lead" th:text="${item.content}"></p>
             </div>
             <div class="col-md-5" th:class="${stat.index % 2 == 0 ? 'col-md-5' : 'col-md-5 col-md-pull-7'}">
-                <img class="featurette-image img-responsive center-block" th:src="${item.imageUrl}" th:alt="${item.title}">
+                <img th:unless="${#strings.isEmpty(item.imageUrl)}" class="featurette-image img-responsive center-block" th:src="${item.imageUrl}" th:alt="${item.title}" />
             </div>
         </div>
         </th:block>
