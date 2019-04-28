@@ -14,7 +14,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 public class WebMvcConfig implements WebMvcConfigurer {
 
-    private static final String[] excludes = {"/**/*.js", "/**/*.css", "/**/*.jpg", "/**/*.jpeg", "/**/*.gif", "/**/*.png", "/fonts/*"};
+    private static final String[] excludes = {
+            "/**/*.js", "/**/*.css", "/**/*.jpg", "/**/*.jpeg", "/**/*.gif", "/**/*.png", "/**/*.map", "/fonts/*"
+    };
 
     @Autowired
     private AccessInterceptor accessInterceptor;
