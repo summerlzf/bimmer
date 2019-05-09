@@ -25,7 +25,9 @@ public class MultipleDataSource implements InitializingBean {
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		//
+		if (dataSources == null) {
+			dataSources = new HashSet<>();
+		}
 	}
 
 	public Set<String> getDataSources() {
