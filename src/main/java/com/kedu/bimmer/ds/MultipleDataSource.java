@@ -21,6 +21,7 @@ public class MultipleDataSource implements InitializingBean {
 		}
 		dataSources = new HashSet<>(CommonUtil.asList(dataSource));
 		defaultDataSource = dataSource[0];
+		DataSourceHolder.setDefaultDataSource(defaultDataSource);
 	}
 
 	@Override
