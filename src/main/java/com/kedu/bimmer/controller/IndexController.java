@@ -96,4 +96,10 @@ public class IndexController {
 		}
 		return "index";
 	}
+
+	@RequestMapping("/robots.txt")
+	public String robots() {
+		// robots协议（爬虫蜘蛛），不过这个“文件”页面的访问，建议在nginx上做
+		return "robots";
+	}
 }
