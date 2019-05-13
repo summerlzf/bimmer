@@ -8,22 +8,22 @@ import java.util.concurrent.Callable;
  */
 public class DataSourceHolder {
 
-	private static final ThreadLocal<String> holder = new ThreadLocal<>();
+	private static final ThreadLocal<DataSourceContainer> holder = ThreadLocal.withInitial(DataSourceContainer::new);
 
 	private static String defaultDataSource;
 
-	public static String getDataSource() {
-		String ds = Optional.ofNullable(holder.get()).orElse(defaultDataSource);
+	static String getDataSource() {
+		String ds = Optional.ofNullable(holder.get().getDataSource()).orElse(defaultDataSource);
 		System.err.println("=============> 当前使用的数据源：" + ds);
 		return ds;
 	}
 
-	public static void putDataSource(String dataSource) {
-		holder.set(dataSource);
+	static void putDataSource(String dataSource) {
+		holder.get().addDataSource(dataSource);
 	}
 
-	public static void removeDataSource(String dataSource) {
-		holder.remove();
+	static void removeDataSource(String dataSource) {
+		holder.get().removeDataSource(dataSource);
 	}
 
 	public static String getDefaultDataSource() {
@@ -38,6 +38,17 @@ public class DataSourceHolder {
 		try {
 			putDataSource(dataSource);
 			return callable.call();
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		} finally {
+			removeDataSource(dataSource);
+		}
+	}
+
+	public static void runInDataSource(String dataSource, Runnable runnable) {
+		try {
+			putDataSource(dataSource);
+			runnable.run();
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		} finally {
