@@ -1,6 +1,7 @@
 package com.kedu.bimmer.ds;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import com.kedu.bimmer.util.CommonUtil;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.springframework.beans.BeansException;
@@ -36,11 +37,17 @@ public class MultipleDataSourceConfig implements BeanDefinitionRegistryPostProce
 
 	@Bean
 	public DynamicDataSource dataSource(MultipleDataSource multipleDataSource) {
+		// 将 Environment 环境对象置入 DataSourceHolder 中
+		DataSourceHolder.setEnvironment(environment);
+		// 创建数据源
 		DynamicDataSource dataSource = new DynamicDataSource();
+		dataSource.setLenientFallback(false);
 		Map<Object, Object> dsMap = new HashMap<>();
 		for(String ds : multipleDataSource.getDataSources()) {
 			DruidDataSource dds = applicationContext.getBean(ds, DruidDataSource.class);
-			initDataSource(ds, dds);
+			if(!initDataSource(ds, dds)) {
+				continue;
+			}
 			// 设置默认数据源
 			if (ds.equalsIgnoreCase(multipleDataSource.getDefaultDataSource())) {
 				dataSource.setDefaultTargetDataSource(dds);
@@ -51,10 +58,14 @@ public class MultipleDataSourceConfig implements BeanDefinitionRegistryPostProce
 		return dataSource;
 	}
 
-	private void initDataSource(String ds, DruidDataSource dataSource) {
+	private boolean initDataSource(String ds, DruidDataSource dataSource) {
+		String url = environment.getProperty(ds + ".url"), username = environment.getProperty(ds + ".username");
+		if (CommonUtil.isBlank(url) || CommonUtil.isBlank(username)) {
+			return false;
+		}
 		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-		dataSource.setUrl(environment.getProperty(ds + ".url"));
-		dataSource.setUsername(environment.getProperty(ds + ".username"));
+		dataSource.setUrl(url);
+		dataSource.setUsername(username);
 //		String pwd = environment.getProperty(ds + ".password");
 		dataSource.setPassword("admin123456");
 
@@ -81,6 +92,7 @@ public class MultipleDataSourceConfig implements BeanDefinitionRegistryPostProce
 		if(dataSource.getValidationQueryTimeout() < 0) {
 			dataSource.setValidationQueryTimeout(0);
 		}
+		return true;
 	}
 
 	@ConditionalOnMissingBean

@@ -33,7 +33,7 @@ public class BimmerConfiguration {
 
 	@Bean
 	public MultipleDataSource multipleDataSource() {
-		return new MultipleDataSource(DataSourceNames.RD_COMMON, DataSourceNames.WT_COMMON);
+		return new MultipleDataSource(DataSourceNames.RD_COMMON, DataSourceNames.RD_REAL, DataSourceNames.WT_COMMON);
 	}
 
 	@Bean
