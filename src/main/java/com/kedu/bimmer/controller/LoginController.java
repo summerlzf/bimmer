@@ -3,6 +3,7 @@ package com.kedu.bimmer.controller;
 import com.kedu.bimmer.base.CookieHolder;
 import com.kedu.bimmer.base.Result;
 import com.kedu.bimmer.base.SystemContext;
+import com.kedu.bimmer.constant.CookieName;
 import com.kedu.bimmer.dto.UserBasicInfo;
 import com.kedu.bimmer.model.UserInfo;
 import com.kedu.bimmer.service.UserInfoService;
@@ -36,7 +37,7 @@ public class LoginController {
         }
         if (CommonUtil.isBlank(callbackUrl)) {
             // 尝试读取cookie中记录的URL地址
-            callbackUrl = CookieUtil.getCookie(request, "bm-url");
+            callbackUrl = CookieUtil.getCookie(request, CookieName.URL);
             if (CommonUtil.isBlank(callbackUrl)) {
                 callbackUrl = "/";
             }

@@ -2,6 +2,7 @@ package com.kedu.bimmer.interceptor;
 
 import com.kedu.bimmer.base.CookieHolder;
 import com.kedu.bimmer.base.SystemContext;
+import com.kedu.bimmer.constant.CookieName;
 import com.kedu.bimmer.dto.UserBasicInfo;
 import com.kedu.bimmer.util.CommonUtil;
 import com.kedu.bimmer.util.CookieUtil;
@@ -56,7 +57,7 @@ public class AccessInterceptor implements HandlerInterceptor {
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object o, ModelAndView modelAndView) throws Exception {
         if(modelAndView != null) {
             // 将每次请求的页面URL地址都写入cookie
-            CookieUtil.setCookie(response, "bm-url", request.getRequestURI());
+            CookieUtil.setCookie(response, CookieName.URL, request.getRequestURI());
         }
     }
 
