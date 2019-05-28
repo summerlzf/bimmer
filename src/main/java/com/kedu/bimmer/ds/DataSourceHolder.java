@@ -1,8 +1,6 @@
 package com.kedu.bimmer.ds;
 
 import com.kedu.bimmer.util.CommonUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 
 import java.util.Optional;
@@ -12,8 +10,6 @@ import java.util.concurrent.Callable;
  * @author liuzifeng
  */
 public class DataSourceHolder {
-
-	private static final Logger logger = LoggerFactory.getLogger(DataSourceHolder.class);
 
 	private static final ThreadLocal<DataSourceContainer> holder = ThreadLocal.withInitial(DataSourceContainer::new);
 
@@ -27,9 +23,7 @@ public class DataSourceHolder {
 	}
 
 	static String getDataSource() {
-		String ds = Optional.ofNullable(holder.get().getDataSource()).orElse(defaultDataSource);
-		logger.info("=============> 当前使用的数据源：" + ds);
-		return ds;
+		return Optional.ofNullable(holder.get().getDataSource()).orElse(defaultDataSource);
 	}
 
 	static void putDataSource(String dataSource) {
