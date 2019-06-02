@@ -40,13 +40,13 @@
                 </tr>
                 </thead>
                 <tbody id="tbody">
-                <tr>
-                    <td>--</td>
-                    <td>--</td>
-                    <td>--</td>
-                    <td>--</td>
-                    <td>--</td>
-                    <td>--</td>
+                <tr v-for="e in list">
+                    <td>{{ e.content }}</td>
+                    <td><a :href="'/article/item/' + e.articleId" target="_blank">{{ e.articleTitle }}</a></td>
+                    <td>{{ e.userName }}</td>
+                    <td>{{ e.createTimeStr }}</td>
+                    <td>{{ e.hidden ? '√' : '' }}</td>
+                    <td><a href="javascript:;" @click="setHidden(e.commentId, !e.hidden)">{{ e.hidden ? '显示' : '隐藏' }}</a></td>
                 </tr>
                 </tbody>
             </table>
@@ -57,21 +57,32 @@
 
 <th:block layout:fragment="footer">
     <script type="text/javascript">
+        var vm = new Vue({
+            el: '#tbody',
+            data: {
+                list: []
+            },
+            methods: {
+                setHidden: function (id, hidden) {
+                    // 设置为【隐藏】时弹出确认对话框
+                    if(hidden && !confirm('隐藏后将不会显示在文章评论中，你确定要隐藏该评论？')) {
+                        return;
+                    }
+                    $.post('/admin/updateCommentHidden', {commentId: id, hidden: hidden}, function (json) {
+                        if(json.code != 0) {
+                            alert(json.message || '操作失败');
+                            return;
+                        }
+                        searchData();
+                    });
+                }
+            }
+        });
         function searchData(pageNum) {
             var req = $('#search-form').serialize();
             $.post('/admin/getCommentList', req + '&pageNum=' + (pageNum || 1), function (json) {
-                var list = json.data.dataList || [], totalPage = json.data.totalPage, html = '';
-                list.forEach(function (e) {
-                    html += '<tr>' +
-                        '<td>' + e.content + '</td>' +
-                        '<td><a href="/article/item/' + e.articleId + '" target="_blank">' + e.articleTitle + '</a></td>' +
-                        '<td>' + e.userName + '</td>' +
-                        '<td>' + e.createTimeStr + '</td>' +
-                        '<td>' + (e.hidden ? '√' : '') + '</td>' +
-                        '<td><a href="javascript:;" onclick="setHidden(\'' + e.commentId + '\', ' + !e.hidden + ');">' + (e.hidden ? '显示' : '隐藏') + '</a></td>' +
-                        '</tr>';
-                });
-                $('#tbody').html(html);
+                vm.list = json.data.dataList || [];
+                var totalPage = json.data.totalPage, html = '';
                 $('#pagination').pagination(json.data.totalCount, {
                     callback: function (pageIndex) {
                         var page = pageIndex + 1;
@@ -95,19 +106,6 @@
                 });
             });
             return false;
-        }
-        function setHidden(id, hidden) {
-            // 设置为【隐藏】时弹出确认对话框
-            if(hidden && !confirm('隐藏后将不会显示在文章评论中，你确定要隐藏该评论？')) {
-                return;
-            }
-            $.post('/admin/updateCommentHidden', {commentId: id, hidden: hidden}, function (json) {
-                if(json.code != 0) {
-                    alert(json.message || '操作失败');
-                    return;
-                }
-                searchData();
-            });
         }
         $(function () {
             searchData();

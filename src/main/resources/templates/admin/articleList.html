@@ -43,15 +43,15 @@
                 </tr>
                 </thead>
                 <tbody id="tbody">
-                <tr>
-                    <td>--</td>
-                    <td>--</td>
-                    <td>--</td>
-                    <td>--</td>
-                    <td>--</td>
-                    <td>--</td>
-                    <td>--</td>
-                    <td>--</td>
+                <tr v-for="e in list">
+                    <td><a :href="'/article/item/' + e.articleId" target="_blank">{{ e.title }}</a></td>
+                    <td>{{ e.content }}</td>
+                    <td>{{ e.authorUserName }}</td>
+                    <td>{{ e.lastModifyTimeStr }}</td>
+                    <td>{{ e.viewCount }}</td>
+                    <td>{{ e.allowComment ? '√' : '' }}</td>
+                    <td>{{ e.hidden ? '√' : '' }}</td>
+                    <td><a :href="'/admin/articleEdit?id=' + e.articleId">编辑</a></td>
                 </tr>
                 </tbody>
             </table>
@@ -62,23 +62,17 @@
 
 <th:block layout:fragment="footer">
     <script type="text/javascript">
+        var vm = new Vue({
+            el: '#tbody',
+            data: {
+                list: []
+            }
+        });
         function searchData(pageNum) {
             var req = $('#search-form').serialize();
             $.post('/admin/getArticleList', req + '&pageNum=' + (pageNum || 1), function (json) {
-                var list = json.data.dataList || [], totalPage = json.data.totalPage, html = '';
-                list.forEach(function (e) {
-                    html += '<tr>' +
-                        '<td><a href="/article/item/' + e.articleId + '" target="_blank">' + e.title + '</a></td>' +
-                        '<td>' + e.content + '</td>' +
-                        '<td>' + e.authorUserName + '</td>' +
-                        '<td>' + e.lastModifyTimeStr + '</td>' +
-                        '<td>' + e.viewCount + '</td>' +
-                        '<td>' + (e.allowComment ? '√' : '') + '</td>' +
-                        '<td>' + (e.hidden ? '√' : '') + '</td>' +
-                        '<td><a href="/admin/articleEdit?id=' + e.articleId + '">编辑</a></td>' +
-                        '</tr>';
-                });
-                $('#tbody').html(html);
+                vm.list = json.data.dataList || [];
+                var totalPage = json.data.totalPage;
                 $('#pagination').pagination(json.data.totalCount, {
                     callback: function (pageIndex) {
                         var page = pageIndex + 1;
