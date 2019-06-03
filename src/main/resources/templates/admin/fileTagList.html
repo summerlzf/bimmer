@@ -16,7 +16,7 @@
                 </div>
                 <div class="col-xs-6 col-sm-3 placeholder text-left">
                     <input type="submit" class="btn btn-primary" value="搜索" />
-                    <a class="btn btn-default" onclick="edit();">新增</a>
+                    <a class="btn btn-default" onclick="vm.edit();">新增</a>
                 </div>
             </div>
         </form>
@@ -33,11 +33,11 @@
                 </tr>
                 </thead>
                 <tbody id="tbody">
-                <tr>
-                    <td>--</td>
-                    <td>--</td>
-                    <td>--</td>
-                    <td>--</td>
+                <tr v-for="e in list">
+                    <td>{{ e.tagId }}</td>
+                    <td>{{ e.tagName }}</td>
+                    <td>{{ e.sortOrder }}</td>
+                    <td><a href="javascript:;" @click="edit(e.tagId)">编辑</a> <a href="javascript:;" @click="remove(e.tagId)">删除</a></td>
                 </tr>
                 </tbody>
             </table>
@@ -77,49 +77,42 @@
 
 <th:block layout:fragment="footer">
     <script type="text/javascript">
+        var vm = new Vue({
+            el: '#tbody',
+            data: {
+                list: []
+            },
+            methods: {
+                edit: function (id) { // 图片标签 新增/编辑
+                    $('#viewModal').modal();
+                    id ? $.post('/admin/getFileTag', {tagId: id}, function (json) {
+                        $.common.initForm($('#viewModal form'), json.data);
+                    }) : $.common.initForm($('#viewModal form'));
+                },
+                remove: function (id) {
+                    if(!confirm('确定要删除该标签信息？')) {
+                        return;
+                    }
+                    $.post('/admin/deleteFileTag', {tagId: id}, function (json) {
+                        if(json.code != 0) {
+                            alert(json.message || '删除失败');
+                            return;
+                        }
+                        window.location.reload();
+                    });
+                }
+            }
+        });
         function searchData(pageNum) {
             var req = $('#search-form').serialize();
             $.post('/admin/getFileTagList', req + '&pageNum=' + (pageNum || 1), function (json) {
-                var list = json.data.dataList || [], totalPage = json.data.totalPage, html = '';
-                list.forEach(function (e) {
-                    html += '<tr>' +
-                        '<td>' + e.tagId + '</td>' +
-                        '<td>' + e.tagName + '</td>' +
-                        '<td>' + e.sortOrder + '</td>' +
-                        '<td><a href="javascript:;" onclick="edit(\'' + e.tagId + '\');">编辑</a> <a href="javascript:;" onclick="remove(\'' + e.tagId + '\');">删除</a></td>' +
-                        '</tr>';
-                });
-                $('#tbody').html(html);
-                $('#pagination').pagination(json.data.totalCount, {
-                    callback: function (pageIndex) {
-                        var page = pageIndex + 1;
-                        if(page >= 1 && page <= totalPage) {
-                            searchData(page);
-                        }
-                    },
-                    items_per_page: 10,
-                    num_display_entries: 5,
-                    current_page: (pageNum || 1) - 1,
-                    num_edge_entries: 0,
-//                    link_to: "#a",
-                    prev_text: "上一页",
-                    next_text: "下一页",
-                    ellipse_text: "...",
-                    prev_show_always: true,
-                    next_show_always: true,
-                    renderer: "defaultRenderer",
-                    show_if_single_page: true,
-                    load_first_page: false
+                vm.list = json.data.dataList || [];
+                // 分页通用方法
+                $.common.pagin($('#pagination'), json.data.totalCount, json.data.totalPage, pageNum, 10, function (page) {
+                    searchData(page);
                 });
             });
             return false;
-        }
-        // 图片标签 新增/编辑
-        function edit(id) {
-            $('#viewModal').modal();
-            id ? $.post('/admin/getFileTag', {tagId: id}, function (json) {
-                $.common.initForm($('#viewModal form'), json.data);
-            }) : $.common.initForm($('#viewModal form'));
         }
         // 保存图片标签
         function save() {
@@ -138,18 +131,6 @@
                 window.location.reload();
             });
             return false;
-        }
-        function remove(id) {
-            if(!confirm('确定要删除该标签信息？')) {
-                return;
-            }
-            $.post('/admin/deleteFileTag', {tagId: id}, function (json) {
-                if(json.code != 0) {
-                    alert(json.message || '删除失败');
-                    return;
-                }
-                window.location.reload();
-            });
         }
         $(function () {
             searchData();

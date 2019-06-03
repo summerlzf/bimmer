@@ -42,13 +42,14 @@
                 </tr>
                 </thead>
                 <tbody id="tbody">
-                <tr>
-                    <td>--</td>
-                    <td>--</td>
-                    <td>--</td>
-                    <td>--</td>
-                    <td>--</td>
-                    <td>--</td>
+                <tr v-for="e in list">
+                    <td>{{ e.fileName }}</td>
+                    <td>{{ e.fileTypeName }}</td>
+                    <td v-if="e.fileTagNames && e.fileTagNames.length > 0"><span class="badge" v-for="name in e.fileTagNames">{{ name }}</span></td>
+                    <td v-else>--</td>
+                    <td>{{ e.createTimeStr }}</td>
+                    <td>{{ e.hidden ? '√' : '' }}</td>
+                    <td><a v-if="e.fileType == 1" href="javascript:;" @click="viewImg(e.url)">图片预览</a> <a :href="'/admin/fileInfoEdit?id=' + e.fileId">编辑</a></td>
                 </tr>
                 </tbody>
             </table>
@@ -78,55 +79,29 @@
 
 <th:block layout:fragment="footer">
     <script type="text/javascript">
+        var vm = new Vue({
+            el: '#tbody',
+            data: {
+                list: []
+            },
+            methods: {
+                viewImg: function (url) { // 图片预览
+                    $('#viewModal').modal();
+                    $('#viewImg').attr('src', url);
+                    $('#viewSource').attr('href', url);
+                }
+            }
+        });
         function searchData(pageNum) {
             var req = $('#search-form').serialize();
             $.post('/admin/getFileInfoList', req + '&pageNum=' + (pageNum || 1), function (json) {
-                var list = json.data.dataList || [], totalPage = json.data.totalPage, html = '';
-                list.forEach(function (e) {
-                    var tagNames = '';
-                    e.fileTagNames && e.fileTagNames.forEach(function (name) {
-                        tagNames += ' <span class="badge">' + name + '</span>';
-                    });
-                    var viewImg = e.fileType == 1 ? '<a href="javascript:;" onclick="viewImg(\'' + e.url + '\');">图片预览</a> ' : '';
-                    html += '<tr>' +
-                        '<td>' + e.fileName + '</td>' +
-                        '<td>' + e.fileTypeName + '</td>' +
-                        '<td>' + (tagNames || '--') + '</td>' +
-                        '<td>' + e.createTimeStr + '</td>' +
-                        '<td>' + (e.hidden ? '√' : '') + '</td>' +
-                        '<td>' + viewImg + '<a href="/admin/fileInfoEdit?id=' + e.fileId + '">编辑</a></td>' +
-                        '</tr>';
-                });
-                $('#tbody').html(html);
-                $('#pagination').pagination(json.data.totalCount, {
-                    callback: function (pageIndex) {
-                        var page = pageIndex + 1;
-                        if(page >= 1 && page <= totalPage) {
-                            searchData(page);
-                        }
-                    },
-                    items_per_page: 10,
-                    num_display_entries: 5,
-                    current_page: (pageNum || 1) - 1,
-                    num_edge_entries: 0,
-//                    link_to: "#a",
-                    prev_text: "上一页",
-                    next_text: "下一页",
-                    ellipse_text: "...",
-                    prev_show_always: true,
-                    next_show_always: true,
-                    renderer: "defaultRenderer",
-                    show_if_single_page: true,
-                    load_first_page: false
+                vm.list = json.data.dataList || [];
+                // 分页通用方法
+                $.common.pagin($('#pagination'), json.data.totalCount, json.data.totalPage, pageNum, 10, function (page) {
+                    searchData(page);
                 });
             });
             return false;
-        }
-        // 图片预览
-        function viewImg(url) {
-            $('#viewModal').modal();
-            $('#viewImg').attr('src', url);
-            $('#viewSource').attr('href', url);
         }
         $(function () {
             searchData();

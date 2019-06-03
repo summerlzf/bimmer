@@ -72,27 +72,9 @@
             var req = $('#search-form').serialize();
             $.post('/admin/getArticleList', req + '&pageNum=' + (pageNum || 1), function (json) {
                 vm.list = json.data.dataList || [];
-                var totalPage = json.data.totalPage;
-                $('#pagination').pagination(json.data.totalCount, {
-                    callback: function (pageIndex) {
-                        var page = pageIndex + 1;
-                        if(page >= 1 && page <= totalPage) {
-                            searchData(page);
-                        }
-                    },
-                    items_per_page: 10,
-                    num_display_entries: 5,
-                    current_page: (pageNum || 1) - 1,
-                    num_edge_entries: 0,
-//                    link_to: "#a",
-                    prev_text: "上一页",
-                    next_text: "下一页",
-                    ellipse_text: "...",
-                    prev_show_always: true,
-                    next_show_always: true,
-                    renderer: "defaultRenderer",
-                    show_if_single_page: true,
-                    load_first_page: false
+                // 分页通用方法
+                $.common.pagin($('#pagination'), json.data.totalCount, json.data.totalPage, pageNum, 10, function (page) {
+                    searchData(page);
                 });
             });
             return false;
