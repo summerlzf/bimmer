@@ -56,8 +56,12 @@ public class AccessInterceptor implements HandlerInterceptor {
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object o, ModelAndView modelAndView) throws Exception {
         if(modelAndView != null) {
-            // 将每次请求的页面URL地址都写入cookie
-            CookieUtil.setCookie(response, CookieName.URL, request.getRequestURI());
+            // 将每次请求的页面URL地址都写入cookie（排除部分URL）
+            List<String> list = CommonUtil.asList("/register", "/robots");
+            String url = request.getRequestURI();
+            if (!list.contains(url)) {
+                CookieUtil.setCookie(response, CookieName.URL, url);
+            }
         }
     }
 

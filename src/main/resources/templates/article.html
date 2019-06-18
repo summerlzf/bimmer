@@ -107,7 +107,9 @@
                 <div class="sidebar-module">
                     <h4>热门文章</h4>
                     <ol class="list-unstyled" id="popular-list">
-                        <li>Loading...</li>
+                        <li v-for="e in list">
+                            <a :href="'/article/item/' + e.articleId">{{ e.title }}</a>
+                        </li>
                     </ol>
                 </div>
                 <div class="sidebar-module">
@@ -132,6 +134,7 @@
     </footer>
 
     <!-- JavaScript -->
+    <script type="text/javascript" src="/js/vue.js"></script>
     <script type="text/javascript" src="/js/jquery.min.js"></script>
     <script type="text/javascript" src="/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/js/public.js"></script>
@@ -168,12 +171,14 @@
             div.is(':hidden') ? div.removeClass('hidden') : div.addClass('hidden');
         }
         function listPopularArticle() {
+            var vm = new Vue({
+                el: '#popular-list',
+                data: {
+                    list: []
+                }
+            });
             $.post('/article/listPopular', function (json) {
-                var list = json.data || [], html = '';
-                list.forEach(function (e) {
-                    html += '<li><a href="/article/item/' + e.articleId + '">' + e.title + '</a></li>';
-                });
-                $('#popular-list').html(html);
+                vm.list = json.data || [];
             });
         }
         $(function () {
