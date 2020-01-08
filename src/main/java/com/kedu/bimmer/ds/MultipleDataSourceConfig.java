@@ -59,15 +59,17 @@ public class MultipleDataSourceConfig implements BeanDefinitionRegistryPostProce
 	}
 
 	private boolean initDataSource(String ds, DruidDataSource dataSource) {
-		String url = environment.getProperty(ds + ".url"), username = environment.getProperty(ds + ".username");
-		if (CommonUtil.isBlank(url) || CommonUtil.isBlank(username)) {
-			return false;
-		}
+//		String url = environment.getProperty(ds + ".url"), username = environment.getProperty(ds + ".username");
+//		if (CommonUtil.isBlank(url) || CommonUtil.isBlank(username)) {
+//			return false;
+//		}
+		String url = "jdbc:mysql://localhost:3306/bimmer?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull";
+		String username = "root";
 		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
 		dataSource.setUrl(url);
 		dataSource.setUsername(username);
 //		String pwd = environment.getProperty(ds + ".password");
-		dataSource.setPassword("admin123456");
+		dataSource.setPassword("admin123");
 
 		// 设置默认参数
 		if(dataSource.getMaxActive() == 8 || dataSource.getMaxActive() == 5) {
